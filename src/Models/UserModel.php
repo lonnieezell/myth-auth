@@ -1,0 +1,31 @@
+<?php namespace Myth\Auth\Models;
+
+use CodeIgniter\Model;
+use Myth\Auth\Entities\User;
+
+class UserModel extends Model
+{
+    protected $table      = 'users';
+    protected $primaryKey = 'id';
+
+    protected $returnType = User::class;
+    protected $useSoftDeletes = true;
+
+    protected $allowedFields = [
+        'email', 'username', 'name', 'password_hash', 'reset_hash', 'activate_hash',
+	    'status', 'status_message', 'active', 'force_pass_reset', 'deleted'
+    ];
+
+    protected $useTimestamps = true;
+
+    protected $validationRules    = [
+    	'email'             => 'required|valid_email|is_unique[users.email]',
+	    'username'          => 'alpha_numeric_space|min[3]',
+	    'name'              => 'alpha_numeric_space',
+	    'password_hash'     => 'required',
+	    'active'            => 'required|integer',
+	    'force_pass_reset'  => 'required|integer'
+    ];
+    protected $validationMessages = [];
+    protected $skipValidation     = false;
+}
