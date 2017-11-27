@@ -1,9 +1,22 @@
 <?php namespace Myth\Auth\Config;
 
 use CodeIgniter\Config\BaseConfig;
+use Myth\Auth\Authentication\LocalAuthenticator;
 
 class Auth extends BaseConfig
 {
+    //--------------------------------------------------------------------
+    // Libraries
+    //--------------------------------------------------------------------
+
+    public $authenticationLibs = [
+        'local' => LocalAuthenticator::class
+    ];
+
+    public $authorizationLibs = [
+        'flat' => ''
+    ];
+
     //--------------------------------------------------------------------
     // Views used by Auth Controllers
     //--------------------------------------------------------------------

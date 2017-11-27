@@ -14,9 +14,9 @@ class AuthController extends Controller
      */
     protected $config;
 
-	/**
-	 * @var \CodeIgniter\Session\Session
-	 */
+    /**
+     * @var \CodeIgniter\Session\Session
+     */
     protected $session;
 
     public function __construct(...$params)
@@ -24,9 +24,9 @@ class AuthController extends Controller
         parent::__construct(...$params);
 
         // Most services in this controller require
-	    // the session to be started - so fire it up!
-	    $this->session = Services::session();
-	    $this->session->start();
+        // the session to be started - so fire it up!
+        $this->session = Services::session();
+        $this->session->start();
 
         $this->config = new Auth();
 //        $this->auth = Services::authentication();
@@ -52,7 +52,6 @@ class AuthController extends Controller
      */
     public function attemptLogin()
     {
-
     }
 
     /**
@@ -60,7 +59,6 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        
     }
 
     //--------------------------------------------------------------------
@@ -75,37 +73,37 @@ class AuthController extends Controller
         echo view($this->config->views['register']);
     }
 
-	/**
-	 * Attempt to register a new user.
-	 */
-	public function attemptRegister()
-	{
-		$userModel = new UserModel();
+    /**
+     * Attempt to register a new user.
+     */
+    public function attemptRegister()
+    {
+        $userModel = new UserModel();
 
-		// Validate here first, since some things,
-		// like the password, can only be validated properly here.
-		$rules = array_merge($userModel->getValidationRules(['only' => ['email', 'username']]), [
-			'password' => 'required|min_length[10]',
-			'pass_confirm' => 'required|matches[password]'
-		]);
+        // Validate here first, since some things,
+        // like the password, can only be validated properly here.
+        $rules = array_merge($userModel->getValidationRules(['only' => ['email', 'username']]), [
+            'password'     => 'required|min_length[10]',
+            'pass_confirm' => 'required|matches[password]',
+        ]);
 
-		if (! $this->validate($rules))
-		{
-			return redirect()->back()->withInput()->with('errors', $userModel->errors());
-		}
+        if (! $this->validate($rules))
+        {
+            return redirect()->back()->withInput()->with('errors', $userModel->errors());
+        }
 
-		// Save the user
-		$user = new User($this->request->getPost());
+        // Save the user
+        $user = new User($this->request->getPost());
 
-		$user->name   = $user->username;
+        $user->name = $user->username;
 
-		if (! $userModel->save($user))
-		{
-			return redirect()->back()->withInput()->with('errors', $userModel->errors());
-		}
+        if (! $userModel->save($user))
+        {
+            return redirect()->back()->withInput()->with('errors', $userModel->errors());
+        }
 
-		// Success!
-		return redirect()->route('login')->with('message', lang('Auth.registerSuccess'));
+        // Success!
+        return redirect()->route('login')->with('message', lang('Auth.registerSuccess'));
     }
 
 }
