@@ -62,7 +62,7 @@ class User extends Entity
 		$config = new Auth();
 
 		$this->password_hash = password_hash(
-			base64_decode(
+			base64_encode(
 				hash('sha384', $password, true)
 			),
 			PASSWORD_DEFAULT,
