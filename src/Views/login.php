@@ -8,6 +8,8 @@
                 <h2 class="card-header">Login</h2>
                 <div class="card-body">
 
+	                <?= view('Myth\Auth\Views\_message_block') ?>
+
                     <form action="<?= route_to('login') ?>" method="post">
                         <?= csrf_field() ?>
 
