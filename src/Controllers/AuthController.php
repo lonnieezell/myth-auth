@@ -14,9 +14,19 @@ class AuthController extends Controller
      */
     protected $config;
 
+	/**
+	 * @var \CodeIgniter\Session\Session
+	 */
+    protected $session;
+
     public function __construct(...$params)
     {
         parent::__construct(...$params);
+
+        // Most services in this controller require
+	    // the session to be started - so fire it up!
+	    $this->session = Services::session();
+	    $this->session->start();
 
         $this->config = new Auth();
 //        $this->auth = Services::authentication();
@@ -72,14 +82,30 @@ class AuthController extends Controller
 	{
 		$userModel = new UserModel();
 
+		// Validate here first, since some things,
+		// like the password, can only be validated properly here.
+		$rules = array_merge($userModel->getValidationRules(['only' => ['email', 'username']]), [
+			'password' => 'required|min_length[10]',
+			'pass_confirm' => 'required|matches[password]'
+		]);
+
+		if (! $this->validate($rules))
+		{
+			return redirect()->back()->withInput()->with('errors', $userModel->errors());
+		}
+
+		// Save the user
 		$user = new User($this->request->getPost());
+
+		$user->name   = $user->username;
 
 		if (! $userModel->save($user))
 		{
-			return redirect()->back()->with('errors', $userModel->errors());
+			return redirect()->back()->withInput()->with('errors', $userModel->errors());
 		}
 
-
+		// Success!
+		return redirect()->route('login')->with('message', lang('Auth.registerSuccess'));
     }
 
 }

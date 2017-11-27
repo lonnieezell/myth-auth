@@ -8,28 +8,43 @@
                 <h2 class="card-header">Register</h2>
                 <div class="card-body">
 
+                    <?= view('Myth\Auth\Views\_message_block') ?>
+
                     <form action="<?= route_to('register') ?>" method="post">
                         <?= csrf_field() ?>
 
                         <div class="form-group">
                             <label for="email">Email address</label>
-                            <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Enter email">
+                            <input type="email" class="form-control <?php if(session('errors.email')) : ?>is-invalid<?php endif ?>"
+                                   name="email" aria-describedby="emailHelp" placeholder="Enter email" value="<?= old('email') ?>">
+                            <div class="invalid-feedback">
+                                <?= session('errors.email') ?>
+                            </div>
                             <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                         </div>
 
                         <div class="form-group">
                             <label for="username">Username</label>
-                            <input type="text" class="form-control" name="username" placeholder="Johnny Appleseed">
+                            <input type="text" class="form-control <?php if(session('errors.username')) : ?>is-invalid<?php endif ?>" name="username" placeholder="Johnny Appleseed" value="<?= old('username') ?>">
+                            <div class="invalid-feedback">
+		                        <?= session('errors.username') ?>
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label for="password">Password</label>
-                            <input type="password" name="password" class="form-control" placeholder="Password">
+                            <input type="password" name="password" class="form-control <?php if(session('errors.password')) : ?>is-invalid<?php endif ?>" placeholder="Password" autocomplete="off">
+                            <div class="invalid-feedback">
+		                        <?= session('errors.password') ?>
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label for="pass_confirm">Password (again)</label>
-                            <input type="password" name="pass_confirm" class="form-control" placeholder="Password (again)">
+                            <input type="password" name="pass_confirm" class="form-control <?php if(session('errors.pass_confirm')) : ?>is-invalid<?php endif ?>" placeholder="Password (again)" autocomplete="off">
+                            <div class="invalid-feedback">
+		                        <?= session('errors.pass_confirm') ?>
+                            </div>
                         </div>
 
                         <br>

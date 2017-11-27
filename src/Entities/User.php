@@ -15,9 +15,9 @@ class User extends Entity
 	protected $activate_hash;
 	protected $status;
 	protected $status_message;
-	protected $active;
-	protected $force_pass_reset;
-	protected $deleted;
+	protected $active           = false;
+	protected $force_pass_reset = false;
+	protected $deleted          = false;
 	protected $created_at;
 	protected $updated_at;
 

@@ -1,6 +1,6 @@
 <?php namespace Myth\Auth\Config;
 
-class Services
+class Services extends \Config\Services
 {
     public static function authentication()
     {
