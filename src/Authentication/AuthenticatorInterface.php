@@ -25,14 +25,17 @@ interface AuthenticatorInterface
      * Checks the user's credentials to see if they could authenticate.
      * Unlike `attempt()`, will not log the user into the system.
      *
-     * @return bool
+     * @param array $credentials
+     * @param bool  $returnUser
+     *
+     * @return bool|User
      */
-    public function validate(): bool;
+    public function validate(array $credentials, bool $returnUser=false);
 
     /**
      * Returns the User instance for the current logged in user.
      *
-     * @return \Myth\Auth\Entities\User
+     * @return \Myth\Auth\Entities\User|null
      */
-    public function user(): User;
+    public function user();
 }

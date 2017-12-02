@@ -29,6 +29,15 @@ class Auth extends BaseConfig
     ];
 
     //--------------------------------------------------------------------
+    // Authentication
+    //--------------------------------------------------------------------
+
+    // Fields that are available to be used as credentials for login.
+    public $validFields = [
+        'email', 'username'
+    ];
+
+    //--------------------------------------------------------------------
     // PASSWORD HASHING COST
     //--------------------------------------------------------------------
     // The BCRYPT method of encryption allows you to define the "cost"

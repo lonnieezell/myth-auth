@@ -18,6 +18,32 @@ class AuthenticationBase
     protected $userModel;
 
     /**
+     * @var string
+     */
+    protected $error;
+
+    /**
+     * @var \Config\Auth
+     */
+    protected $config;
+
+    public function __construct($config)
+    {
+        $this->config = $config;
+    }
+
+    /**
+     * Returns the current error, if any.
+     *
+     * @return string
+     */
+    public function error()
+    {
+        return $this->error;
+    }
+
+
+    /**
      * Logs a user into the system.
      * NOTE: does not perform validation. All validation should
      * be done prior to using the login method.
@@ -55,17 +81,25 @@ class AuthenticationBase
     {
     }
 
-    public function recordLoginAttempt()
+    /**
+     * Record a login attempt
+     *
+     * @param array       $credentials
+     * @param string|null $ipAddress
+     * @param bool        $isSuccess
+     */
+    public function recordLoginAttempt(array $credentials, string $ipAddress=null, bool $isSuccess)
     {
+
     }
 
 
     /**
      * Returns the User instance for the current logged in user.
      *
-     * @return \Myth\Auth\Entities\User
+     * @return \Myth\Auth\Entities\User|null
      */
-    public function user(): User
+    public function user()
     {
         return $this->user;
     }

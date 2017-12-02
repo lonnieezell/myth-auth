@@ -70,12 +70,13 @@ class User extends Entity
 		);
 	}
 
-	/**
-	 * Generates a secure hash to use for password reset purposes,
-	 * saves it to the instance.
-	 *
-	 * @return $this
-	 */
+    /**
+     * Generates a secure hash to use for password reset purposes,
+     * saves it to the instance.
+     *
+     * @return $this
+     * @throws \Exception
+     */
 	public function generateResetHash()
 	{
 		$this->reset_hash = bin2hex(random_bytes(16));
@@ -83,11 +84,12 @@ class User extends Entity
 		return $this;
 	}
 
-	/**
-	 * Generates a secure random hash to use for account activation.
-	 *
-	 * @return $this
-	 */
+    /**
+     * Generates a secure random hash to use for account activation.
+     *
+     * @return $this
+     * @throws \Exception
+     */
 	public function generateActivateHash()
 	{
 		$this->activate_hash = bin2hex(random_bytes(16));

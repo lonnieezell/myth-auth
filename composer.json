@@ -25,7 +25,9 @@
   },
   "autoload": {
     "psr-4": {
-      "Myth\\Auth\\": "src"
+      "Myth\\Auth\\": "src",
+      "CodeIgniter\\": "../../CodeIgniter4/system/",
+      "Config\\": "../../CodeIgniter4/application/Config/"
     }
   },
   "autoload-dev": {
