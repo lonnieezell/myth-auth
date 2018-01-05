@@ -9,4 +9,8 @@ return [
 
     // Registration
     'registerSuccess' => 'Welcome aboard! Please login with your new credentials.',
+
+    // Login
+    'badAttempt' => 'Unable to log you in. Please check your credentials.',
+    'loginSuccess' => 'Welcome back!',
 ];

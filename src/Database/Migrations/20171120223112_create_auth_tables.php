@@ -35,11 +35,12 @@ class Migration_create_auth_tables extends Migration
          * Auth Login Attempts
          */
         $this->forge->addField([
-            'id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'ip_address' => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
-            'email'      => ['type' => 'varchar', 'constraint' => 255, 'null' => false],
-            'user_id'    => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true], // Only for successful logins
-            'datetime'   => ['type' => 'datetime'],
+            'id'            => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'ip_address'    => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
+            'email'         => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
+            'user_id'       => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true], // Only for successful logins
+            'date'          => ['type' => 'datetime'],
+            'success'       => ['type' => 'tinyint', 'constraint' => 1],
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addKey('email');
@@ -53,8 +54,8 @@ class Migration_create_auth_tables extends Migration
          */
         $this->forge->addField([
             'id'              => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'selector'        => ['type' => 'char', 'constraint' => 12],
-            'hashedValidator' => ['type' => 'char', 'constraint' => 64],
+            'selector'        => ['type' => 'varchar', 'constraint' => 255],
+            'hashedValidator' => ['type' => 'varchar', 'constraint' => 255],
             'user_id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
             'expires'         => ['type' => 'datetime'],
         ]);
@@ -137,7 +138,7 @@ class Migration_create_auth_tables extends Migration
     public function down()
     {
         $this->forge->dropTable('users', true);
-        $this->forge->dropTable('auth_logins', true);
+        $this->forge->dropTable('auth_login_attempts', true);
         $this->forge->dropTable('auth_tokens', true);
         $this->forge->dropTable('auth_groups', true);
         $this->forge->dropTable('auth_permissions', true);

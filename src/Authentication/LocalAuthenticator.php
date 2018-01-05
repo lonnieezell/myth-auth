@@ -1,6 +1,7 @@
 <?php namespace Myth\Auth\Authentication;
 
 use Myth\Auth\Config\Services;
+use Myth\Auth\Entities\User;
 use Myth\Auth\Exceptions\AuthException;
 
 class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInterface
@@ -17,22 +18,17 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
     {
         $this->user = $this->validate($credentials, true);
 
-        // Always record a login attempt, whether success or not.
-        $ipAddress = Services::request()->getIPAddress();
-        $this->recordLoginAttempt($credentials, $ipAddress, ! is_bool($this->user));
-
-        if (! $this->user)
+        if (empty($this->user))
         {
+            // Always record a login attempt, whether success or not.
+            $ipAddress = Services::request()->getIPAddress();
+            $this->recordLoginAttempt($credentials['email'], $ipAddress, $this->user->id ?? null, false);
+
             $this->user = null;
             return false;
         }
 
-        if ($remember)
-        {
-            $this->rememberUser($this->user);
-        }
-
-        return true;
+        return $this->login($this->user, $remember);
     }
 
     /**
@@ -42,6 +38,50 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
      */
     public function check(): bool
     {
+        if ($this->isLoggedIn())
+        {
+            return true;
+        }
+
+        // Check the remember me functionality.
+        helper('cookie');
+        $remember = get_cookie('remember');
+
+        if (empty($remember))
+        {
+            return false;
+        }
+
+        list($selector, $validator) = explode(':', $remember);
+        $validator = hash('sha256', $validator);
+
+        $token = $this->loginModel->getRememberToken($selector);
+
+        if (empty($token))
+        {
+            return false;
+        }
+
+        if (! hash_equals($token->hashedValidator, $validator))
+        {
+            return false;
+        }
+
+        // Yay! We were remembered!
+        $user = $this->userModel->find($token->user_id);
+
+        if (empty($user))
+        {
+            return false;
+        }
+
+        $this->login($user);
+
+        // We only want our remember me tokens to be valid
+        // for a single use.
+        $this->refreshRemember($user->id, $selector);
+
+        return true;
     }
 
     /**
@@ -87,7 +127,9 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
         }
 
         // Now, try matching the passwords.
-        $result = password_verify($password, $user->password_hash);
+        $result = password_verify(base64_encode(
+            hash('sha384', $password, true)
+        ), $user->password_hash);
 
         if (! $result)
         {
@@ -101,7 +143,7 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
         // logged in.
         if (password_needs_rehash($user->password_hash, PASSWORD_DEFAULT))
         {
-            $user->password_hash = password_hash($password, PASSWORD_DEFAULT);
+            $user->password = $password;
             $this->userModel->save($user);
         }
 
@@ -109,4 +151,5 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
             ? $user
             : true;
     }
+
 }

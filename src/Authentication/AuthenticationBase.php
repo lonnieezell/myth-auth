@@ -1,6 +1,8 @@
 <?php namespace Myth\Auth\Authentication;
 
+use Config\App;
 use CodeIgniter\Model;
+use Myth\Auth\Config\Services;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Exceptions\AuthException;
 use Myth\Auth\Exceptions\UserNotFoundException;
@@ -16,6 +18,11 @@ class AuthenticationBase
      * @var Model
      */
     protected $userModel;
+
+    /**
+     * @var Model
+     */
+    protected $loginModel;
 
     /**
      * @var string
@@ -50,11 +57,73 @@ class AuthenticationBase
      *
      * @param \Myth\Auth\Entities\User $user
      * @param bool                     $remember
+     *
+     * @return bool
+     * @throws \Exception
      */
-    public function login(User $user, bool $remember = false)
+    public function login(User $user=null, bool $remember = false): bool
     {
+        if (empty($user))
+        {
+            $this->user = null;
+            return false;
+        }
+
         $this->user = $user;
+
+        // Always record a login attempt, whether success or not.
+        $ipAddress = Services::request()->getIPAddress();
+        $this->recordLoginAttempt($user->email, $ipAddress, $user->id ?? null, true);
+
+        // Regenerate the session ID to help protect against session fixation
+        session()->regenerate();
+
+        // Let the session know we're logged in
+        session()->set('logged_in', $this->user->id);
+
+        // When logged in, ensure cache control headers are in place
+        Services::response()->noCache();
+
+        if ($remember)
+        {
+            $this->rememberUser($this->user->id);
+        }
+
+        // We'll give a 20% chance to need to do a purge since we
+        // don't need to purge THAT often, it's just a maintenance issue.
+        // to keep the table from getting out of control.
+        if (mt_rand(1, 100) < 20)
+        {
+            $this->loginModel->purgeOldRememberTokens();
+        }
+
+        return true;
     }
+
+    /**
+     * Checks to see if the user is logged in.
+     *
+     * @return bool
+     */
+    public function isLoggedIn(): bool
+    {
+        // On the off chance
+        if ($this->user instanceof User)
+        {
+            return true;
+        }
+
+        if ($userID = session('logged_in'))
+        {
+            // Store our current user object
+            $this->user = $this->userModel->find($userID);
+
+            return true;
+        }
+
+        return false;
+    }
+
 
     /**
      * Logs a user into the system by their ID.
@@ -79,18 +148,127 @@ class AuthenticationBase
      */
     public function logout()
     {
+        helper('cookie');
+
+        $user = $this->user();
+
+        // Destroy the session data - but ensure a session is still
+        // available for flash messages, etc.
+        if (isset($_SESSION))
+        {
+            foreach ( $_SESSION as $key => $value )
+            {
+                $_SESSION[ $key ] = NULL;
+                unset( $_SESSION[ $key ] );
+            }
+        }
+
+        // Regenerate the session ID for a touch of added safety.
+        session()->regenerate(true);
+
+        // Take care of any remember me functionality
     }
 
     /**
      * Record a login attempt
      *
-     * @param array       $credentials
+     * @param string      $email
      * @param string|null $ipAddress
-     * @param bool        $isSuccess
+     * @param int|null    $userID
+     *
+     * @param bool        $success
+     *
+     * @return bool|int|string
      */
-    public function recordLoginAttempt(array $credentials, string $ipAddress=null, bool $isSuccess)
+    public function recordLoginAttempt(string $email, string $ipAddress=null, int $userID=null, bool $success)
     {
+        return $this->loginModel->insert([
+            'ip_address' => $ipAddress,
+            'email' => $email,
+            'user_id' => $userID,
+            'datetime' => date('Y-m-d H:i:s'),
+            'success' => (int)$success
+        ]);
+    }
 
+    /**
+     * Generates a timing-attack safe remember me token
+     * and stores the necessary info in the db and a cookie.
+     *
+     * @see https://paragonie.com/blog/2015/04/secure-authentication-php-with-long-term-persistence
+     *
+     * @param int $userID
+     *
+     * @throws \Exception
+     */
+    public function rememberUser(int $userID)
+    {
+        $selector  = bin2hex(random_bytes(12));
+        $validator = bin2hex(random_bytes(20));
+        $expires   = date('Y-m-d H:i:s', time() + $this->config->rememberLength);
+
+        $token = $selector.':'.$validator;
+
+        // Store it in the database
+        $this->loginModel->rememberUser($userID, $selector, hash('sha256', $validator), $expires);
+
+        // Save it to the user's browser in a cookie.
+        helper('cookie');
+
+        $appConfig = new App();
+
+        // Create the cookie
+        set_cookie(
+            'remember',               // Cookie Name
+            $token,                      // Value
+            $this->config->rememberLength,  // # Seconds until it expires
+            $appConfig->cookieDomain,
+            $appConfig->cookiePath,
+            $appConfig->cookiePrefix,
+            false,                  // Only send over HTTPS?
+            true                  // Hide from Javascript?
+        );
+    }
+
+    /**
+     * Sets a new validator for this user/selector. This allows
+     * a one-time use of remember-me tokens, but still allows
+     * a user to be remembered on multiple browsers/devices.
+     *
+     * @param int    $userID
+     * @param string $selector
+     */
+    public function refreshRemember(int $userID, string $selector)
+    {
+        $existing = $this->loginModel->getRememberToken($selector);
+
+        // No matching record? Shouldn't happen, but remember the user now.
+        if (empty($existing))
+        {
+            return $this->rememberUser($userID);
+        }
+
+        // Update the validator in the database and the session
+        $validator = bin2hex(random_bytes(20));
+
+        $this->loginModel->updateRememberValidator($selector, $validator);
+
+        // Save it to the user's browser in a cookie.
+        helper('cookie');
+
+        $appConfig = new App();
+
+        // Create the cookie
+        set_cookie(
+            'remember',               // Cookie Name
+            $selector.':'.$validator, // Value
+            $this->config->rememberLength,  // # Seconds until it expires
+            $appConfig->cookieDomain,
+            $appConfig->cookiePath,
+            $appConfig->cookiePrefix,
+            false,                  // Only send over HTTPS?
+            true                  // Hide from Javascript?
+        );
     }
 
 
@@ -125,6 +303,7 @@ class AuthenticationBase
         return $user;
     }
 
+
     //--------------------------------------------------------------------
     // Model Setters
     //--------------------------------------------------------------------
@@ -140,6 +319,21 @@ class AuthenticationBase
     public function setUserModel(Model $model)
     {
         $this->userModel = $model;
+
+        return $this;
+    }
+
+    /**
+     * Sets the model that should be used to record
+     * login attempts (but failed and successful).
+     *
+     * @param Model $model
+     *
+     * @return $this
+     */
+    public function setLoginModel(Model $model)
+    {
+        $this->loginModel = $model;
 
         return $this;
     }

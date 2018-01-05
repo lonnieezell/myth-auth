@@ -29,7 +29,7 @@ class AuthController extends Controller
         $this->session->start();
 
         $this->config = new Auth();
-//        $this->auth = Services::authentication();
+        $this->auth = Services::authentication();
     }
 
     //--------------------------------------------------------------------
@@ -43,6 +43,16 @@ class AuthController extends Controller
      */
     public function login()
     {
+        // No need to show a login form if the user
+        // is already logged in.
+        if ($this->auth->check())
+        {
+            $redirectURL = session('redirect_url') ?? '/';
+            unset($_SESSION['redirect_url']);
+
+            return redirect()->to($redirectURL);
+        }
+
         echo view($this->config->views['login']);
     }
 
@@ -52,6 +62,36 @@ class AuthController extends Controller
      */
     public function attemptLogin()
     {
+        $rules = [
+            'email' => 'required|valid_email',
+            'password' => 'required'
+        ];
+
+        if (! $this->validate($rules))
+        {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $email = $this->request->getPost('email');
+        $password = $this->request->getPost('password');
+        $remember = (bool)$this->request->getPost('remember');
+
+        // Try to log them in...
+        if (! $this->auth->attempt(['email' => $email, 'password' => $password], $remember))
+        {
+            return redirect()->back()->withInput()->with('error', lang('Auth.'));
+        }
+
+        // Is the user being forced to reset their password?
+        if ($this->auth->user()->force_pass_reset === true)
+        {
+            return redirect('change_pass');
+        }
+
+        $redirectURL = session('redirect_url') ?? '/';
+        unset($_SESSION['redirect_url']);
+
+        return redirect()->to($redirectURL)->with('message', lang('Auth.loginSuccess'));
     }
 
     /**
@@ -59,6 +99,12 @@ class AuthController extends Controller
      */
     public function logout()
     {
+        if ($this->auth->check())
+        {
+            $this->auth->logout();
+        }
+
+        return redirect('/');
     }
 
     //--------------------------------------------------------------------

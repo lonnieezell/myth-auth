@@ -7,7 +7,7 @@ use Myth\Auth\Config\Services;
 use Myth\Auth\Models\UserModel;
 use Myth\Auth\Authentication\LocalAuthenticator;
 
-class LocalAuthenticateLoginTest extends \PHPUnit\Framework\TestCase
+class LocalAuthenticateAttemptTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var UserModel
@@ -48,7 +48,7 @@ class LocalAuthenticateLoginTest extends \PHPUnit\Framework\TestCase
         ];
 
         $this->auth->shouldReceive('validate')->once()->with(\Mockery::subset($credentials), true)->andReturn(false);
-        $this->auth->shouldReceive('recordLoginAttempt')->once()->with($credentials, '0.0.0.0', false);
+        $this->auth->shouldReceive('recordLoginAttempt')->once()->with($credentials, '0.0.0.0', null);
 
         $result = $this->auth->attempt($credentials, false);
 
@@ -64,10 +64,11 @@ class LocalAuthenticateLoginTest extends \PHPUnit\Framework\TestCase
         ];
 
         $user = new User();
+        $user->id = 5;
 
         $this->auth->shouldReceive('validate')->once()->with(\Mockery::subset($credentials), true)->andReturn($user);
-        $this->auth->shouldReceive('recordLoginAttempt')->once()->with($credentials, '0.0.0.0', true);
-        $this->auth->shouldReceive('rememberUser')->once()->with($user);
+        $this->auth->shouldReceive('recordLoginAttempt')->once()->with($credentials, '0.0.0.0', 5);
+        $this->auth->shouldReceive('rememberUser')->once()->with($user->id);
 
         $result = $this->auth->attempt($credentials, true);
 

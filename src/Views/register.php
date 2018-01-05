@@ -55,7 +55,7 @@
 
                     <hr>
 
-                    <p>Already registered? <a href="<?= route_to('register') ?>">Sign in</a></p>
+                    <p>Already registered? <a href="<?= route_to('login') ?>">Sign in</a></p>
                 </div>
             </div>
 

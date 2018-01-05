@@ -38,6 +38,25 @@ class Auth extends BaseConfig
     ];
 
     //--------------------------------------------------------------------
+    // Allow Persistent Login Cookies (Remember me)
+    //--------------------------------------------------------------------
+    // While every attempt has been made to create a very strong protection
+    // with the remember me system, there are some cases (like when you
+    // need extreme protection, like dealing with users financials) that
+    // you might not want the extra risk associated with this cookie-based
+    // solution.
+    //
+    public $allowRemembering = false;
+
+    //--------------------------------------------------------------------
+    // Remember Length
+    //--------------------------------------------------------------------
+    // The amount of time, in seconds, that you want a login to last for.
+    // Defaults to 2 weeks.
+    //
+    public $rememberLength = 2 * WEEK;
+
+    //--------------------------------------------------------------------
     // PASSWORD HASHING COST
     //--------------------------------------------------------------------
     // The BCRYPT method of encryption allows you to define the "cost"
