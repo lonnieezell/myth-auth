@@ -52,9 +52,9 @@ class Auth extends BaseConfig
     // Remember Length
     //--------------------------------------------------------------------
     // The amount of time, in seconds, that you want a login to last for.
-    // Defaults to 2 weeks.
+    // Defaults to 30 days.
     //
-    public $rememberLength = 2 * WEEK;
+    public $rememberLength = 30 * DAY;
 
     //--------------------------------------------------------------------
     // PASSWORD HASHING COST
@@ -68,4 +68,25 @@ class Auth extends BaseConfig
     //
     // Valid range is between 4 - 31.
     public $hashCost = 10;
+
+    //--------------------------------------------------------------------
+    // MINIMUM PASSWORD LENGTH
+    //--------------------------------------------------------------------
+    // The minimum length that a password must be to be accepted.
+    // Recommended minimum value by NIST = 8 characters.
+    //
+    public $minimumPasswordLength = 8;
+
+    //--------------------------------------------------------------------
+    // PASSWORD CHECK HELPERS
+    //--------------------------------------------------------------------
+    // The PasswordValidater class runs the password through all of these
+    // classes, each getting the opportunity to pass/fail the password.
+    // You can add custom classes as long as they adhere to the
+    // Password\ValidatorInterface.
+    //
+    public $passwordValidators = [
+        'Myth\Auth\Authentication\Passwords\CompositionValidator',
+        'Myth\Auth\Authentication\Passwords\DictionaryValidator',
+    ];
 }

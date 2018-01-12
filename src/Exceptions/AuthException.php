@@ -30,4 +30,15 @@ class AuthException extends \DomainException implements ExceptionInterface
     {
         return new self(lang('Auth.invalidFields', [$key]), 500);
     }
+
+    /**
+     * Fires when no minimumPasswordLength has been set
+     * in the Auth config file.
+     *
+     * @return AuthException
+     */
+    public static function forInvalidPasswordLength()
+    {
+        return new self(lang('Auth.invalidPasswordLength'), 500);
+    }
 }
