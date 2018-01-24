@@ -51,15 +51,26 @@ class DictionaryValidatorTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($this->validator->check($password, $user));
     }
 
-    public function testCheckFalseOnNameMatch()
+    public function nameMatches()
+    {
+        return [
+            ['joe smith'],
+            ['joesmith'],
+            ['joe.smith'],
+            ['joe-smith']
+        ];
+    }
+
+    /**
+     * @dataProvider nameMatches
+     */
+    public function testCheckFalseOnNameMatch($passCheck)
     {
         $user = new \Myth\Auth\Entities\User([
             'name' => 'Joe Smith'
         ]);
 
-        $password = 'joe smith';
-
-        $this->assertFalse($this->validator->check($password, $user));
+        $this->assertFalse($this->validator->check($passCheck, $user));
     }
 
     public function testCheckFalseOnUsernameMatch()

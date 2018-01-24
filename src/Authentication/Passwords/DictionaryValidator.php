@@ -36,9 +36,16 @@ class DictionaryValidator extends BaseValidator implements ValidatorInterface
         // Don't allow personal information as the password
         if ($user !== null)
         {
+            $names = [
+                strtolower($user->name),
+                strtolower(str_replace(' ', '', $user->name)),
+                strtolower(str_replace(' ', '.', $user->name)),
+                strtolower(str_replace(' ', '-', $user->name)),
+            ];
+
             $tPassword = strtolower($password);
-            if ($tPassword == strtolower($user->email)
-                || $tPassword == strtolower($user->name)
+            if ($tPassword == $user->email
+                || in_array($tPassword, $names, $user->name)
                 || $tPassword == strtolower($user->username)
             )
             {
