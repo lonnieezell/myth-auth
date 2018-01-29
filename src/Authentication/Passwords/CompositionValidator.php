@@ -34,10 +34,12 @@ class CompositionValidator extends BaseValidator implements ValidatorInterface
     {
         if (empty($this->config->minimumPasswordLength))
         {
-            throw AuthException::forInvalidPasswordLength();
+            throw AuthException::forUnsetPasswordLength();
         }
 
-        return strlen($password) >= $this->config->minimumPasswordLength;
+        $passed = strlen($password) >= $this->config->minimumPasswordLength;
+
+        return $passed;
     }
 
     /**
@@ -47,7 +49,7 @@ class CompositionValidator extends BaseValidator implements ValidatorInterface
      */
     public function error(): string
     {
-        return lang('Auth.errorPasswordLength');
+        return lang('Myth\Auth.errorPasswordLength', [$this->config->minimumPasswordLength]);
     }
 
     /**

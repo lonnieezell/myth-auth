@@ -28,7 +28,7 @@ class PasswordValidator
      *
      * @return bool
      */
-    public function check(string $password, User $user): bool
+    public function check(string $password, User $user=null): bool
     {
         $valid = false;
 

@@ -1,5 +1,7 @@
 <?php namespace Myth\Auth\Exceptions;
 
+use Myth\Auth\Config\Auth;
+
 class AuthException extends \DomainException implements ExceptionInterface
 {
     public static function forInvalidModel(string $model)
@@ -37,8 +39,8 @@ class AuthException extends \DomainException implements ExceptionInterface
      *
      * @return AuthException
      */
-    public static function forInvalidPasswordLength()
+    public static function forUnsetPasswordLength()
     {
-        return new self(lang('Auth.invalidPasswordLength'), 500);
+        return new self(lang('Auth.unsetPasswordLength'), 500);
     }
 }

@@ -13,6 +13,15 @@ use CodeIgniter\Entity;
 class DictionaryValidator extends BaseValidator implements ValidatorInterface
 {
     /**
+     * @var string
+     */
+    protected $error;
+    /**
+     * @var string
+     */
+    protected $suggestion;
+
+    /**
      * Checks the password and returns true/false
      * if it passes muster. Must return either true/false.
      * True means the password passes this test and
@@ -30,6 +39,8 @@ class DictionaryValidator extends BaseValidator implements ValidatorInterface
 
         if (empty($password))
         {
+            $this->error = lang('Auth.errorPasswordEmpty');
+
             return false;
         }
 
@@ -49,6 +60,9 @@ class DictionaryValidator extends BaseValidator implements ValidatorInterface
                 || $tPassword == strtolower($user->username)
             )
             {
+                $this->error = lang('Auth.errorPasswordPersonal');
+                $this->suggestion = lang('Auth.suggestPasswordPersonal');
+
                 return false;
             }
         }
@@ -63,6 +77,8 @@ class DictionaryValidator extends BaseValidator implements ValidatorInterface
                 {
                     fclose($fp);
 
+                    $this->error = lang('Auth.errorPasswordCommon');
+                    $this->suggestion = lang('Auth.suggestPasswordCommon');
                     return false;
                 }
             }
@@ -80,7 +96,7 @@ class DictionaryValidator extends BaseValidator implements ValidatorInterface
      */
     public function error(): string
     {
-
+        return $this->error ?? '';
     }
 
     /**
@@ -93,6 +109,6 @@ class DictionaryValidator extends BaseValidator implements ValidatorInterface
      */
     public function suggestion(): string
     {
-
+        return $this->suggestion ?? '';
     }
 }
