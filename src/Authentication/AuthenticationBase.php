@@ -167,6 +167,7 @@ class AuthenticationBase
         session()->regenerate(true);
 
         // Take care of any remember me functionality
+        $this->loginModel->purgeRememberTokens($user->id);
     }
 
     /**
