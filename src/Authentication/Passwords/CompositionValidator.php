@@ -49,7 +49,7 @@ class CompositionValidator extends BaseValidator implements ValidatorInterface
      */
     public function error(): string
     {
-        return lang('Myth\Auth.errorPasswordLength', [$this->config->minimumPasswordLength]);
+        return lang('Auth.errorPasswordLength', [$this->config->minimumPasswordLength]);
     }
 
     /**

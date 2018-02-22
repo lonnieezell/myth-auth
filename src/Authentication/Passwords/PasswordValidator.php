@@ -42,8 +42,11 @@ class PasswordValidator
                 $this->error = $class->error();
                 $this->suggestion = $class->suggestion();
 
+                $valid = false;
                 break;
             }
+
+            $valid = true;
         }
 
         return $valid;

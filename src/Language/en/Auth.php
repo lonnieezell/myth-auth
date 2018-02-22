@@ -16,7 +16,7 @@ return [
     'loginSuccess' => 'Welcome back!',
 
     // Passwords
-    'errorPasswordLength' => 'Passwords must be at least {0, integer} characters long.',
+    'errorPasswordLength' => 'Passwords must be at least {0, number} characters long.',
     'suggestPasswordLength' => 'Pass phrases - up to 255 characters long - make more secure passwords that are simpler to remember.',
     'errorPasswordCommon' => 'Password must not be a common password.',
     'suggestPasswordCommon' => 'The password was checked against over 65k commonly used passwords or passwords that have been leaked through hacks.',
