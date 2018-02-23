@@ -15,6 +15,9 @@ return [
     'badAttempt' => 'Unable to log you in. Please check your credentials.',
     'loginSuccess' => 'Welcome back!',
 
+    // Forgotten Passwords
+    'forgotNoUser' => 'Unable to locate a user with that email.',
+
     // Passwords
     'errorPasswordLength' => 'Passwords must be at least {0, number} characters long.',
     'suggestPasswordLength' => 'Pass phrases - up to 255 characters long - make more secure passwords that are simpler to remember.',

@@ -16,6 +16,7 @@ class Migration_create_auth_tables extends Migration
             'name'             => ['type' => 'varchar', 'constraint' => 30, 'null' => true],
             'password_hash'    => ['type' => 'varchar', 'constraint' => 255],
             'reset_hash'       => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
+            'reset_time'       => ['type' => 'datetime', 'null' => true],
             'activate_hash'    => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
             'status'           => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
             'status_message'   => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
@@ -35,12 +36,12 @@ class Migration_create_auth_tables extends Migration
          * Auth Login Attempts
          */
         $this->forge->addField([
-            'id'            => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'ip_address'    => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
-            'email'         => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
-            'user_id'       => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true], // Only for successful logins
-            'date'          => ['type' => 'datetime'],
-            'success'       => ['type' => 'tinyint', 'constraint' => 1],
+            'id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'ip_address' => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
+            'email'      => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
+            'user_id'    => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true], // Only for successful logins
+            'date'       => ['type' => 'datetime'],
+            'success'    => ['type' => 'tinyint', 'constraint' => 1],
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addKey('email');
@@ -63,6 +64,20 @@ class Migration_create_auth_tables extends Migration
         $this->forge->addKey('selector');
         $this->forge->addForeignKey('user_id', 'users', 'id', false, 'CASCADE');
         $this->forge->createTable('auth_tokens', true);
+
+        /*
+         * Password Reset Table
+         */
+        $this->forge->addField([
+            'id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'email'      => ['type' => 'varchar', 'constraint' => 255],
+            'ip_address' => ['type' => 'varchar', 'constraint' => 255],
+            'user_agent' => ['type' => 'varchar', 'constraint' => 255],
+            'token'      => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
+            'created_at' => ['type' => 'datetime', 'null' => false],
+        ]);
+        $this->forge->addKey('id', true);
+        $this->forge->createTable('auth_reset_attempts');
 
         /*
          * Groups Table

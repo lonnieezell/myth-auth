@@ -1,6 +1,7 @@
 <?php namespace Myth\Auth\Controllers;
 
 use CodeIgniter\Controller;
+use Config\Email;
 use Myth\Auth\Config\Auth;
 use Myth\Auth\Config\Services;
 use Myth\Auth\Entities\User;
@@ -124,18 +125,18 @@ class AuthController extends Controller
      */
     public function attemptRegister()
     {
-        $userModel = new UserModel();
+        $users = new UserModel();
 
         // Validate here first, since some things,
         // like the password, can only be validated properly here.
-        $rules = array_merge($userModel->getValidationRules(['only' => ['email', 'username']]), [
+        $rules = array_merge($users->getValidationRules(['only' => ['email', 'username']]), [
             'password'     => 'required|strong_password',
             'pass_confirm' => 'required|matches[password]',
         ]);
 
         if (! $this->validate($rules))
         {
-            return redirect()->back()->withInput()->with('errors', $userModel->errors());
+            return redirect()->back()->withInput()->with('errors', $users->errors());
         }
 
         // Save the user
@@ -143,13 +144,69 @@ class AuthController extends Controller
 
         $user->name = $user->username;
 
-        if (! $userModel->save($user))
+        if (! $users->save($user))
         {
-            return redirect()->back()->withInput()->with('errors', $userModel->errors());
+            return redirect()->back()->withInput()->with('errors', $users->errors());
         }
 
         // Success!
         return redirect()->route('login')->with('message', lang('Auth.registerSuccess'));
+    }
+
+    //--------------------------------------------------------------------
+    // Forgot Password
+    //--------------------------------------------------------------------
+
+    /**
+     * Displays the forgot password form.
+     */
+    public function forgotPassword()
+    {
+        echo view($this->config->views['forgot']);
+    }
+
+    /**
+     * Attempts to find a user account with that password
+     * and send password reset instructions to them.
+     */
+    public function attemptForgot()
+    {
+        $users = new userModel();
+
+        $user = $users->where('email', $this->request->getPost('email'))->first();
+
+        if (is_null($user))
+        {
+            return redirect()->back()->with('error', lang('Auth.forgotNoUser'));
+        }
+
+        // Save the reset hash /
+        $user->generateResetHash();
+        $users->save($user);
+
+        $email = Services::email();
+        $config = new Email();
+
+        $email->setFrom($config->fromEmail, $config->fromEmail)
+            ->setTo($user->email)
+            ->setSubject(lang('Auth.forgotSubject'))
+            ->setMessage(view($this->config->views['emailForgot'], ['hash' => $user->reset_hash]))
+            ->setMailType('html')
+            ->send();
+
+        echo $email->printDebugger();
+    }
+
+    /**
+     * Displays the Reset Password form.
+     */
+    public function resetPassword()
+    {
+        $token = $this->request->getGet('token');
+
+        echo view($this->config->views['reset'], [
+            'token' => $token
+        ]);
     }
 
 }

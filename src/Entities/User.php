@@ -12,6 +12,7 @@ class User extends Entity
 	protected $name;
 	protected $password_hash;
 	protected $reset_hash;
+	protected $reset_start_time;
 	protected $activate_hash;
 	protected $status;
 	protected $status_message;
@@ -80,6 +81,7 @@ class User extends Entity
 	public function generateResetHash()
 	{
 		$this->reset_hash = bin2hex(random_bytes(16));
+		$this->reset_start_time = date('Y-m-d H:i:s');
 
 		return $this;
 	}
