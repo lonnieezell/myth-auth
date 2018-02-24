@@ -64,8 +64,8 @@ class AuthController extends Controller
     public function attemptLogin()
     {
         $rules = [
-            'email' => 'required|valid_email',
-            'password' => 'required'
+            'email'    => 'required|valid_email',
+            'password' => 'required',
         ];
 
         if (! $this->validate($rules))
@@ -171,7 +171,7 @@ class AuthController extends Controller
      */
     public function attemptForgot()
     {
-        $users = new userModel();
+        $users = new UserModel();
 
         $user = $users->where('email', $this->request->getPost('email'))->first();
 
@@ -187,14 +187,20 @@ class AuthController extends Controller
         $email = Services::email();
         $config = new Email();
 
-        $email->setFrom($config->fromEmail, $config->fromEmail)
-            ->setTo($user->email)
-            ->setSubject(lang('Auth.forgotSubject'))
-            ->setMessage(view($this->config->views['emailForgot'], ['hash' => $user->reset_hash]))
-            ->setMailType('html')
-            ->send();
+        $sent = $email->setFrom($config->fromEmail, $config->fromEmail)
+              ->setTo($user->email)
+              ->setSubject(lang('Auth.forgotSubject'))
+              ->setMessage(view($this->config->views['emailForgot'], ['hash' => $user->reset_hash]))
+              ->setMailType('html')
+              ->send();
 
-        echo $email->printDebugger();
+        if (! $sent)
+        {
+            log_message('error', "Failed to send forgotten password email to: {$email}");
+            return redirect()->back()->withInput()->with('error', lang('Auth.unknownError'));
+        }
+
+        return redirect()->route('reset-password')->with('message', lang('Auth.forgotEmailSent'));
     }
 
     /**
@@ -205,8 +211,54 @@ class AuthController extends Controller
         $token = $this->request->getGet('token');
 
         echo view($this->config->views['reset'], [
-            'token' => $token
+            'token' => $token,
         ]);
+    }
+
+    /**
+     * Verifies the code with the email and saves the new password,
+     * if they all pass validation.
+     *
+     * @return mixed
+     */
+    public function attemptReset()
+    {
+        $users = new UserModel();
+
+        // First things first - log the reset attempt.
+        $users->logResetAttempt(
+            $this->request->getPost('email'),
+            $this->request->getPost('token'),
+            $this->request->getIPAddress(),
+            (string)$this->request->getUserAgent()
+        );
+
+        $rules = [
+            'token'        => 'required',
+            'email'        => 'required|valid_email',
+            'password'     => 'required|strong_password',
+            'pass_confirm' => 'required|matches[password]',
+        ];
+
+        if (! $this->validate($rules))
+        {
+            return redirect()->back()->withInput()->with('errors', $users->errors());
+        }
+
+        $user = $users->where('email', $this->request->getPost('email'))->first();
+
+        if (is_null($user))
+        {
+            return redirect()->back()->with('error', lang('Auth.forgotNoUser'));
+        }
+
+        // Success! Save the new password, and cleanup the reset hash.
+        $user->password = $this->request->getPost('password');
+        $user->reset_hash = null;
+        $user->reset_start_time = null;
+        $users->save($user);
+
+        return redirect()->route('login')->with('message', lang('Auth.resetSuccess'));
     }
 
 }

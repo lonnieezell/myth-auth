@@ -7,6 +7,7 @@ return [
     'tooManyCredentials' => 'You may only validate against 1 credential other than a password.',
     'invalidFields'   => 'The "{0, string}" field cannot be used to validate credentials.',
     'unsetPasswordLength' => 'You must set the `minimumPasswordLength` setting in the Auth config file.',
+    'unknownError' => 'Sorry, we encountered an issue sending the email to you. Please try again later.',
 
     // Registration
     'registerSuccess' => 'Welcome aboard! Please login with your new credentials.',
@@ -17,6 +18,9 @@ return [
 
     // Forgotten Passwords
     'forgotNoUser' => 'Unable to locate a user with that email.',
+    'forgotSubject' => 'Password Reset Instructions',
+    'resetSuccess' => 'Your password has been successfully changed. Please login with the new password.',
+    'forgotEmailSent' => 'A security token has been emailed to you. Enter it in the box below to continue.',
 
     // Passwords
     'errorPasswordLength' => 'Passwords must be at least {0, number} characters long.',

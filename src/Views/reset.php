@@ -27,7 +27,7 @@
                         <div class="form-group">
                             <label for="email">Email address</label>
                             <input type="email" class="form-control <?php if(session('errors.email')) : ?>is-invalid<?php endif ?>"
-                                   name="email" aria-describedby="emailHelp" placeholder="Enter email">
+                                   name="email" aria-describedby="emailHelp" placeholder="Enter email" value="<?= old('email') ?>">
                             <div class="invalid-feedback">
                                 <?= session('errors.email') ?>
                             </div>
@@ -45,9 +45,9 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="password">New Password (Again)</label>
+                            <label for="pass_confirm">New Password (Again)</label>
                             <input type="password" class="form-control <?php if(session('errors.pass_confirm')) : ?>is-invalid<?php endif ?>"
-                                   name="password">
+                                   name="pass_confirm">
                             <div class="invalid-feedback">
                                 <?= session('errors.pass_confirm') ?>
                             </div>
