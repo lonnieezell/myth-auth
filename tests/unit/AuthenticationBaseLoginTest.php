@@ -35,13 +35,13 @@ class AuthenticationBaseLoginTest extends \PHPUnit\Framework\TestCase
 
         $this->loginModel->shouldReceive('insert')->once()->with(\Mockery::subset([
             'ip_address' => '0.0.0.0',
-            'attempt_key' => 'email',
-            'attempt_value' => 'joe@example.com',
+            'email' => 'joe@example.com',
             'user_id' => 12,
-            'date' => date('Y-m-d H:i:s')
+            'date' => date('Y-m-d H:i:s'),
+            'success' => 0
         ]))->andReturn(true);
 
-        $this->assertTrue($this->auth->recordLoginAttempt($credentials, '0.0.0.0', 12));
+        $this->assertTrue($this->auth->recordLoginAttempt($credentials['email'], '0.0.0.0', 12, false));
     }
 
 }

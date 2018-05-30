@@ -55,7 +55,7 @@ class DictionaryValidator extends BaseValidator implements ValidatorInterface
             ];
 
             $tPassword = strtolower($password);
-            if ($tPassword == $user->email
+            if ($tPassword == strtolower($user->email)
                 || in_array($tPassword, $names, $user->name)
                 || $tPassword == strtolower($user->username)
             )

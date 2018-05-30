@@ -3,6 +3,7 @@
 use Mockery as m;
 use Myth\Auth\Config\Services;
 use Myth\Auth\Models\UserModel;
+use Myth\Auth\Models\LoginModel;
 use Myth\Auth\Authentication\LocalAuthenticator;
 
 class LocalAuthenticateValidateTest extends \PHPUnit\Framework\TestCase
@@ -11,6 +12,10 @@ class LocalAuthenticateValidateTest extends \PHPUnit\Framework\TestCase
      * @var UserModel
      */
     protected $userModel;
+    /**
+     * @var LoginModel
+     */
+    protected $loginModel;
     /**
      * @var LocalAuthenticator
      */
@@ -24,7 +29,8 @@ class LocalAuthenticateValidateTest extends \PHPUnit\Framework\TestCase
     {
         parent::setUp();
         $this->userModel = m::mock(UserModel::class);
-        $this->auth = Services::authentication('local', $this->userModel, false);
+        $this->loginModel = m::mock(LoginModel::class);
+        $this->auth = Services::authentication('local', $this->userModel, $this->loginModel,false);
 
         $this->request = m::mock('CodeIgniter\HTTP\IncomingRequest');
         Services::injectMock('CodeIgniter\HTTP\IncomingRequest', $this->request);
@@ -98,7 +104,7 @@ class LocalAuthenticateValidateTest extends \PHPUnit\Framework\TestCase
 
     public function testValidateSuccess()
     {
-        $user = new \Myth\Auth\Entities\User(['password_hash' => password_hash('secret', PASSWORD_DEFAULT)]);
+        $user = new \Myth\Auth\Entities\User(['password' => 'secret']);
 
         $this->userModel->shouldReceive('where')->once()->with(\Mockery::subset(['email' => 'joe@example.com']))->andReturn($this->userModel);
         $this->userModel->shouldReceive('first')->once()->andReturn($user);
@@ -113,7 +119,7 @@ class LocalAuthenticateValidateTest extends \PHPUnit\Framework\TestCase
 
     public function testValidateSuccessReturnsUser()
     {
-        $user = new \Myth\Auth\Entities\User(['password_hash' => password_hash('secret', PASSWORD_DEFAULT)]);
+        $user = new \Myth\Auth\Entities\User(['password' => 'secret']);
 
         $this->userModel->shouldReceive('where')->once()->with(\Mockery::subset(['email' => 'joe@example.com']))->andReturn($this->userModel);
         $this->userModel->shouldReceive('first')->once()->andReturn($user);
@@ -128,12 +134,10 @@ class LocalAuthenticateValidateTest extends \PHPUnit\Framework\TestCase
 
     public function testValidateSuccessReHashPassword()
     {
-        $origPassword = password_hash('secret', PASSWORD_DEFAULT, ['cost' => 9]);
-        $user = new \Myth\Auth\Entities\User(['password_hash' => $origPassword]);
+        $user = new \Myth\Auth\Entities\User(['password' => 'secret']);
 
         $this->userModel->shouldReceive('where')->once()->with(\Mockery::subset(['email' => 'joe@example.com']))->andReturn($this->userModel);
         $this->userModel->shouldReceive('first')->once()->andReturn($user);
-        $this->userModel->shouldReceive('save')->once();
 
         $result = $this->auth->validate([
             'password' => 'secret',
@@ -141,6 +145,5 @@ class LocalAuthenticateValidateTest extends \PHPUnit\Framework\TestCase
         ], true);
 
         $this->assertTrue($result instanceof \Myth\Auth\Entities\User);
-        $this->assertNotEquals($origPassword, $user->password_hash);
     }
 }

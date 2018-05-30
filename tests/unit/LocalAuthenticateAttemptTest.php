@@ -67,8 +67,7 @@ class LocalAuthenticateAttemptTest extends \PHPUnit\Framework\TestCase
         $user->id = 5;
 
         $this->auth->shouldReceive('validate')->once()->with(\Mockery::subset($credentials), true)->andReturn($user);
-        $this->auth->shouldReceive('recordLoginAttempt')->once()->with($credentials, '0.0.0.0', 5);
-        $this->auth->shouldReceive('rememberUser')->once()->with($user->id);
+        $this->auth->shouldReceive('login')->once()->andReturn(true);
 
         $result = $this->auth->attempt($credentials, true);
 
