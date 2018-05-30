@@ -12,7 +12,7 @@ class User extends Entity
 	protected $name;
 	protected $password_hash;
 	protected $reset_hash;
-	protected $reset_start_time;
+	protected $reset_time;
 	protected $activate_hash;
 	protected $status;
 	protected $status_message;

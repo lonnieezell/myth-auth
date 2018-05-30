@@ -13,7 +13,7 @@ class LoginModel extends Model
     protected $useSoftDeletes = true;
 
     protected $allowedFields = [
-        'ip_address', 'email', 'user_id', 'datetime', 'success'
+        'ip_address', 'email', 'user_id', 'date', 'success'
     ];
 
     protected $useTimestamps = false;
@@ -22,7 +22,7 @@ class LoginModel extends Model
         'ip_address' => 'required',
         'email'      => 'required',
         'user_id'    => 'permit_empty|integer',
-        'datetime'       => 'required|valid_date',
+        'date'       => 'required|valid_date',
     ];
     protected $validationMessages = [];
     protected $skipValidation = false;

@@ -187,7 +187,7 @@ class AuthenticationBase
             'ip_address' => $ipAddress,
             'email' => $email,
             'user_id' => $userID,
-            'datetime' => date('Y-m-d H:i:s'),
+            'date' => date('Y-m-d H:i:s'),
             'success' => (int)$success
         ]);
     }

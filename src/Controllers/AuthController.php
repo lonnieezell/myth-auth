@@ -80,7 +80,7 @@ class AuthController extends Controller
         // Try to log them in...
         if (! $this->auth->attempt(['email' => $email, 'password' => $password], $remember))
         {
-            return redirect()->back()->withInput()->with('error', lang('Auth.'));
+            return redirect()->back()->withInput()->with('error', lang('Auth.badAttempt'));
         }
 
         // Is the user being forced to reset their password?

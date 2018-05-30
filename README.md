@@ -33,6 +33,11 @@ perform the following setup:
 2. Edit **application/Config/Routes.php** and set **discoverLocal** to **true**.
 3. Edit **application/Config/Email.php** and verify that a **fromName** and **fromEmail** are set 
     as that is used when sending emails for password reset, etc. 
+4. Edit **application/Config/Validation.php** and add the following value to the **ruleSets** array: 
+    `\Myth\Auth\Authentication\Passwords\ValidationRules::class`
+4. Ensure your database is setup correctly, then run the Auth migrations: 
+
+    > php spark migrate:latest -all  
 
 ## Overview
 
