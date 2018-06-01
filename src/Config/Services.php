@@ -7,8 +7,9 @@ use Myth\Auth\Models\LoginModel;
 use Myth\Authorization\GroupModel;
 use Myth\Authorization\PermissionModel;
 use Myth\Auth\Authentication\Passwords\PasswordValidator;
+use CodeIgniter\Config\BaseService;
 
-class Services extends \Config\Services
+class Services extends BaseService
 {
     public static function authentication(string $lib = 'local', Model $userModel=null, Model $loginModel=null, bool $getShared = true)
     {
