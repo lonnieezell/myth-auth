@@ -1,9 +1,12 @@
 <?php namespace Myth\Auth\Config;
 
 use CodeIgniter\Model;
-use Myth\Auth\Authentication\Passwords\PasswordValidator;
-use Myth\Auth\Models\LoginModel;
+use Myth\Auth\Authorization\FlatAuthorization;
 use Myth\Auth\Models\UserModel;
+use Myth\Auth\Models\LoginModel;
+use Myth\Authorization\GroupModel;
+use Myth\Authorization\PermissionModel;
+use Myth\Auth\Authentication\Passwords\PasswordValidator;
 
 class Services extends \Config\Services
 {
@@ -35,9 +38,31 @@ class Services extends \Config\Services
             ->setLoginModel($loginModel);
     }
 
-    public static function authorization()
+    public static function authorization(Model $groupModel=null, Model $permissionModel=null, Model $userModel=null, bool $getShared = true)
     {
-        
+        if ($getShared)
+        {
+            return self::getSharedInstance('authorization', $groupModel, $permissionModel);
+        }
+
+        if (is_null($groupModel))
+        {
+            $groupModel = new GroupModel();
+        }
+
+        if (is_null($permissionModel))
+        {
+            $permissionModel = new PermissionModel();
+        }
+
+        $instance = new FlatAuthorization($groupModel, $permissionModel);
+
+        if (is_null($userModel))
+        {
+            $userModel = new UserModel();
+        }
+
+        return $instance->setUserModel($userModel);
     }
 
     /**

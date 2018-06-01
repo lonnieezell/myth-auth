@@ -13,7 +13,7 @@ class UserModel extends Model
 
     protected $allowedFields = [
         'email', 'username', 'name', 'password_hash', 'reset_hash', 'reset_start_time', 'activate_hash',
-        'status', 'status_message', 'active', 'force_pass_reset', 'deleted',
+        'status', 'status_message', 'active', 'force_pass_reset', 'permissions', 'deleted',
     ];
 
     protected $useTimestamps = true;

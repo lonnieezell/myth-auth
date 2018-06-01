@@ -18,6 +18,7 @@ class User extends Entity
 	protected $status_message;
 	protected $active           = false;
 	protected $force_pass_reset = false;
+	protected $permissions;
 	protected $deleted          = false;
 	protected $created_at;
 	protected $updated_at;
@@ -136,4 +137,31 @@ class User extends Entity
 		return $this->status === 'banned';
 	}
 
+    /**
+     * Returns the user's permissions, automatically
+     * json_decoding them into an associative array.
+     *
+     * @return array|mixed
+     */
+    public function getPermissions()
+    {
+        return ! empty($this->permissions)
+            ? json_decode($this->permissions, true)
+            : [];
+	}
+
+    /**
+     * Stores the permissions, automatically json_encoding
+     * them for saving.
+     *
+     * @param array $permissions
+     *
+     * @return $this
+     */
+    public function setPermissions(array $permissions)
+    {
+        $this->permissions = json_encode($permissions);
+
+        return $this;
+	}
 }
