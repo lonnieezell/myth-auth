@@ -12,7 +12,7 @@ to include the following primary features:
 - [x] Password-based authentication with remember-me functionality for web apps
 - [ ] JWT authentication for APIs that should work with password-based accounts
 - [ ] Social login integration by integrating [HybridAuth](https://hybridauth.github.io/). Works well with other accounts.
-- [ ] Flat RBAC per NIST standards. (Will link it when I find it again)
+- [x] Flat RBAC per NIST standards. (Will link it when I find it again)
 - [ ] all views/javascript necessary in cross-browser manner
 - [ ] easy to "publish" files to the main application for easy customization. Done via a CLI command.
 - [ ] Debug Toolbar integration
