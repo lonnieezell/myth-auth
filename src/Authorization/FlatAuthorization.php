@@ -63,7 +63,7 @@ class FlatAuthorization implements AuthorizeInterface
      *
      * @return bool
      */
-    public function inGroup($groups, $userId)
+    public function inGroup($groups, int $userId)
     {
         if (! is_array($groups))
         {
@@ -151,7 +151,7 @@ class FlatAuthorization implements AuthorizeInterface
      *
      * @return bool
      */
-    public function addUserToGroup($userid, $group)
+    public function addUserToGroup(int $userid, $group)
     {
         if (empty($userid) || ! is_numeric($userid))
         {
@@ -196,7 +196,7 @@ class FlatAuthorization implements AuthorizeInterface
      *
      * @return mixed
      */
-    public function removeUserFromGroup($userId, $group)
+    public function removeUserFromGroup(int $userId, $group)
     {
         if (empty($userId) || ! is_numeric($userId))
         {
@@ -477,7 +477,7 @@ class FlatAuthorization implements AuthorizeInterface
      *
      * @return mixed
      */
-    public function createGroup($name, $description = '')
+    public function createGroup(string $name, string $description = '')
     {
         $data = [
             'name'        => $name,
@@ -633,13 +633,13 @@ class FlatAuthorization implements AuthorizeInterface
     /**
      * Deletes a single permission and removes that permission from all groups.
      *
-     * @param int $permissionId
+     * @param int $permissionIdId
      *
      * @return mixed
      */
-    public function deletePermission(int $permissionId)
+    public function deletePermission(int $permissionIdId)
     {
-        if (! $this->permissionModel->delete($permissionId))
+        if (! $this->permissionModel->delete($permissionIdId))
         {
             $this->error = $this->permissionModel->error();
 
@@ -647,7 +647,7 @@ class FlatAuthorization implements AuthorizeInterface
         }
 
         // Remove the permission from all groups
-        $this->groupModel->removePermissionFromAllGroups($permissionId);
+        $this->groupModel->removePermissionFromAllGroups($permissionIdId);
 
         return true;
     }

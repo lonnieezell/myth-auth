@@ -13,10 +13,6 @@ class Auth extends BaseConfig
         'local' => LocalAuthenticator::class
     ];
 
-    public $authorizationLibs = [
-        'flat' => ''
-    ];
-
     //--------------------------------------------------------------------
     // Views used by Auth Controllers
     //--------------------------------------------------------------------

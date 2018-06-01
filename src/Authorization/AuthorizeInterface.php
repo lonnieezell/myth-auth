@@ -158,11 +158,11 @@ interface AuthorizeInterface  {
     /**
      * Deletes a single permission and removes that permission from all groups.
      *
-     * @param $permission
+     * @param $permissionId
      *
      * @return mixed
      */
-    public function deletePermission($permission);
+    public function deletePermission(int $permissionId);
 
     /**
      * Updates the details for a single permission.
