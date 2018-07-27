@@ -6,9 +6,17 @@ login, logout, password resets, and more. This guide does NOT talk about the inc
 to digest by looking through it. Instead, this guide goes over how configure the system and how to use the underlying 
 technology so that you can intelligently modify the authentication system to meet your site's specific needs.
 
-When modifying any provided module located in the `myth/CIModules` folder, you should copy that module's folder and 
-place it the `application/modules` folder before making any changes. This allows you to upgrade to newer versions of 
-Sprint without overwriting your own code. Your modules will be ran in place of the myth modules.
+Do not modify the contents of any of this code directly, including views, config files, etc. Instead, you should
+copy the file to the appropriate spot in your application, and modify the namespace of the file. This allows you to 
+upgrade to newer versions without overwriting your own code. 
+
+A CLI command has been provided to take of this for you. Run the following command from the command prompt, and
+it will ask you which sections you would like to "publish" into your application. 
+
+    > php spark auth:publish
+
+NOTE: it assumes a standard CodeIgniter 4 application structure, so will need to manually move files if you have changed 
+the directory structure.
 
 > DISCLAIMER: I am, by no means, a security expert. Any knowledge that I have has been gathered from reading articles 
 from people smarter and more experienced than I am. If you know that I've explained something incorrectly and can tell 
@@ -25,7 +33,7 @@ will be automatically loaded up and readied for any class that uses the [Auth Tr
 ## Logging Users In
 
 Use the `attempt()` method to attempt to log users in. The first parameter is an array of credentials to verify the 
-user against. The library does not enforce a specific set of credentials to confirm against. You are free to use any 
+user against. The library does not enforce a specific set of credentials. You are free to use any 
 combination of fields that exist within the `users` table, but typical uses would be either `email` or `username`. 
 You must include a field name `password`, though as it will be verified against the hashed version in the database.
 
@@ -104,7 +112,7 @@ remain logged in at home.
 Often, you will only need the ID of the current user. You can get this with the `id()` method. It will return either 
 an INT with the user's id, or NULL.
 
-	$user_id = $auth->id();
+	$userId = $auth->id();
 
 ## Remembering Users
 You can have a user be remembered, through the user of cookies, by passing true in as the second parameter to the 

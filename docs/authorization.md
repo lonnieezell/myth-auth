@@ -1,6 +1,6 @@
 # User Authorization
 
-A simple Flat RBAC authorization library is included with Sprint. It provides a simple method to group users into one or 
+A Flat RBAC authorization library is included. It provides a simple method to group users into one or 
 more roles, create and assign permissions to the roles, and restrict users from gaining access to content they're not allowed to.
 
 This guide describes the libraries and methods involved with group and permissions management, as well as actions to use 
@@ -9,7 +9,7 @@ with users for low-level security. While the class can easily be used on it's ow
 
 ## Configuration
 There is only one configuration option: which Authorization library to use. Myth:Auth only ships one, FlatAuthorization, 
-which implements a simple Flat RBAC authentication system. You can easily create new libraries by extending the 
+which implements a Flat RBAC authentication system. You can create new libraries by extending the 
 `Myth\Auth\Authorization\AuthorizeInterface`.
 
 The config value sits in your `Config/Auth.php` configuration file.
@@ -32,43 +32,43 @@ The `group` parameter is very flexible. It can be either a single group or an ar
 expressed as either the group's ID or the name of the group.
 
 	// Use a single group id
-	inGroup(12, $user_id);
+	inGroup(12, $userId);
 
 	// Use multiple group ids
-	inGroup([12,14], $user_id);
+	inGroup([12,14], $userId);
 
 	// Use a group name
-	inGroup('admins', $user_id);
+	inGroup('admins', $userId);
 
 	// Use multiple group names
-	inGroup(['admin', 'moderators'], $user_id);
+	inGroup(['admin', 'moderators'], $userId);
 
 When checking multiple groups it only checks if the user belongs to one of the groups, not all of them. In other words, it's an OR query, not and AND query.
 
 ### hasPermission()
-If you need to check if a user belongs to any group that has a permission, than you can use the `hasPermision()` method. 
-The first parameter is the permission. It can be either its ID or its name. The second parameter is the user_id to check 
+If you need to check if a user belongs to any group that has a certain permission, than you can use the `hasPermision()` method. 
+The first parameter is the permission. It can be either be its ID or its name. The second parameter is the userId to check 
 against.
 
 	// Use a permission ID
-	hasPermission(12, $user_id);
+	hasPermission(12, $userId);
 
 	// Use a permission name
-	hasPermission('manageUsers', $user_id);
+	hasPermission('manageUsers', $userId);
 
 ### addUserToGroup()
 Adds a user to a group. The first parameter is the users ID. The second parameter is the group. The group can be either 
 the group ID or the name of the group.
 
-	addUserToGroup($user_id, $group_id);
-	addUserToGroup($user_id, 'moderators');
+	addUserToGroup($userId, $group_id);
+	addUserToGroup($userId, 'moderators');
 
 ### removeUserFromGroup()
 Removes a user from a single group. The first parameter is the user id. The second parameter is the group. The group can 
 be either the group ID or the group's name.
 
-	removeUserFromGroup($user_id, $group_id);
-	removeUserFromGroup($user_id, 'moderators');
+	removeUserFromGroup($userId, $group_id);
+	removeUserFromGroup($userId, 'moderators');
 
 ### addPermissionToGroup()
 Adds a permission to a single group. The permission must already exist. The first parameter is the permission. 
@@ -94,18 +94,18 @@ Adds a private permission to a single user. This is in addition to any permissio
 The permission must already exist. The first parameter is the permission. The second parameter is the user's ID. 
 The permission may be either the permission ID or the name assigned to it.
 
-	addPermissionToUser($permission_id, $user_id);
-	addPermissionToUser('permission name', $user_id);
+	addPermissionToUser($permission_id, $userId);
+	addPermissionToUser('permission name', $userId);
 
 ### removePermissionFromUser()
 Removes a single private permission from a user. Does not delete the user. The first parameter is the permission. 
 The second parameter is the user ID. The permission may be either the permission ID or the name assigned to it.
 
-	removePermissionFromUser($permission_id, $user_id);
-	removePermissionFromUser('permission name', $user_id);
+	removePermissionFromUser($permission_id, $userId);
+	removePermissionFromUser('permission name', $userId);
 
 ### doesUserHavePermission()
-Checks a user to see if they have a private permission. The first parameter is the `user_id`. The second parameter is 
+Checks a user to see if they have a private permission. The first parameter is the `userId`. The second parameter is 
 the permission. The permission may be either the permission ID or the name of the permission. Returns either `true` or `false`.
 
 This is called automatically by the `hasPermission()` method, so you don't need to call it again if you are using that 

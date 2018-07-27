@@ -1,8 +1,7 @@
 # The Auth Trait
 
-To make the Auth system as flexible as possible, and ensure that you can use Auth capabilities easily on nearly any 
-controller you might ever need to, the Auth Trait can be used which provides a number of convenience methods that work 
-with both Authentication and Authorization.
+The Auth Trait can be used on any Controller, and provides a number of convenience methods that work with both 
+Authentication and Authorization.
 
 ## Protecting Controllers
 
@@ -25,10 +24,8 @@ logged in. If no URI is provided, it will try to use the route named 'login'.
 	{
 		use \Myth\Auth\AuthTrait;
 		
-		public function __construct(...$params) 
+		public function __construct() 
 		{
-			parent::__construct(...$params);
-			
 			$this->restrict( site_url('my/login/url') );
 		}
 	}
@@ -82,5 +79,5 @@ Once that method is ran, you can get direct access to the loaded instance throug
 or `$this->authorize` class vars.
 
 	$this->setupAuthClasses();
-	$user_id = $this->authenticate->id();
-	$good = $this->authorize->hasPermission('blog.posts.view', $user_id);
+	$userId = $this->authenticate->id();
+	$good = $this->authorize->hasPermission('blog.posts.view', $userId);
