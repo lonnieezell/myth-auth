@@ -18,7 +18,7 @@ class Services extends BaseService
             return self::getSharedInstance('authentication', $lib, $userModel, $loginModel);
         }
 
-        $config = new Auth();
+        $config = config(Auth::class);
 
         $class = $config->authenticationLibs[$lib];
 
@@ -83,7 +83,7 @@ class Services extends BaseService
 
         if (empty($config))
         {
-            $config = new Auth();
+            $config = config(Auth::class);
         }
 
         return new PasswordValidator($config);

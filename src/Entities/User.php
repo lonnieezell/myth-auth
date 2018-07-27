@@ -61,7 +61,7 @@ class User extends Entity
 	 */
 	public function setPassword(string $password)
 	{
-		$config = new Auth();
+        $config = config(Auth::class);
 
 		$this->password_hash = password_hash(
 			base64_encode(

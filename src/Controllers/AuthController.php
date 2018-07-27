@@ -29,7 +29,7 @@ class AuthController extends Controller
         $this->session = Services::session();
         $this->session->start();
 
-        $this->config = new Auth();
+        $this->config = config(Auth::class);
         $this->auth = Services::authentication();
     }
 
