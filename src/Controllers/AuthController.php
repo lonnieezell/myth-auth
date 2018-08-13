@@ -20,14 +20,11 @@ class AuthController extends Controller
      */
     protected $session;
 
-    public function __construct(...$params)
+    public function __construct()
     {
-        parent::__construct(...$params);
-
         // Most services in this controller require
         // the session to be started - so fire it up!
         $this->session = Services::session();
-        $this->session->start();
 
         $this->config = config(Auth::class);
         $this->auth = Services::authentication();
@@ -48,6 +45,7 @@ class AuthController extends Controller
         // is already logged in.
         if ($this->auth->check())
         {
+            die('here');
             $redirectURL = session('redirect_url') ?? '/';
             unset($_SESSION['redirect_url']);
 

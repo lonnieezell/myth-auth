@@ -1,6 +1,6 @@
 <?php namespace Myth\Auth;
 
-use Myth\Auth\Config\Services;
+use Config\Services;
 
 trait AuthTrait {
 
@@ -38,7 +38,7 @@ trait AuthTrait {
     {
         $this->setupAuthClasses();
 
-        if ($this->authenticate->isLoggedIn())
+        if ($this->authenticate->check())
         {
             return true;
         }
@@ -86,7 +86,7 @@ trait AuthTrait {
     {
         $this->setupAuthClasses();
 
-        if ($this->authenticate->isLoggedIn())
+        if ($this->authenticate->check())
         {
             if ($this->authorize->inGroup($groups, $this->authenticate->id() ) )
             {
@@ -125,7 +125,7 @@ trait AuthTrait {
     {
         $this->setupAuthClasses();
 
-        if ($this->authenticate->isLoggedIn())
+        if ($this->authenticate->check())
         {
             if ($this->authorize->hasPermission($permissions, $this->authenticate->id() ) )
             {
@@ -167,10 +167,7 @@ trait AuthTrait {
         $this->authenticate = Services::authentication($this->authenticationLib);
 
         // Try to log us in automatically.
-        if (! $this->authenticate->isLoggedIn())
-        {
-            $this->authenticate->viaRemember();
-        }
+        $this->authenticate->check();
 
         /*
          * Authorization

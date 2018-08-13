@@ -1,6 +1,6 @@
 <?php namespace Myth\Auth\Authentication;
 
-use Myth\Auth\Config\Services;
+use \Config\Services;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Exceptions\AuthException;
 
