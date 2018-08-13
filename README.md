@@ -14,7 +14,7 @@ to include the following primary features:
 - [ ] Social login integration by integrating [HybridAuth](https://hybridauth.github.io/). Works well with other accounts.
 - [x] Flat RBAC per NIST standards. (Will link it when I find it again)
 - [ ] all views/javascript necessary in cross-browser manner
-- [ ] easy to "publish" files to the main application for easy customization. Done via a CLI command.
+- [x] easy to "publish" files to the main application for easy customization. Done via a CLI command.
 - [ ] Debug Toolbar integration
 
 ## Installation
