@@ -39,7 +39,7 @@ class GroupModel extends Model
             'group_id'  => (int)$groupId
         ];
 
-        return $this->db->insert('auth_groups_users', $data);
+        return $this->db->table('auth_groups_users')->insert($data);
     }
 
     /**
@@ -52,10 +52,11 @@ class GroupModel extends Model
      */
     public function removeUserFromGroup(int $userId, $groupId)
     {
-        return $this->db->where([
-            'user_id' => (int)$userId,
-            'group_id' => (int)$groupId
-        ])->delete('auth_groups_users');
+        return $this->db->table('auth_groups_users')
+            ->where([
+                'user_id' => (int)$userId,
+                'group_id' => (int)$groupId
+            ])->delete();
     }
 
     /**
@@ -67,8 +68,9 @@ class GroupModel extends Model
      */
     public function removeUserFromAllGroups(int $userId)
     {
-        return $this->db->where('user_id', (int)$userId)
-            ->delete('auth_groups_users');
+        return $this->db->table('auth_groups_users')
+            ->where('user_id', (int)$userId)
+            ->delete();
     }
 
     /**
@@ -107,7 +109,7 @@ class GroupModel extends Model
             'group_id'      => (int)$groupId
         ];
 
-        return $this->db->insert('auth_groups_permissions', $data);
+        return $this->db->table('auth_groups_permissions')->insert($data);
     }
 
     //--------------------------------------------------------------------
@@ -123,10 +125,11 @@ class GroupModel extends Model
      */
     public function removePermissionFromGroup(int $permissionId, int $groupId)
     {
-        return $this->db->where([
-            'permission_id' => $permissionId,
-            'group_id'      => $groupId
-        ])->delete('auth_groups_permissions');
+        return $this->db->table('auth_groups_permissions')
+            ->where([
+                'permission_id' => $permissionId,
+                'group_id'      => $groupId
+            ])->delete();
     }
 
     //--------------------------------------------------------------------
@@ -140,7 +143,8 @@ class GroupModel extends Model
      */
     public function removePermissionFromAllGroups(int $permissionId)
     {
-        return $this->db->where('permission_id', $permissionId)
-            ->delete('auth_groups_permissions');
+        return $this->db->table('auth_groups_permissions')
+            ->where('permission_id', $permissionId)
+            ->delete();
     }
 }
