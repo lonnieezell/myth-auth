@@ -1,4 +1,4 @@
-<?php namespace Myth\Authorization;
+<?php namespace Myth\Auth\Authorization;
 
 use CodeIgniter\Model;
 

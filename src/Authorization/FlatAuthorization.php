@@ -2,8 +2,6 @@
 
 use CodeIgniter\Model;
 use CodeIgniter\Events\Events;
-use Myth\Authorization\GroupModel;
-use Myth\Authorization\PermissionModel;
 
 class FlatAuthorization implements AuthorizeInterface
 {
