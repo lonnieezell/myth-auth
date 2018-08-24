@@ -284,6 +284,16 @@ class AuthenticationBase
     }
 
     /**
+     * Returns the User ID for the current logged in user.
+     *
+     * @return int|null
+     */
+    public function id()
+    {
+        return $this->user->id;
+    }
+
+    /**
      * Grabs the current user from the database.
      *
      * @param array $wheres
