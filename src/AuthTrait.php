@@ -172,7 +172,7 @@ trait AuthTrait {
         /*
          * Authorization
          */
-        $this->authorize = Services::authorization();
+        $this->authorize = Services::authentication();
 
         $this->classesLoaded = true;
     }
