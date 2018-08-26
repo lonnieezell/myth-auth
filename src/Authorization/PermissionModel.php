@@ -28,20 +28,33 @@ class PermissionModel extends Model
      */
     public function doesUserHavePermission(int $userId, int $permissionId): bool
     {
-        $permissions = $this->builder()
+        // Get user permissions
+        $user_permissions = $this
+            ->join('auth_users_permissions', 'auth_users_permissions.permission_id = auth_permissions.id', 'inner')
+            ->where('auth_users_permissions.user_id', $userId)
+            ->asArray()
+            ->findAll();
+
+        $u_ids = array_column($user_permissions, 'permission_id');
+
+        // Get group permissions
+        $group_permissions = $this
             ->join('auth_groups_permissions', 'auth_groups_permissions.permission_id = auth_permissions.id', 'inner')
             ->join('auth_groups_users', 'auth_groups_users.group_id = auth_groups_permissions.group_id', 'inner')
             ->where('auth_groups_users.user_id', $userId)
             ->asArray()
             ->findAll();
 
-        if (! $permissions)
-        {
-            return false;
-        }
+        $g_ids = array_column($group_permissions, 'permission_id');
 
-        $ids = array_column($permissions, 'permission_id');
+        // Merge both permissions into an array
+        // Order is important as User permissions override Group permissions
+        $ids = array_merge($u_ids, $g_ids);
 
-        return in_array($permissionId, $ids);
+        // Remove duplicates giving more preference
+        // to user permissions over group permissions
+        $unique_permissions = array_unique($ids);
+
+        return in_array($permissionId, $unique_permissions);
     }
 }
