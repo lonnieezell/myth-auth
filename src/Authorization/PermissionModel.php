@@ -28,7 +28,7 @@ class PermissionModel extends Model
      */
     public function doesUserHavePermission(int $userId, int $permissionId): bool
     {
-        $permissions = $this->builder()
+        $permissions = $this
             ->join('auth_groups_permissions', 'auth_groups_permissions.permission_id = auth_permissions.id', 'inner')
             ->join('auth_groups_users', 'auth_groups_users.group_id = auth_groups_permissions.group_id', 'inner')
             ->where('auth_groups_users.user_id', $userId)
