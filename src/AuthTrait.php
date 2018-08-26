@@ -55,13 +55,9 @@ trait AuthTrait {
 
         if (empty($uri))
         {
-            header("Location: ".route_to('login'));
-            die();
             redirect( route_to('login') );
         }
 
-        header("Location: $uri");
-        die();
         redirect($uri);
     }
 
@@ -105,13 +101,9 @@ trait AuthTrait {
 
         if (empty($uri))
         {
-            header("Location: ".route_to('login').'?request_uri='. current_url());
-            die();
             redirect( route_to('login') .'?request_uri='. current_url() );
         }
 
-        header("Location: ".$uri.'?request_uri='. current_url());
-        die();
         redirect($uri .'?request_uri='. current_url());
     }
 
@@ -148,13 +140,9 @@ trait AuthTrait {
 
         if (empty($uri))
         {
-            header("Location: ".route_to('login').'?request_uri='. current_url());
-            die();
             redirect( route_to('login') .'?request_uri='. current_url() );
         }
 
-        header("Location: ".$uri.'?request_uri='. current_url());
-        die();
         redirect($uri .'?request_uri='. current_url());
     }
 
