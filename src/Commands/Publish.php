@@ -119,7 +119,7 @@ class Publish extends BaseCommand
             $path = "{$this->sourcePath}/Models/{$model}.php";
 
             $content = file_get_contents($path);
-            $content = $this->replaceNamespace($content, 'Myth\Auth\Models', 'Models');
+            $content = $this->replaceNamespace($content, 'Myth\Auth\Models', 'Auth\Models');
 
             $this->writeFile("Models/{$model}.php", $content);
         }
@@ -202,7 +202,7 @@ class Publish extends BaseCommand
 
         $content = file_get_contents($path);
         $appNamespace = APP_NAMESPACE;
-        $content = str_replace('namespace Myth\Auth\Config', "namespace {$appNamespace}/Config", $content);
+        $content = str_replace('namespace Myth\Auth\Config', "namespace {$appNamespace}Config", $content);
 
         $this->writeFile("Config/Auth.php", $content);
     }
