@@ -177,4 +177,17 @@ trait AuthTrait {
         $this->classesLoaded = true;
     }
 
+    /*
+     *  Allows status message being displayed on
+     *  next page load
+     *
+     * @param $type         Type of bootstrap 4 alert
+     * @param string $msg   The text that will be displayed.
+     *
+     * @return void
+     */
+
+    public function setMessage(string $type, string $msg) {
+        session()->setFlashdata($type, $msg);
+    }
 }
