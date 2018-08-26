@@ -133,7 +133,7 @@ class AuthenticationBase
      */
     public function loginByID(int $id, bool $remember = false)
     {
-        $user = $this->retrieveUser(['id' => $id]);
+        $user = $this->$this->retrieveUser(['id' => $id]);
 
         if (empty($user))
         {
