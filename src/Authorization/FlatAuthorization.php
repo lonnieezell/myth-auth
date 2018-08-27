@@ -697,7 +697,7 @@ class FlatAuthorization implements AuthorizeInterface
         }
 
         // Otherwise, pull it from the database.
-        $p = $this->permissionModel->findWhere('name', $permission);
+        $p = $this->permissionModel->asObject()->where('name', $permission)->first();
 
         if (! $p)
         {
