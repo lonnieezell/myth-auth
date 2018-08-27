@@ -35,7 +35,7 @@ class PermissionModel extends Model
             ->asArray()
             ->findAll();
 
-        $u_ids = array_column($user_permissions, 'permission_id');
+        $userIds = array_column($user_permissions, 'permission_id');
 
         // Get group permissions
         $group_permissions = $this
@@ -45,11 +45,11 @@ class PermissionModel extends Model
             ->asArray()
             ->findAll();
 
-        $g_ids = array_column($group_permissions, 'permission_id');
+        $groupIds = array_column($group_permissions, 'permission_id');
 
         // Merge both permissions into an array
         // Order is important as User permissions override Group permissions
-        $ids = array_merge($u_ids, $g_ids);
+        $ids = array_merge($userIds, $groupIds);
 
         // Remove duplicates giving more preference
         // to user permissions over group permissions
