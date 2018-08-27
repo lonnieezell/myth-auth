@@ -45,7 +45,7 @@ trait AuthTrait {
 
         if (method_exists($this, 'setMessage'))
         {
-            $this->setMessage( lang('Auth.notLoggedIn') );
+            $this->setMessage('error', lang('Auth.notLoggedIn') );
         }
 
         if ($returnOnly)
@@ -96,7 +96,7 @@ trait AuthTrait {
 
         if (method_exists($this, 'setMessage'))
         {
-            $this->setMessage( lang('Auth.notEnoughPrivilege') );
+            $this->setMessage('error', lang('Auth.notEnoughPrivilege') );
         }
 
         if (empty($uri))
@@ -135,7 +135,7 @@ trait AuthTrait {
 
         if (method_exists($this, 'setMessage'))
         {
-            $this->setMessage( lang('auth.notEnoughPrivilege') );
+            $this->setMessage('error', lang('auth.notEnoughPrivilege') );
         }
 
         if (empty($uri))
@@ -177,4 +177,17 @@ trait AuthTrait {
         $this->classesLoaded = true;
     }
 
+    /*
+     *  Allows status message being displayed on
+     *  next page load
+     *
+     * @param $type         Type of bootstrap 4 alert
+     * @param string $msg   The text that will be displayed.
+     *
+     * @return void
+     */
+
+    public function setMessage(string $type, string $msg) {
+        session()->setFlashdata($type, $msg);
+    }
 }
