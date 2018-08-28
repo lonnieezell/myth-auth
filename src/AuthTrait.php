@@ -45,7 +45,7 @@ trait AuthTrait {
 
         if (method_exists($this, 'setMessage'))
         {
-            $this->setMessage( lang('Auth.notLoggedIn') );
+            session()->setFlashdata('error', lang('Auth.notLoggedIn'));
         }
 
         if ($returnOnly)
@@ -96,7 +96,7 @@ trait AuthTrait {
 
         if (method_exists($this, 'setMessage'))
         {
-            $this->setMessage( lang('Auth.notEnoughPrivilege') );
+            session()->setFlashdata('error', lang('Auth.notEnoughPrivilege'));
         }
 
         if (empty($uri))
@@ -135,7 +135,7 @@ trait AuthTrait {
 
         if (method_exists($this, 'setMessage'))
         {
-            $this->setMessage( lang('auth.notEnoughPrivilege') );
+            session()->setFlashdata('error', lang('Auth.notEnoughPrivilege'));
         }
 
         if (empty($uri))
