@@ -82,11 +82,11 @@ class GroupModel extends Model
      */
     public function getGroupsForUser(int $userId)
     {
-        return $this->builder()->select('auth_groups_users.*, auth_groups.name, auth_groups.description')
+        return $this->builder()
+            ->select('auth_groups_users.*, auth_groups.name, auth_groups.description')
             ->join('auth_groups_users', 'auth_groups_users.group_id = auth_groups.id', 'left')
             ->where('user_id', $userId)
-            ->asArray()
-            ->findAll();
+            ->get()->getResultArray();
     }
 
 

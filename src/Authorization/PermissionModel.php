@@ -32,7 +32,7 @@ class PermissionModel extends Model
         $user_permissions = $this->builder()
             ->join('auth_users_permissions', 'auth_users_permissions.permission_id = auth_permissions.id', 'inner')
             ->where('auth_users_permissions.user_id', $userId)
-            ->get()->getResult();
+            ->get()->getResultArray();
 
         $userIds = array_column($user_permissions, 'permission_id');
 
