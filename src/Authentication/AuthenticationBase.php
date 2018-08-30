@@ -274,6 +274,17 @@ class AuthenticationBase
 
 
     /**
+     * Returns the User ID for the current logged in user.
+     *
+     * @return int|null
+     */
+    public function id()
+    {
+        return $this->user->id;
+    }
+
+
+    /**
      * Returns the User instance for the current logged in user.
      *
      * @return \Myth\Auth\Entities\User|null

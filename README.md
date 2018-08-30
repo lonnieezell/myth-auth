@@ -133,3 +133,39 @@ reset hash generation, and more.
 It also provides a UserModel that should be used as it provides methods needed during the 
 password-reset flow, as well as basic validation rules. You are free to extend this class
 or modify it as needed.
+
+## Restricting by Route
+
+If you specify each of your routes within the `application/Config/Routes.php` file, you can restrict access
+to users by group/role or permission with []Controller Filters](https://bcit-ci.github.io/CodeIgniter4/general/filters.html).
+
+First, edit `application/Config/Filters.php` and add the following `role` and `permission` entries to the 
+`aliases` property::
+
+```
+    'role' => \Myth\Auth\Filters\RoleFilter::class,
+    'permission' => \Myth\Auth\Filters\PermissionFilter::class,
+```
+
+**Restricting a single route**
+
+Any single route can be restricted by adding the `filter` option to the last parameter in any of the route definition
+methods:
+
+```
+$routes->get('admin/users', 'UserController::index', ['filter' => 'permission:manage-user'])
+$routes->get('admin/users', 'UserController::index', ['filter' => 'role:admin,superadmin'])
+``` 
+
+The filter can be either `role` or `permission`, which restricts the route by either group or permission. 
+You must add a comma-separated list of groups or permissions to check the logged in user against. 
+
+**Restricting Route Groups**
+
+In the same way, entire groups of routes can be restricted within the `group()` method:
+
+```
+$routes->group('admin', ['filter' => 'role:admin,superadmin'], function($routes) {
+    ...
+});
+```
