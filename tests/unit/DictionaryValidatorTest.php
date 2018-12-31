@@ -1,8 +1,9 @@
 <?php
 
+use CodeIgniter\Test\CIUnitTestCase;
 use Myth\Auth\Authentication\Passwords\DictionaryValidator;
 
-class DictionaryValidatorTest extends \PHPUnit\Framework\TestCase
+class DictionaryValidatorTest extends CIUnitTestCase
 {
     /**
      * @var CompositionValidator

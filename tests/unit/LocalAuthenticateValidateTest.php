@@ -4,9 +4,10 @@ use Mockery as m;
 use Myth\Auth\Config\Services;
 use Myth\Auth\Models\UserModel;
 use Myth\Auth\Models\LoginModel;
+use CodeIgniter\Test\CIUnitTestCase;
 use Myth\Auth\Authentication\LocalAuthenticator;
 
-class LocalAuthenticateValidateTest extends \PHPUnit\Framework\TestCase
+class LocalAuthenticateValidateTest extends CIUnitTestCase
 {
     /**
      * @var UserModel

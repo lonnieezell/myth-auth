@@ -5,9 +5,10 @@ use Myth\Auth\Config\Auth;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Config\Services;
 use Myth\Auth\Models\UserModel;
+use CodeIgniter\Test\CIUnitTestCase;
 use Myth\Auth\Authentication\LocalAuthenticator;
 
-class LocalAuthenticateAttemptTest extends \PHPUnit\Framework\TestCase
+class LocalAuthenticateAttemptTest extends CIUnitTestCase
 {
     /**
      * @var UserModel
