@@ -51,3 +51,8 @@ if (! isset($_SERVER['app.baseURL']))
     $_SERVER['app.baseURL'] = 'http://example.com';
 }
 
+// Ensure the autoloader uses our autoload config to get our namespaces found
+require __DIR__ .'/../support/Config/Autoload.php';
+require __DIR__ .'/../support/Config/Constants.php';
+
+\CodeIgniter\Config\Config::injectMock('Autoload', new Config\Autoload());
