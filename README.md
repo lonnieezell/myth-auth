@@ -137,7 +137,7 @@ or modify it as needed.
 ## Restricting by Route
 
 If you specify each of your routes within the `application/Config/Routes.php` file, you can restrict access
-to users by group/role or permission with []Controller Filters](https://bcit-ci.github.io/CodeIgniter4/general/filters.html).
+to users by group/role or permission with [Controller Filters](https://bcit-ci.github.io/CodeIgniter4/general/filters.html).
 
 First, edit `application/Config/Filters.php` and add the following `role` and `permission` entries to the 
 `aliases` property::
