@@ -10,7 +10,7 @@ class DictionaryValidatorTest extends CIUnitTestCase
      */
     protected $validator;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

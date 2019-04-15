@@ -16,7 +16,7 @@ class AuthenticationBaseLoginTest extends CIUnitTestCase
      */
     protected $loginModel;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

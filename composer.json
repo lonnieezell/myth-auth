@@ -27,7 +27,6 @@
   "autoload": {
     "psr-4": {
       "Myth\\Auth\\": "src",
-      "CodeIgniter\\": "vendor/codeigniter4/framework/system/",
       "Config\\": "support/Config/"
     },
     "classmap": [

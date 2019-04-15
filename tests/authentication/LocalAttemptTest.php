@@ -9,7 +9,7 @@ class LocalAttemptTest extends \CIDatabaseTestCase
      */
     protected $auth;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

@@ -23,7 +23,7 @@ class LocalAuthenticateAttemptTest extends CIUnitTestCase
      */
     protected $request;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -35,7 +35,7 @@ class LocalAuthenticateAttemptTest extends CIUnitTestCase
         Services::injectMock('CodeIgniter\HTTP\IncomingRequest', $this->request);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
         parent::tearDown();
