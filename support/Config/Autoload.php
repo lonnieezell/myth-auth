@@ -50,9 +50,10 @@ class Autoload extends \CodeIgniter\Config\AutoloadConfig
 		 *   `];
 		 */
 		$psr4 = [
-			'Config'      => APPPATH . 'Config',
+			'Config'      => __DIR__ .'/../Config',
 			APP_NAMESPACE => APPPATH,                // For custom namespace
 			'App'         => APPPATH,                // To ensure filters, etc still found,
+            'Myth\Auth'   => __DIR__ .'/../../src',
 		];
 
 		/**

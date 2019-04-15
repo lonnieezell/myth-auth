@@ -49,7 +49,7 @@ class LocalAuthenticateAttemptTest extends CIUnitTestCase
         ];
 
         $this->auth->shouldReceive('validate')->once()->with(\Mockery::subset($credentials), true)->andReturn(false);
-        $this->auth->shouldReceive('recordLoginAttempt')->once()->with($credentials, '0.0.0.0', null);
+        $this->auth->shouldReceive('recordLoginAttempt')->once()->with($credentials['email'], '0.0.0.0', null, false);
 
         $result = $this->auth->attempt($credentials, false);
 

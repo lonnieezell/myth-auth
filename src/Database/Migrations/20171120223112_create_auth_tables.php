@@ -153,6 +153,8 @@ class Migration_create_auth_tables extends Migration
 
     public function down()
     {
+//        $this->forge->dropForeignKey('auth_tokens','user_id_foreign');
+
         $this->forge->dropTable('users', true);
         $this->forge->dropTable('auth_login_attempts', true);
         $this->forge->dropTable('auth_tokens', true);
