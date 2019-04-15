@@ -69,7 +69,7 @@ within the `$views` variable:
     ];
 
 NOTE: If you're not familiar with how views can be namespaced in CodeIgniter, please refer to 
-[the user guide](https://bcit-ci.github.io/CodeIgniter4/general/modules.html) for CI4's 
+[the user guide](https://codeigniter4.github.io/CodeIgniter4/general/modules.html) for CI4's 
 Code Module support. 
 
 ## Services
@@ -125,7 +125,7 @@ Now you can use `strong_password` in any set of rules for validation:
 
 ## Users
 
-Myth:Auth uses [CodeIgniter Entities](https://bcit-ci.github.io/CodeIgniter4/database/entities.html) 
+Myth:Auth uses [CodeIgniter Entities](https://codeigniter4.github.io/CodeIgniter4/models/entities.html) 
 for it's User object, and your application must also use that class. This class
 provides automatic password hashing as well as utility methods for banning/un-banning, password
 reset hash generation, and more. 
@@ -137,7 +137,7 @@ or modify it as needed.
 ## Restricting by Route
 
 If you specify each of your routes within the `application/Config/Routes.php` file, you can restrict access
-to users by group/role or permission with []Controller Filters](https://bcit-ci.github.io/CodeIgniter4/general/filters.html).
+to users by group/role or permission with [Controller Filters](https://codeigniter4.github.io/CodeIgniter4/incoming/filters.html).
 
 First, edit `application/Config/Filters.php` and add the following `role` and `permission` entries to the 
 `aliases` property::
