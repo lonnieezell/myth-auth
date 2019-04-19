@@ -27,7 +27,6 @@
   "autoload": {
     "psr-4": {
       "Myth\\Auth\\": "src",
-      "Config\\": "support/Config/"
     },
     "classmap": [
       "tests/_support/CIDatabaseTestCase.php"

@@ -26,7 +26,7 @@
 //}
 
 ini_set('error_reporting', E_ALL);
-;
+
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 
@@ -35,14 +35,14 @@ $_SERVER['CI_ENVIRONMENT'] = 'testing';
 define('ENVIRONMENT', 'testing');
 
 // Load our paths config file
-require __DIR__ . '/../support/Config/Paths.php';
+require __DIR__ . '/../vendor/codeigniter4/framework/app/Config/Paths.php';
 
 define('APPPATH', realpath(__DIR__ .'/../vendor/codeigniter4/framework/app'). DIRECTORY_SEPARATOR);
 define('SYSTEMPATH', realpath(__DIR__ .'/../vendor/codeigniter4/framework/system'). DIRECTORY_SEPARATOR);
 define('FCPATH', realpath(__DIR__ . '/../vendor/codeigniter4/framework/public'). DIRECTORY_SEPARATOR);
+define('ROOTPATH', realpath(__DIR__ . '/../vendor/codeigniter4/framework'). DIRECTORY_SEPARATOR);
 
 define('TESTPATH', realpath(__DIR__ . '/../') . DIRECTORY_SEPARATOR);
-
 define('SUPPORTPATH', realpath(TESTPATH . '_support/') . DIRECTORY_SEPARATOR);
 
 // Set environment values that would otherwise stop the framework from functioning during tests.
@@ -52,7 +52,8 @@ if (! isset($_SERVER['app.baseURL']))
 }
 
 // Ensure the autoloader uses our autoload config to get our namespaces found
-require __DIR__ .'/../support/Config/Autoload.php';
-require __DIR__ .'/../support/Config/Constants.php';
+require __DIR__ .'/../vendor/codeigniter4/framework/app/Config/Autoload.php';
+require __DIR__ .'/../vendor/codeigniter4/framework/app/Config/Constants.php';
+require __DIR__ .'/../vendor/codeigniter4/framework/app/Config/Modules.php';
 
 \CodeIgniter\Config\Config::injectMock('Autoload', new Config\Autoload());
