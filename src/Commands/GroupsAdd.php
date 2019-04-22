@@ -24,12 +24,16 @@ class GroupsAdd extends BaseCommand
 		// consume or prompt for group name
 		$name = array_shift($params);
 		if (empty($name))
+		{
 			$name = CLI::prompt('Group name', null, 'required');
+		}
 		
 		// consume or prompt for description
 		$description = array_shift($params);
 		if (empty($description))
+		{
 			$description = CLI::prompt('Description', '');
+		}
 						
 		try
 		{

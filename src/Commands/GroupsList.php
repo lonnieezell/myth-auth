@@ -19,11 +19,14 @@ class GroupsList extends BaseCommand
 			->orderBy('name', 'asc')
 			->get()->getResultArray();
 
-		if (empty($rows)):
+		if (empty($rows))
+		{
 			CLI::write( CLI::color("There are no groups.", 'yellow') );
-		else:
+		}
+		else
+		{
 			$thead = ['Group ID', 'Name', 'Description'];
 			CLI::table($rows, $thead);
-		endif;
+		}
 	}
 }

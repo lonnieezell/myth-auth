@@ -27,6 +27,7 @@ class RoleFilter implements FilterInterface
 
         if (! $authenticate->check() || empty($params))
         {
+        	die('fail');
             return;
         }
 
