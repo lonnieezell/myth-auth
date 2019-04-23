@@ -176,7 +176,7 @@ class Publish extends BaseCommand
         $path = "{$this->sourcePath}/Views/{$prefix}{$view}";
 
         $content = file_get_contents($path);
-        $content = str_replace('Myth\Auth\Views', 'Auth', $content);
+        $content = str_replace('Myth\Auth\Views', 'App\Auth', $content);
 
         $this->writeFile("Views/Auth/{$prefix}{$view}", $content);
     }
