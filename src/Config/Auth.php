@@ -54,6 +54,13 @@ class Auth extends BaseConfig
     public $rememberLength = 30 * DAY;
 
     //--------------------------------------------------------------------
+    // Error handling
+    //--------------------------------------------------------------------
+    // If true, will continue instead of throwing exceptions.
+    //
+    public $silent = false;
+
+    //--------------------------------------------------------------------
     // PASSWORD HASHING COST
     //--------------------------------------------------------------------
     // The BCRYPT method of encryption allows you to define the "cost"
