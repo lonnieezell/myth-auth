@@ -1,6 +1,7 @@
 <?php namespace Myth\Auth\Authentication;
 
 use Config\App;
+use CodeIgniter\Events\Events;
 use CodeIgniter\Model;
 use Myth\Auth\Config\Services;
 use Myth\Auth\Entities\User;
@@ -108,6 +109,9 @@ class AuthenticationBase
             $this->loginModel->purgeOldRememberTokens();
         }
 
+		// trigger login event, in case anyone cares
+		Events::trigger('login', $user);
+
         return true;
     }
 
@@ -179,6 +183,9 @@ class AuthenticationBase
 
         // Take care of any remember me functionality
         $this->loginModel->purgeRememberTokens($user->id);
+        
+        // trigger logout event
+		Events::trigger('logout', $user);
     }
 
     /**
