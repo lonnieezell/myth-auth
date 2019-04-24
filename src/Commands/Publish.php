@@ -174,9 +174,10 @@ class Publish extends BaseCommand
     protected function publishView($view, string $prefix = '')
     {
         $path = "{$this->sourcePath}/Views/{$prefix}{$view}";
+		$namespace = defined('APP_NAMESPACE') ? APP_NAMESPACE : 'App';
 
         $content = file_get_contents($path);
-        $content = str_replace('Myth\Auth\Views', 'Auth', $content);
+        $content = str_replace('Myth\Auth\Views', $namespace.'\Auth', $content);
 
         $this->writeFile("Views/Auth/{$prefix}{$view}", $content);
     }
