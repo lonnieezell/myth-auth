@@ -49,6 +49,17 @@ class AuthenticationBase
         return $this->error;
     }
 
+    /**
+     * Whether to continue instead of throwing exceptions,
+     * as defined in config.
+     *
+     * @return string
+     */
+    public function silent()
+    {
+        return $this->config->silent;
+    }
+
 
     /**
      * Logs a user into the system.

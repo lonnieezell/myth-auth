@@ -23,19 +23,32 @@ class RoleFilter implements FilterInterface
      */
     public function before(RequestInterface $request, $params = null)
     {
+		if (empty($params))
+		{
+			return;
+		}
+		
         $authenticate = Services::authentication();
-
-        if (! $authenticate->check() || empty($params))
+		
+		// if no user is logged in then send to the login form
+        if (! $authenticate->check())
         {
-            return;
+            return redirect('login');
         }
 
-        $user = $authenticate->user();
         $authorize = Services::authorization();
 
-        if (! $authorize->inGroup($params, $user->id))
+        if (! $authorize->inGroup($params, $authenticate->id()))
         {
-            throw new \RuntimeException('You do not have permission to view that page.');
+        	if ($authenticate->silent())
+        	{
+				$redirectURL = session('redirect_url') ?? '/';
+				unset($_SESSION['redirect_url']);
+				return redirect()->to($redirectURL)->with('error', lang('Auth.notEnoughPrivilege'));
+        	}
+        	else {
+        		throw new \RuntimeException(lang('Auth.notEnoughPrivilege'));
+        	}
         }
     }
 
