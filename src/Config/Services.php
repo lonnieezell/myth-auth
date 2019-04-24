@@ -17,8 +17,16 @@ class Services extends BaseService
         {
             return self::getSharedInstance('authentication', $lib, $userModel, $loginModel);
         }
-
-        $config = config(Auth::class);
+		
+		// prioritizes user config in app/Config if found
+		if (class_exists('\Config\Auth'))
+		{
+			$config = config('Config\\Auth');
+		}
+		else
+		{
+			$config = config(Auth::class);
+		}
 
         $class = $config->authenticationLibs[$lib];
 

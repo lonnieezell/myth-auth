@@ -57,7 +57,7 @@ class AuthenticationBase
      */
     public function silent()
     {
-        return $this->silent;
+        return $this->config->silent;
     }
 
 
