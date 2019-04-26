@@ -9,6 +9,8 @@ class LocalAttemptTest extends \CIDatabaseTestCase
      */
     protected $auth;
 
+    protected $namespace = 'Myth\Auth';
+
     public function setUp(): void
     {
         parent::setUp();

@@ -34,7 +34,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Myth\\Auth\\": "tests"
+      "Myth\\Auth\\": "tests",
+      "MythTests\\Support": "tests/_support"
     }
   },
   "scripts": {
