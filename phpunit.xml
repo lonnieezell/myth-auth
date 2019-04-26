@@ -22,8 +22,11 @@
     <php>
         <env name="app.baseURL" value="http://example.com"/>
         <env name="CI_ENVIRONMENT" value="testing"/>
-        <env name="database.tests.DBDriver" value="SQLite3"/>
-        <env name="database.tests.database" value=":memory:"/>
-        <env name="database.tests.DBPrefix" value="myth_"/>
+        <env name="database.tests.DBDriver" value="MySQLi"/>
+        <env name="database.tests.database" value="mythauth"/>
+        <env name="database.tests.username" value="root"/>
+<!--        <env name="database.tests.DBDriver" value="SQLite3"/>-->
+<!--        <env name="database.tests.database" value=":memory:"/>-->
+<!--        <env name="database.tests.DBPrefix" value="myth_"/>-->
     </php>
 </phpunit>
