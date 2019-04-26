@@ -154,7 +154,7 @@ class Migration_create_auth_tables extends Migration
     public function down()
     {
 		// drop constraints first to prevent errors
-        if (ENVIRONMENT != 'testing')
+        if ($this->db->DBDriver != 'SQLite3')
         {
             $this->forge->dropForeignKey('auth_tokens', 'auth_tokens_user_id_foreign');
             $this->forge->dropForeignKey('auth_groups_permissions', 'auth_groups_permissions_group_id_foreign');
