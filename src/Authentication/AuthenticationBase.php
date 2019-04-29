@@ -83,12 +83,15 @@ class AuthenticationBase
 
         $this->user = $user;
 
-        // Always record a login attempt, whether success or not.
+        // Always record a login attempt
         $ipAddress = Services::request()->getIPAddress();
         $this->recordLoginAttempt($user->email, $ipAddress, $user->id ?? null, true);
 
         // Regenerate the session ID to help protect against session fixation
-        session()->regenerate();
+        if (ENVIRONMENT !== 'testing')
+        {
+            session()->regenerate();
+        }
 
         // Let the session know we're logged in
         session()->set('logged_in', $this->user->id);
@@ -148,7 +151,7 @@ class AuthenticationBase
      */
     public function loginByID(int $id, bool $remember = false)
     {
-        $user = $this->$this->retrieveUser(['id' => $id]);
+        $user = $this->retrieveUser(['id' => $id]);
 
         if (empty($user))
         {
@@ -183,7 +186,7 @@ class AuthenticationBase
 
         // Take care of any remember me functionality
         $this->loginModel->purgeRememberTokens($user->id);
-        
+
         // trigger logout event
 		Events::trigger('logout', $user);
     }
@@ -232,20 +235,19 @@ class AuthenticationBase
         $this->loginModel->rememberUser($userID, $selector, hash('sha256', $validator), $expires);
 
         // Save it to the user's browser in a cookie.
-        helper('cookie');
-
         $appConfig = new App();
+        $response = \Config\Services::response();
 
         // Create the cookie
-        set_cookie(
-            'remember',               // Cookie Name
-            $token,                      // Value
+        $response->setCookie(
+            'remember',                     // Cookie Name
+            $token,                         // Value
             $this->config->rememberLength,  // # Seconds until it expires
             $appConfig->cookieDomain,
             $appConfig->cookiePath,
             $appConfig->cookiePrefix,
-            false,                  // Only send over HTTPS?
-            true                  // Hide from Javascript?
+            false,                          // Only send over HTTPS?
+            true                            // Hide from Javascript?
         );
     }
 

@@ -11,19 +11,11 @@ class LocalAttemptTest extends \CIDatabaseTestCase
      */
     protected $auth;
 
-    protected $namespace = 'Myth\Auth';
-
-    /**
-     * @var \Myth\Auth\Models\UserModel
-     */
-    protected $users;
-
     public function setUp(): void
     {
         parent::setUp();
 
         $this->auth = \Myth\Auth\Config\Services::authentication('local');
-        $this->users = new UserModel();
     }
 
     public function testValidateNoPassword()
@@ -85,26 +77,5 @@ class LocalAttemptTest extends \CIDatabaseTestCase
         // It should return a user instance
         $foundUser = $this->auth->validate(['email' => 'fred@example.com', 'password' => 'secret'], true);
         $this->assertEquals($user->email, $foundUser->email);
-    }
-
-
-
-    
-
-    protected function createUser(array $info = [])
-    {
-        $defaults = [
-            'email' => 'fred@example.com',
-            'password' => 'secret'
-        ];
-
-        $info = array_merge($info, $defaults);
-
-        $user = new User($info);
-        $user->setPassword($info['password']);
-        $this->users->save($user);
-        $user = $this->users->find($user->id)[0];
-
-        return $user;
     }
 }
