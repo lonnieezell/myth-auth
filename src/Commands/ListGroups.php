@@ -3,7 +3,7 @@
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 
-class GroupsList extends BaseCommand
+class ListGroups extends BaseCommand
 {
     protected $group       = 'Auth';
     protected $name        = 'auth:list-groups';
