@@ -4,13 +4,13 @@ use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 use CodeIgniter\Config\Services;
 
-class GroupsAdd extends BaseCommand
+class CreateGroup extends BaseCommand
 {
     protected $group       = 'Auth';
-    protected $name        = 'groups:add';
+    protected $name        = 'auth:create-group';
     protected $description = "Adds a new group to the database.";
     
-	protected $usage     = "auth:create_group [name] [description]";
+	protected $usage     = "auth:create-group [name] [description]";
 	protected $arguments = [
 		'name'        => "The name of the new group to create",
 		'description' => "Optional description 'in quotes'",
@@ -44,6 +44,6 @@ class GroupsAdd extends BaseCommand
 			$this->showError($e);
 		}
 		
-		$this->call('groups:list');
+		$this->call('auth:list-groups');
 	}
 }
