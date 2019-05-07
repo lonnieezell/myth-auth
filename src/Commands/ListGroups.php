@@ -6,7 +6,7 @@ use CodeIgniter\CLI\CLI;
 class GroupsList extends BaseCommand
 {
     protected $group       = 'Auth';
-    protected $name        = 'groups:list';
+    protected $name        = 'auth:list-groups';
     protected $description = 'Lists groups from the database.';
 
     public function run(array $params)
