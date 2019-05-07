@@ -1,5 +1,8 @@
 <?php
 
+use Myth\Auth\Entities\User;
+use Myth\Auth\Models\UserModel;
+
 class CIDatabaseTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
 {
     /**
@@ -33,4 +36,33 @@ class CIDatabaseTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
      * @var string
      */
     protected $namespace = 'Myth\Auth';
+
+    /**
+     * @var \Myth\Auth\Models\UserModel
+     */
+    protected $users;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->users = new UserModel();
+    }
+
+    protected function createUser(array $info = [])
+    {
+        $defaults = [
+            'email' => 'fred@example.com',
+            'password' => 'secret'
+        ];
+
+        $info = array_merge($info, $defaults);
+
+        $user = new User($info);
+        $user->setPassword($info['password']);
+        $this->users->save($user);
+        $user = $this->users->find($user->id)[0];
+
+        return $user;
+    }
 }

@@ -52,8 +52,7 @@ if (! isset($_SERVER['app.baseURL']))
 }
 
 // Ensure the autoloader uses our autoload config to get our namespaces found
-require __DIR__ .'/../vendor/codeigniter4/framework/app/Config/Autoload.php';
+require __DIR__ .'/../tests/_support/Config/Autoload.php';
 require __DIR__ .'/../vendor/codeigniter4/framework/app/Config/Constants.php';
 require __DIR__ .'/../vendor/codeigniter4/framework/app/Config/Modules.php';
 
-\CodeIgniter\Config\Config::injectMock('Autoload', new Config\Autoload());
