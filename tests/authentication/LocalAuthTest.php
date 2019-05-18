@@ -4,18 +4,30 @@ use Myth\Auth\Entities\User;
 use Myth\Auth\Models\UserModel;
 use Myth\Auth\Authentication\LocalAuthenticator;
 
-class LocalAttemptTest extends \CIDatabaseTestCase
+class LocalAuthTest extends \CIDatabaseTestCase
 {
     /**
      * @var LocalAuthenticator
      */
     protected $auth;
 
+    /**
+     * @var \Tests\Support\Session\MockSession
+     */
+    protected $session;
+
+    protected $refresh = true;
+
     public function setUp(): void
     {
         parent::setUp();
 
         $this->auth = \Myth\Auth\Config\Services::authentication('local');
+
+        require_once ROOTPATH.'_support/Session/MockSession.php';
+        $config = config('App');
+        $this->session = new \Tests\Support\Session\MockSession(new \CodeIgniter\Session\Handlers\FileHandler($config, '0.0.0.0'), $config);
+        \Config\Services::injectMock('session', $this->session);
     }
 
     public function testValidateNoPassword()
@@ -77,5 +89,12 @@ class LocalAttemptTest extends \CIDatabaseTestCase
         // It should return a user instance
         $foundUser = $this->auth->validate(['email' => 'fred@example.com', 'password' => 'secret'], true);
         $this->assertEquals($user->email, $foundUser->email);
+    }
+
+    public function testCheckNotRemembered()
+    {
+        $user = $this->createUser();
+
+        $this->assertFalse($this->auth->check());
     }
 }

@@ -35,12 +35,12 @@ $_SERVER['CI_ENVIRONMENT'] = 'testing';
 define('ENVIRONMENT', 'testing');
 
 // Load our paths config file
-require __DIR__ . '/../vendor/codeigniter4/framework/app/Config/Paths.php';
+require __DIR__ . '/../vendor/codeigniter4/codeigniter4/app/Config/Paths.php';
 
-define('APPPATH', realpath(__DIR__ .'/../vendor/codeigniter4/framework/app'). DIRECTORY_SEPARATOR);
-define('SYSTEMPATH', realpath(__DIR__ .'/../vendor/codeigniter4/framework/system'). DIRECTORY_SEPARATOR);
-define('FCPATH', realpath(__DIR__ . '/../vendor/codeigniter4/framework/public'). DIRECTORY_SEPARATOR);
-define('ROOTPATH', realpath(__DIR__ . '/../vendor/codeigniter4/framework'). DIRECTORY_SEPARATOR);
+define('APPPATH', realpath(__DIR__ .'/../vendor/codeigniter4/codeigniter4/app'). DIRECTORY_SEPARATOR);
+define('SYSTEMPATH', realpath(__DIR__ .'/../vendor/codeigniter4/codeigniter4/system'). DIRECTORY_SEPARATOR);
+define('FCPATH', realpath(__DIR__ . '/../vendor/codeigniter4/codeigniter4/public'). DIRECTORY_SEPARATOR);
+define('ROOTPATH', realpath(__DIR__ . '/../vendor/codeigniter4/codeigniter4'). DIRECTORY_SEPARATOR);
 
 define('TESTPATH', realpath(__DIR__ . '/../') . DIRECTORY_SEPARATOR);
 define('SUPPORTPATH', realpath(TESTPATH . '_support/') . DIRECTORY_SEPARATOR);
@@ -53,6 +53,6 @@ if (! isset($_SERVER['app.baseURL']))
 
 // Ensure the autoloader uses our autoload config to get our namespaces found
 require __DIR__ .'/../tests/_support/Config/Autoload.php';
-require __DIR__ .'/../vendor/codeigniter4/framework/app/Config/Constants.php';
-require __DIR__ .'/../vendor/codeigniter4/framework/app/Config/Modules.php';
+require __DIR__ .'/../vendor/codeigniter4/codeigniter4/app/Config/Constants.php';
+require __DIR__ .'/../vendor/codeigniter4/codeigniter4/app/Config/Modules.php';
 
