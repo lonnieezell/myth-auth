@@ -138,9 +138,12 @@ class User extends Entity
      *
      * @return $this
      */
-    public function setPermissions(array $permissions)
+    public function setPermissions(array $permissions = null)
     {
-        $this->permissions = json_encode($permissions);
+        if (is_array($permissions))
+        {
+            $this->permissions = json_encode($permissions);
+        }
 
         return $this;
 	}
