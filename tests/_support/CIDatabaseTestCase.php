@@ -38,6 +38,11 @@ class CIDatabaseTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
     protected $namespace = 'Myth\Auth';
 
     /**
+     * @var SessionHandler
+     */
+    protected $session;
+
+    /**
      * @var \Myth\Auth\Models\UserModel
      */
     protected $users;
@@ -47,6 +52,7 @@ class CIDatabaseTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
         parent::setUp();
 
         $this->users = new UserModel();
+        $this->mockSession();
     }
 
     protected function createUser(array $info = [])
@@ -64,5 +70,13 @@ class CIDatabaseTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
         $user = $this->users->find($user->id)[0];
 
         return $user;
+    }
+
+    protected function mockSession()
+    {
+        require_once ROOTPATH.'tests/_support/Session/MockSession.php';
+        $config = config('App');
+        $this->session = new \Tests\Support\Session\MockSession(new \CodeIgniter\Session\Handlers\ArrayHandler($config, '0.0.0.0'), $config);
+        \Config\Services::injectMock('session', $this->session);
     }
 }

@@ -23,11 +23,6 @@ class LocalAuthTest extends \CIDatabaseTestCase
         parent::setUp();
 
         $this->auth = \Myth\Auth\Config\Services::authentication('local');
-
-        require_once ROOTPATH.'_support/Session/MockSession.php';
-        $config = config('App');
-        $this->session = new \Tests\Support\Session\MockSession(new \CodeIgniter\Session\Handlers\FileHandler($config, '0.0.0.0'), $config);
-        \Config\Services::injectMock('session', $this->session);
     }
 
     public function testValidateNoPassword()
