@@ -12,7 +12,7 @@ class UserModel extends Model
     protected $useSoftDeletes = true;
 
     protected $allowedFields = [
-        'email', 'username', 'password_hash', 'reset_hash', 'reset_start_time', 'activate_hash',
+        'email', 'username', 'name', 'password_hash', 'reset_hash', 'reset_start_time', 'activate_hash',
         'status', 'status_message', 'active', 'force_pass_reset', 'permissions', 'deleted',
     ];
 
