@@ -44,6 +44,6 @@ class CreateGroup extends BaseCommand
 			$this->showError($e);
 		}
 		
-		$this->call('auth:list-groups');
+		$this->call('auth:list_groups');
 	}
 }
