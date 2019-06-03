@@ -6,8 +6,9 @@ use CodeIgniter\CLI\CLI;
 class ListGroups extends BaseCommand
 {
     protected $group       = 'Auth';
-    protected $name        = 'auth:list-groups';
+    protected $name        = 'auth:list_groups';
     protected $description = 'Lists groups from the database.';
+    protected $usage       = 'auth:list_groups';
 
     public function run(array $params)
     {
