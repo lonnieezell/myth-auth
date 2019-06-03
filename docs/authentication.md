@@ -178,7 +178,7 @@ The names of the fields in the user table that are allowed by used when testing 
     ];
 
 ### auth.allowRegistration
-This can be either true or false, and determines whether ot not the system allows unregistered users to make a new
+This can be either true or false, and determines whether or not the system allows unregistered users to make a new
 account by accessing `AuthController->register()`. NOTE: This setting is not enforced by `UserModel` so if you add
 or edit controller and views you are responsible for checking this value.
 
