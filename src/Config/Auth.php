@@ -35,6 +35,15 @@ class Auth extends BaseConfig
     ];
 
     //--------------------------------------------------------------------
+    // Allow User Registration
+    //--------------------------------------------------------------------
+    // When enabled (default) any unregistered user may apply for a new
+    // account. If you disable registration you may need to ensure your
+    // controllers and views know not to offer registration.
+    //
+    public $allowRegistration = false;
+
+    //--------------------------------------------------------------------
     // Allow Persistent Login Cookies (Remember me)
     //--------------------------------------------------------------------
     // While every attempt has been made to create a very strong protection
@@ -61,7 +70,7 @@ class Auth extends BaseConfig
     public $silent = false;
 
     //--------------------------------------------------------------------
-    // PASSWORD HASHING COST
+    // Password Hashing Cost
     //--------------------------------------------------------------------
     // The BCRYPT method of encryption allows you to define the "cost"
     // or number of iterations made, whenever a password hash is created.
@@ -74,7 +83,7 @@ class Auth extends BaseConfig
     public $hashCost = 10;
 
     //--------------------------------------------------------------------
-    // MINIMUM PASSWORD LENGTH
+    // Minimum Password Length
     //--------------------------------------------------------------------
     // The minimum length that a password must be to be accepted.
     // Recommended minimum value by NIST = 8 characters.
@@ -82,7 +91,7 @@ class Auth extends BaseConfig
     public $minimumPasswordLength = 8;
 
     //--------------------------------------------------------------------
-    // PASSWORD CHECK HELPERS
+    // Password Check Helpers
     //--------------------------------------------------------------------
     // The PasswordValidater class runs the password through all of these
     // classes, each getting the opportunity to pass/fail the password.
@@ -93,4 +102,5 @@ class Auth extends BaseConfig
         'Myth\Auth\Authentication\Passwords\CompositionValidator',
         'Myth\Auth\Authentication\Passwords\DictionaryValidator',
     ];
+
 }

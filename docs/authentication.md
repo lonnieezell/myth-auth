@@ -177,6 +177,11 @@ The names of the fields in the user table that are allowed by used when testing 
         'email', 'username'
     ];
 
+### auth.allowRegistration
+This can be either true or false, and determines whether ot not the system allows unregistered users to make a new
+account by accessing `AuthController->register()`. NOTE: This setting is not enforced by `UserModel` so if you add
+or edit controller and views you are responsible for checking this value.
+
 ### auth.allowRemembering
 This can be either true or false, and determines whether or not the system allows persistent logins (Remember Me). 
 For most sites, you will likely want this turned on for your user's convenience. If your site holds extremely 

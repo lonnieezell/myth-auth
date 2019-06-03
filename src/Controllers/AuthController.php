@@ -45,14 +45,13 @@ class AuthController extends Controller
         // is already logged in.
         if ($this->auth->check())
         {
-            die('here');
             $redirectURL = session('redirect_url') ?? '/';
             unset($_SESSION['redirect_url']);
 
             return redirect()->to($redirectURL);
         }
 
-        echo view($this->config->views['login']);
+        echo view($this->config->views['login'], ['allowRegistration' => $this->config->allowRegistration]);
     }
 
     /**
@@ -115,6 +114,12 @@ class AuthController extends Controller
      */
     public function register()
     {
+    	// Check if registration is allowed
+    	if (! $this->config->allowRegistration)
+    	{
+			return redirect()->back()->withInput()->with('error', lang('Auth.registerDisabled'));
+		}
+		
         echo view($this->config->views['register']);
     }
 
@@ -123,6 +128,12 @@ class AuthController extends Controller
      */
     public function attemptRegister()
     {
+    	// Check if registration is allowed
+    	if (! $this->config->allowRegistration)
+    	{
+			return redirect()->back()->withInput()->with('error', lang('Auth.registerDisabled'));
+		}
+		
         $users = new UserModel();
 
         // Validate here first, since some things,

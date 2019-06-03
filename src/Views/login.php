@@ -43,11 +43,16 @@
                         <button type="submit" class="btn btn-primary btn-block">Login</button>
                     </form>
 
-
                     <hr>
 
+<?php
+if ($allowRegistration)
+{
+?>
                     <p><a href="<?= route_to('register') ?>">Need an account?</a></p>
-
+<?php
+}
+?>
                     <p><a href="<?= route_to('forgot') ?>">Forgot your password?</a></p>
                 </div>
             </div>
