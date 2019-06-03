@@ -5,10 +5,7 @@ use CodeIgniter\Database\Migration;
 class Migration_alter_table_users extends Migration
 {
 	public function up()
-	{
-		// get rid of generic "name" columnd
-		$this->forge->dropColumn('users', 'name');
-		
+	{		
 		// add new identity info
 		$fields = [
 			'firstname'      => ['type' => 'VARCHAR', 'constraint' => 63, 'after' => 'username'],
@@ -24,11 +21,5 @@ class Migration_alter_table_users extends Migration
 		$this->forge->dropColumn('users', 'firstname');
 		$this->forge->dropColumn('users', 'lastname');
 		$this->forge->dropColumn('users', 'phone');
-		
-		// add back original "name" field from Myth:Auth
-		$fields = [
-			'name' => ['type' => 'varchar', 'constraint' => 30, 'null' => true, 'after' => 'username'],
-		];
-		$this->forge->addColumn($fields);
 	}
 }
