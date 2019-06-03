@@ -13,6 +13,7 @@ return [
     'notEnoughPrivilege'      => 'You do not have sufficient permissions to access that page.',
 
     // Registration
+    'registerDisabled'        => 'Sorry, new user accounts are not allowed at this time.',
     'registerSuccess'         => 'Welcome aboard! Please login with your new credentials.',
 
     // Login
