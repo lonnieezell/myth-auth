@@ -7,10 +7,10 @@ use CodeIgniter\Config\Services;
 class CreateGroup extends BaseCommand
 {
     protected $group       = 'Auth';
-    protected $name        = 'auth:create-group';
+    protected $name        = 'auth:create_group';
     protected $description = "Adds a new group to the database.";
     
-	protected $usage     = "auth:create-group [name] [description]";
+	protected $usage     = "auth:create_group [name] [description]";
 	protected $arguments = [
 		'name'        => "The name of the new group to create",
 		'description' => "Optional description 'in quotes'",
