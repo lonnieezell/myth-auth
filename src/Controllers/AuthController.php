@@ -140,8 +140,6 @@ class AuthController extends Controller
         // Save the user
         $user = new User($this->request->getPost());
 
-        $user->name = $user->username;
-
         if (! $users->save($user))
         {
             return redirect()->back()->withInput()->with('errors', $users->errors());
