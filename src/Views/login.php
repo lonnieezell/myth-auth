@@ -45,14 +45,9 @@
 
                     <hr>
 
-<?php
-if ($allowRegistration)
-{
-?>
+<?php if ($allowRegistration) : ?>
                     <p><a href="<?= route_to('register') ?>">Need an account?</a></p>
-<?php
-}
-?>
+<?php endif; ?>
                     <p><a href="<?= route_to('forgot') ?>">Forgot your password?</a></p>
                 </div>
             </div>
