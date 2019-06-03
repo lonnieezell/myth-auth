@@ -52,28 +52,6 @@ class DictionaryValidatorTest extends CIUnitTestCase
         $this->assertFalse($this->validator->check($password, $user));
     }
 
-    public function nameMatches()
-    {
-        return [
-            ['joe smith'],
-            ['joesmith'],
-            ['joe.smith'],
-            ['joe-smith']
-        ];
-    }
-
-    /**
-     * @dataProvider nameMatches
-     */
-    public function testCheckFalseOnNameMatch($passCheck)
-    {
-        $user = new \Myth\Auth\Entities\User([
-            'name' => 'Joe Smith'
-        ]);
-
-        $this->assertFalse($this->validator->check($passCheck, $user));
-    }
-
     public function testCheckFalseOnUsernameMatch()
     {
         $user = new \Myth\Auth\Entities\User([
