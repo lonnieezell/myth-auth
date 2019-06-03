@@ -92,7 +92,6 @@ class Migration_create_auth_tables extends Migration
 
         $this->forge->addField($fields);
         $this->forge->addKey('id', true);
-        $this->forge->addUniqueKey('name');
         $this->forge->createTable('auth_groups', true);
 
         /*
