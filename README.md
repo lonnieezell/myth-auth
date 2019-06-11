@@ -151,15 +151,38 @@ the list of active collectors:
 
 ## Restricting by Route
 
-If you specify each of your routes within the `application/Config/Routes.php` file, you can restrict access
+If you specify each of your routes within the `app/Config/Routes.php` file, you can restrict access
 to users by group/role or permission with [Controller Filters](https://codeigniter4.github.io/CodeIgniter4/incoming/filters.html).
 
-First, edit `application/Config/Filters.php` and add the following `role` and `permission` entries to the 
-`aliases` property::
+First, edit `application/Config/Filters.php` and add the following entries to the `aliases` property:
 
 ```
-    'role' => \Myth\Auth\Filters\RoleFilter::class,
+    'login'      => \Myth\Auth\Filters\LoginFilter::class,
+    'role'       => \Myth\Auth\Filters\RoleFilter::class,
     'permission' => \Myth\Auth\Filters\PermissionFilter::class,
+```
+
+**Global restrictions**
+
+The role and permission filters require additional parameters, but `LoginFilter` can be used to
+retrict portions of a site (or the entire site) to any authenticated user. If no logged in user is detected
+then the filter will redirect users to the login form.
+
+Restrict routes based on their URI pattern by editing **app/Config/Filters.php** and adding them to the
+`$filters` array, e.g.:
+```
+public filters = [
+    'login' => ['before' => ['account/*']],
+];
+```
+
+Or restrict your entire site by adding the `LoginFilter` to the `$globals` array:
+```
+    public $globals = [
+        'before' => [
+            'honeypot',
+            'login',
+    ...
 ```
 
 **Restricting a single route**
