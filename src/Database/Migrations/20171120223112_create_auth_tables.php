@@ -28,7 +28,8 @@ class Migration_create_auth_tables extends Migration
         ]);
 
         $this->forge->addKey('id', true);
-        $this->forge->addKey('email');
+        $this->forge->addUniqueKey('email');
+        $this->forge->addUniqueKey('username');
 
         $this->forge->createTable('users', true);
 
