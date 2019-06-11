@@ -29,11 +29,11 @@ Your best bet is to simply clone the repo for now:
 Once installed you need to let your CodeIgniter 4 application know where to find the libraries. In your application,
 perform the following setup: 
 
-1. Edit **application/Config/Autoload.php** and add the **Myth\Auth** namespace to the **$psr4** array.
-2. Edit **application/Config/Routes.php** and set **discoverLocal** to **true**.
-3. Edit **application/Config/Email.php** and verify that a **fromName** and **fromEmail** are set 
+1. Edit **app/Config/Autoload.php** and add the **Myth\Auth** namespace to the **$psr4** array.
+2. Edit **app/Config/Routes.php** and set **discoverLocal** to **true**.
+3. Edit **app/Config/Email.php** and verify that a **fromName** and **fromEmail** are set 
     as that is used when sending emails for password reset, etc. 
-4. Edit **application/Config/Validation.php** and add the following value to the **ruleSets** array: 
+4. Edit **app/Config/Validation.php** and add the following value to the **ruleSets** array: 
     `\Myth\Auth\Authentication\Passwords\ValidationRules::class`
 4. Ensure your database is setup correctly, then run the Auth migrations: 
 
@@ -51,7 +51,7 @@ by setting the `$allowRemembering` variable to be `true`.
 
 Routes are defined in Auth's **Config/Routes.php** file. This file is automatically located by CodeIgniter
 when it is processing the routes. If you would like to customize the routes, you should copy the file
-to the **application/Config** directory and make your changes there.
+to the **app/Config** directory and make your changes there.
 
 ### Views
 
@@ -106,7 +106,7 @@ A handful of variations on the user's email/username are automatically checked a
    
 Most of the time you should not need to access this library directly, though, as a new Validation rule
 is provided that can be used with the Validation library, `strong_password`. In order to enable this, 
-you must first edit **application/Config/Validation.php** and add the new ruleset to the available rule sets:
+you must first edit **app/Config/Validation.php** and add the new ruleset to the available rule sets:
 
      public $ruleSets = [
         \CodeIgniter\Validation\Rules::class,
@@ -133,6 +133,21 @@ reset hash generation, and more.
 It also provides a UserModel that should be used as it provides methods needed during the 
 password-reset flow, as well as basic validation rules. You are free to extend this class
 or modify it as needed.
+
+### Toolbar
+
+Myth:Auth includes a toolbar collector to make it easy for developers to work with and troubleshoot
+the authentication process. To enable the collector, edit **app/Config/Toolbar.php** and add it to
+the list of active collectors:
+
+```
+	public $collectors = [
+		\CodeIgniter\Debug\Toolbar\Collectors\Timers::class,
+		\CodeIgniter\Debug\Toolbar\Collectors\Database::class,
+        ...
+		\Myth\Auth\Collectors\Auth::class,
+	];
+```
 
 ## Restricting by Route
 
