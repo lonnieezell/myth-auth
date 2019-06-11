@@ -179,9 +179,9 @@ public filters = [
 Or restrict your entire site by adding the `LoginFilter` to the `$globals` array:
 ```
     public $globals = [
-		'before' => [
+        'before' => [
             'honeypot',
-			'login',
+            'login',
     ...
 ```
 
