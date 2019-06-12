@@ -33,6 +33,8 @@ class LoginFilter implements FilterInterface
 		$authenticate = Services::authentication();
 		if (! $authenticate->check())
 		{
+			$session = session();
+			$session->set('redirect_url', current_url());
 			return redirect('login');
 		}
 	}
