@@ -18,6 +18,7 @@ class RoleFilter implements FilterInterface
      * redirects, etc.
      *
      * @param \CodeIgniter\HTTP\RequestInterface $request
+     * @param array|null                         $params
      *
      * @return mixed
      */
@@ -38,8 +39,15 @@ class RoleFilter implements FilterInterface
         }
 
         $authorize = Services::authorization();
-
-        if (! $authorize->inGroup($params, $authenticate->id()))
+		$result = true;
+		
+		// Check each requested permission
+		foreach ($params as $group)
+		{
+			$result = $result && $authorize->inGroup($group, $authenticate->id());
+		}
+		
+        if (! $result)
         {
         	if ($authenticate->silent())
         	{

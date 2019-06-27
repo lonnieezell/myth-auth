@@ -18,6 +18,7 @@ class PermissionFilter implements FilterInterface
      * redirects, etc.
      *
      * @param \CodeIgniter\HTTP\RequestInterface $request
+     * @param array|null                         $params
      *
      * @return mixed
      */
@@ -38,8 +39,15 @@ class PermissionFilter implements FilterInterface
         }
 
         $authorize = Services::authorization();
-
-        if (! $authorize->hasPermission($params, $authenticate->id()))
+		$result = true;
+		
+		// Check each requested permission
+		foreach ($params as $permission)
+		{
+			$result = $result && $authorize->hasPermission($permission, $authenticate->id());
+		}
+		
+        if (! $result)
         {
         	if ($authenticate->silent())
         	{
