@@ -14,7 +14,7 @@ class PermissionModel extends Model
 
     protected $validationRules = [
         'name' => 'required|max_length[255]|is_unique[auth_permissions.name,name,{name}]',
-        'description' => 'max_length[255',
+        'description' => 'max_length[255]',
     ];
 
     /**
