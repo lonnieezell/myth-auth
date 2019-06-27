@@ -9,7 +9,7 @@ class LoginModel extends Model
     protected $table = 'auth_logins';
     protected $primaryKey = 'id';
 
-    protected $returnType = User::class;
+    protected $returnType = 'object';
     protected $useSoftDeletes = true;
 
     protected $allowedFields = [
