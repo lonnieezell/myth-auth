@@ -26,7 +26,15 @@ class AuthController extends Controller
         // the session to be started - so fire it up!
         $this->session = Services::session();
 
-        $this->config = config(Auth::class);
+		// prioritizes user config in app/Config if found
+		if (class_exists('\Config\Auth'))
+		{
+			$this->config = new \Config\Auth();
+		}
+		else
+		{
+			$this->config = config(Auth::class);
+		}
         $this->auth = Services::authentication();
     }
 
