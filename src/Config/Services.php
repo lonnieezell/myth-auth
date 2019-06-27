@@ -21,7 +21,7 @@ class Services extends BaseService
 		// prioritizes user config in app/Config if found
 		if (class_exists('\Config\Auth'))
 		{
-			$config = config('Config\\Auth');
+			$config = new \Config\Auth();
 		}
 		else
 		{
