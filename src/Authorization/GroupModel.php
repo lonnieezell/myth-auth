@@ -7,6 +7,7 @@ class GroupModel extends Model
     protected $table = 'auth_groups';
     protected $primaryKey = 'id';
 
+    protected $returnType = 'object';
     protected $allowedFields = [
         'name', 'description'
     ];
