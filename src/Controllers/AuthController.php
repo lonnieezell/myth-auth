@@ -2,7 +2,6 @@
 
 use CodeIgniter\Controller;
 use Config\Email;
-use Myth\Auth\Config\Auth;
 use Myth\Auth\Config\Services;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Models\UserModel;
@@ -26,7 +25,7 @@ class AuthController extends Controller
         // the session to be started - so fire it up!
         $this->session = Services::session();
 
-        $this->config = config(Auth::class);
+        $this->config = config('Auth');
         $this->auth = Services::authentication();
     }
 
