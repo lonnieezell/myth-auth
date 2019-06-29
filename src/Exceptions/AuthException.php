@@ -1,7 +1,5 @@
 <?php namespace Myth\Auth\Exceptions;
 
-use Myth\Auth\Config\Auth;
-
 class AuthException extends \DomainException implements ExceptionInterface
 {
     public static function forInvalidModel(string $model)
