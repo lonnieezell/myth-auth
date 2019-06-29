@@ -27,7 +27,7 @@ line and correct me. I'll make sure to read through it and try to correct either
 
 The included class, `Myth\Auth\Authentication\LocalAuthentication`, together with the `LoginModel` is the power 
 behind the features listed below. If you want to create your own, create a new class that implements the 
-`Myth\Auth\Authentication\AuthenticateInterface`. Then modify `application/Config/App.php` to use the new class. This 
+`Myth\Auth\Authentication\AuthenticateInterface`. Then modify `app/Config/App.php` to use the new class. This 
 will be automatically loaded up and readied for any class that uses the [Auth Trait](auth_trait.md).
 
 ## Logging Users In
@@ -119,7 +119,7 @@ You can have a user be remembered, through the user of cookies, by passing true 
 `attempt()` method, as described above. But what happens then? I have tried to make the process as secure as possible, 
 and will describe the process here so that you can understand the flow.
 
-If you do NOT want your users to be able to use persistent logins, you can turn this off in `application/Config/Auth.php`, 
+If you do NOT want your users to be able to use persistent logins, you can turn this off in `app/Config/Auth.php`, 
 along with a number of other settings. See the section on [Configuration](#configuration), below.
 
 ### Security Flow
