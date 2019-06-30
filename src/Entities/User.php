@@ -1,7 +1,6 @@
 <?php namespace Myth\Auth\Entities;
 
 use CodeIgniter\Entity;
-use Myth\Auth\Config\Auth;
 
 class User extends Entity
 {
@@ -40,7 +39,7 @@ class User extends Entity
 	 */
 	public function setPassword(string $password)
 	{
-        $config = config(Auth::class);
+        $config = config('Auth');
 
 		$this->attributes['password_hash'] = password_hash(
 			base64_encode(
