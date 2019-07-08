@@ -11,8 +11,7 @@ if (! function_exists('logged_in'))
 	 */
 	function logged_in()
 	{
-		$authenticate = Services::authentication();
-		return $authenticate->isLoggedIn();
+		$authenticate = Services::authentication()->isLoggedIn();
 	}
 }
 
@@ -72,6 +71,8 @@ if (! function_exists('in_groups'))
         {
             return $authorize->inGroup($groups, $authenticate->id());
         }
+        
+        return false;
 	}
 }
 
@@ -94,5 +95,7 @@ if (! function_exists('has_permission'))
         {
             return $authorize->hasPermission($permission, $authenticate->id()) ?? false;
         }
+        
+        return false;
 	}
 }
