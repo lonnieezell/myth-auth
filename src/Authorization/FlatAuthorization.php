@@ -84,7 +84,7 @@ class FlatAuthorization implements AuthorizeInterface
         {
             if (is_numeric($group))
             {
-                $ids = array_column($userGroups, 'id');
+                $ids = array_column($userGroups, 'group_id');
                 if (in_array($group, $ids))
                 {
                     return true;

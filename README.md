@@ -81,11 +81,11 @@ The following Services are provided by the package:
 Provides access to any of the authenticacation packages that Myth:Auth knows about. By default
 it will return the "Local Authentication" library, which is the basic password-based system.
 
-    $authenticate = Myth\Auth\Services::authentication();
+    $authenticate = Myth\Auth\Config\Services::authentication();
     
 You can specify the library to use as the first argument:
 
-    $authenticate = Myth\Auth\Services::authentication('jwt');
+    $authenticate = Myth\Auth\Config\Services::authentication('jwt');
     
 **authorization**
 
@@ -93,7 +93,7 @@ Provides access to any of the authorization libraries that Myth:Auth knows about
 it will return the "Flat" authorization library, which is a Flat RBAC (role-based access control)
 as defined by NIST. It provides user-specific permissions as well as group (role) based permissions.
 
-    $authorize = $auth = Myth\Auth\Services::authorization();
+    $authorize = $auth = Myth\Auth\Config\Services::authorization();
 
 **passwords**
 
@@ -102,7 +102,7 @@ supports many of [NIST's latest Digital Identity guidelines](https://pages.nist.
 validator comes with a dictionary of over 620,000 common/leaked passwords that can be checked against.
 A handful of variations on the user's email/username are automatically checked against. 
 
-    $authenticate = Myth\Auth\Services::passwords();
+    $authenticate = Myth\Auth\Config\Services::passwords();
    
 Most of the time you should not need to access this library directly, though, as a new Validation rule
 is provided that can be used with the Validation library, `strong_password`. In order to enable this, 
@@ -122,6 +122,46 @@ Now you can use `strong_password` in any set of rules for validation:
         'username' => 'required',
         'password' => 'required|strong_password'
     ]);
+
+## Helper Functions
+
+Myth:Auth comes with its own [Helper](https://codeigniter4.github.io/CodeIgniter4/general/helpers.html) 
+that includes the following helper functions to ease access to basic features. Be sure to
+load the helper before using these functions: `helper('auth');`
+
+**Hint**: Add `'auth'` to any controller's `$helper` property to have it loaded automatically,
+or the same in **app/Controllers/BaseController.php** to have it globally available.
+
+**logged_in()**
+
+* Function: Checks to see if any user is logged in.
+* Parameters: None
+* Returns: `true` or `false`
+
+**user()**
+
+* Function: Returns the User instance for the current logged in user.
+* Parameters: None
+* Returns: The current User entity, or `null`
+
+**user_id()**
+
+* Function: Returns the User ID for the current logged in user.
+* Parameters: None
+* Returns: The current User's integer ID, or `null`
+
+**in_groups()**
+
+* Function: Ensures that the current user is in at least one of the passed in groups.
+* Parameters: Group IDs or names, as either a single item or an array of items.
+* Returns: `true` or `false`
+
+**has_permission()**
+
+* Function: Ensures that the current user has at least one of the passed in permissions.
+* Parameters: Permission ID or name.
+* Returns: `true` or `false`
+
 
 ## Users
 
