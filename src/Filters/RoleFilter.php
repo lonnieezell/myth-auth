@@ -59,7 +59,7 @@ class RoleFilter implements FilterInterface
 				return redirect()->to($redirectURL)->with('error', lang('Auth.notEnoughPrivilege'));
         	}
         	else {
-        		return redirect()->to($redirectURL)->with('error', lang('Auth.notEnoughPrivilege'));
+        		return redirect()->to('login')->with('error', lang('Auth.notEnoughPrivilege'));
         	}
         }
     }
