@@ -44,7 +44,7 @@ class RoleFilter implements FilterInterface
 		// Check each requested permission
 		foreach ($params as $group)
 		{
-            if(!result)
+            if(!$result)
             {
     			$result = $authorize->inGroup($group, $authenticate->id());
             }
