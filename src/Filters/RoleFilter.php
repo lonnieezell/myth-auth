@@ -44,7 +44,28 @@ class RoleFilter implements FilterInterface
 		// Check each requested permission
 		foreach ($params as $group)
 		{
-			$result = $result && $authorize->inGroup($group, $authenticate->id());
+            /**
+             *  Fixed a bug right here.
+             *  It happens when there's more than one role checked.
+             *  
+             *  Maybe better with an example:
+             *
+             *  user: dog
+             *  role: doberman
+             *
+             *  Routes set:
+             *  $routes->get('changepass', 'Admin::changePassword', ['filter' => 'role:doberman,german_sheppard', 'as' => 'change-password']);
+             *
+             *  It'll fail because this function should end right after role doberman is checked, but it doesn't
+             *  and in the end $result is FALSE.
+             *
+             *  Therefore, once $result is TRUE, this check should end.
+             */
+
+            if(! $result)
+            {
+                $result = $result && $authorize->inGroup($group, $authenticate->id());
+            }
 		}
 		
         if (! $result)
@@ -56,7 +77,14 @@ class RoleFilter implements FilterInterface
 				return redirect()->to($redirectURL)->with('error', lang('Auth.notEnoughPrivilege'));
         	}
         	else {
-        		throw new \RuntimeException(lang('Auth.notEnoughPrivilege'));
+                /**
+                 *
+                 *  Added redirect so when it fails user is headed back to previous page
+                 *  with the error message.
+                 *
+                 */
+                return redirect()->back()->with('error', lang('Auth.notEnoughPrivilege'));
+        		// throw new \RuntimeException(lang('Auth.notEnoughPrivilege'));
         	}
         }
     }
