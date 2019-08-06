@@ -88,12 +88,31 @@ class Auth extends \CodeIgniter\Debug\Toolbar\Collectors\BaseCollector
 		if ($authenticate->isLoggedIn())
 		{
 			$user = $authenticate->user();
+			/**
+			 *  Should groups be added here,
+			 *  as am afterFind action in UserModel
+			 *  so it's available globally,
+			 *  or not at all?
+			 */
+			$groupModel = new \Myth\Auth\Authorization\GroupModel();
+			$user->groups =  $groupModel->getGroupsForUser($user->id);
+
+			$groupsForUser = '';
+
+			if (!empty($user->groups))
+			{
+				foreach($user->groups as $group)
+				{
+					$groupsForUser .= $group['name'].', ';
+				}
+			}
 		
 			$html = '<h3>Current User</h3>';
 			$html .= '<table><tbody>';
 			$html .= "<tr><td style='width:150px;'>User ID</td><td>#{$user->id}</td></tr>";
 			$html .= "<tr><td>Username</td><td>{$user->username}</td></tr>";
 			$html .= "<tr><td>Email</td><td>{$user->email}</td></tr>";
+			$html .= "<tr><td>Groups</td><td>{$groupsForUser}</td></tr>";
 			$html .= '</tbody></table>';
 		}
 		else {
