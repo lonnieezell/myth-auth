@@ -16,26 +16,39 @@
       "role": "Developer"
     }
   ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/codeigniter4/CodeIgniter4"
+    }
+  ],
   "require": {
-    "php" : ">=7.0"
+    "php" : ">=7.2"
   },
+  "minimum-stability": "dev",
   "require-dev": {
-    "phpunit/phpunit" : ">=6.4",
-    "mockery/mockery": "^1.0"
+    "phpunit/phpunit" : "^7.0",
+    "mockery/mockery": "^1.0",
+    "codeigniter4/codeigniter4": "dev-develop"
   },
   "autoload": {
     "psr-4": {
-      "Myth\\Auth\\": "src",
-      "CodeIgniter\\": "../../CodeIgniter4/system/",
-      "Config\\": "../../CodeIgniter4/application/Config/"
-    }
+      "Myth\\Auth\\": "src"
+    },
+    "classmap": [
+      "tests/_support/CIDatabaseTestCase.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
-      "Myth\\Auth\\": "tests"
+      "Myth\\Auth\\": "tests",
+      "MythTests\\Support\\": "tests/_support"
     }
   },
   "scripts": {
-    "test": "phpunit"
+    "test": "phpunit",
+    "post-update-cmd": [
+      "composer dump-autoload"
+    ]
   }
 }

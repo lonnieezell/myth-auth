@@ -1,15 +1,16 @@
 <?php
 
+use CodeIgniter\Test\CIUnitTestCase;
 use Myth\Auth\Authentication\Passwords\DictionaryValidator;
 
-class DictionaryValidatorTest extends \PHPUnit\Framework\TestCase
+class DictionaryValidatorTest extends CIUnitTestCase
 {
     /**
      * @var CompositionValidator
      */
     protected $validator;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -49,28 +50,6 @@ class DictionaryValidatorTest extends \PHPUnit\Framework\TestCase
         $password = 'joesmith@example.com';
 
         $this->assertFalse($this->validator->check($password, $user));
-    }
-
-    public function nameMatches()
-    {
-        return [
-            ['joe smith'],
-            ['joesmith'],
-            ['joe.smith'],
-            ['joe-smith']
-        ];
-    }
-
-    /**
-     * @dataProvider nameMatches
-     */
-    public function testCheckFalseOnNameMatch($passCheck)
-    {
-        $user = new \Myth\Auth\Entities\User([
-            'name' => 'Joe Smith'
-        ]);
-
-        $this->assertFalse($this->validator->check($passCheck, $user));
     }
 
     public function testCheckFalseOnUsernameMatch()

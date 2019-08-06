@@ -18,23 +18,46 @@ class PermissionFilter implements FilterInterface
      * redirects, etc.
      *
      * @param \CodeIgniter\HTTP\RequestInterface $request
+     * @param array|null                         $params
      *
      * @return mixed
      */
     public function before(RequestInterface $request, $params = null)
     {
+		if (empty($params))
+		{
+			return;
+		}
+		
         $authenticate = Services::authentication();
-
-        if (! $authenticate->check() || empty($params))
+		
+		// if no user is logged in then send to the login form
+        if (! $authenticate->check())
         {
-            return;
+			session()->set('redirect_url', current_url());
+            return redirect('login');
         }
 
         $authorize = Services::authorization();
-
-        if (! $authorize->hasPermission($params, $authenticate->id()))
+		$result = true;
+		
+		// Check each requested permission
+		foreach ($params as $permission)
+		{
+			$result = $result && $authorize->hasPermission($permission, $authenticate->id());
+		}
+		
+        if (! $result)
         {
-            throw new \RuntimeException('You do not have permission to view that page.');
+        	if ($authenticate->silent())
+        	{
+				$redirectURL = session('redirect_url') ?? '/';
+				unset($_SESSION['redirect_url']);
+				return redirect()->to($redirectURL)->with('error', lang('Auth.notEnoughPrivilege'));
+        	}
+        	else {
+        		throw new \RuntimeException(lang('Auth.notEnoughPrivilege'));
+        	}
         }
     }
 

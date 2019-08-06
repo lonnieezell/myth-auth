@@ -7,6 +7,7 @@ class GroupModel extends Model
     protected $table = 'auth_groups';
     protected $primaryKey = 'id';
 
+    protected $returnType = 'object';
     protected $allowedFields = [
         'name', 'description'
     ];
@@ -15,7 +16,7 @@ class GroupModel extends Model
 
     protected $validationRules = [
         'name' => 'required|max_length[255]|is_unique[auth_groups.name,name,{name}]',
-        'description' => 'max_length[255',
+        'description' => 'max_length[255]',
     ];
     protected $validationMessages = [];
     protected $skipValidation = false;

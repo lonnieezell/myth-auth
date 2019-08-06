@@ -13,7 +13,6 @@ class Migration_create_auth_tables extends Migration
             'id'               => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'email'            => ['type' => 'varchar', 'constraint' => 255],
             'username'         => ['type' => 'varchar', 'constraint' => 30, 'null' => true],
-            'name'             => ['type' => 'varchar', 'constraint' => 30, 'null' => true],
             'password_hash'    => ['type' => 'varchar', 'constraint' => 255],
             'reset_hash'       => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
             'reset_time'       => ['type' => 'datetime', 'null' => true],
@@ -22,14 +21,15 @@ class Migration_create_auth_tables extends Migration
             'status_message'   => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
             'active'           => ['type' => 'tinyint', 'constraint' => 1, 'null' => 0, 'default' => 0],
             'force_pass_reset' => ['type' => 'tinyint', 'constraint' => 1, 'null' => 0, 'default' => 0],
-            'deleted'          => ['type' => 'tinyint', 'constraint' => 1, 'null' => 0, 'default' => 0],
             'permissions'      => ['type' => 'text', 'null' => true],
             'created_at'       => ['type' => 'datetime', 'null' => true],
             'updated_at'       => ['type' => 'datetime', 'null' => true],
+            'deleted_at'       => ['type' => 'datetime', 'null' => true],
         ]);
 
         $this->forge->addKey('id', true);
-        $this->forge->addKey('email');
+        $this->forge->addUniqueKey('email');
+        $this->forge->addUniqueKey('username');
 
         $this->forge->createTable('users', true);
 
@@ -153,13 +153,26 @@ class Migration_create_auth_tables extends Migration
 
     public function down()
     {
-        $this->forge->dropTable('users', true);
-        $this->forge->dropTable('auth_login_attempts', true);
-        $this->forge->dropTable('auth_tokens', true);
-        $this->forge->dropTable('auth_groups', true);
-        $this->forge->dropTable('auth_permissions', true);
-        $this->forge->dropTable('auth_groups_permissions', true);
-        $this->forge->dropTable('auth_groups_users', true);
-        $this->forge->dropTable('auth_users_permissions', true);
+		// drop constraints first to prevent errors
+        if ($this->db->DBDriver != 'SQLite3')
+        {
+            $this->forge->dropForeignKey('auth_tokens', 'auth_tokens_user_id_foreign');
+            $this->forge->dropForeignKey('auth_groups_permissions', 'auth_groups_permissions_group_id_foreign');
+            $this->forge->dropForeignKey('auth_groups_permissions', 'auth_groups_permissions_permission_id_foreign');
+            $this->forge->dropForeignKey('auth_groups_users', 'auth_groups_users_group_id_foreign');
+            $this->forge->dropForeignKey('auth_groups_users', 'auth_groups_users_user_id_foreign');
+            $this->forge->dropForeignKey('auth_users_permissions', 'auth_users_permissions_user_id_foreign');
+            $this->forge->dropForeignKey('auth_users_permissions', 'auth_users_permissions_permission_id_foreign');
+        }
+
+		$this->forge->dropTable('users', true);
+		$this->forge->dropTable('auth_login_attempts', true);
+		$this->forge->dropTable('auth_tokens', true);
+		$this->forge->dropTable('auth_reset_attempts', true);
+		$this->forge->dropTable('auth_groups', true);
+		$this->forge->dropTable('auth_permissions', true);
+		$this->forge->dropTable('auth_groups_permissions', true);
+		$this->forge->dropTable('auth_groups_users', true);
+		$this->forge->dropTable('auth_users_permissions', true);
     }
 }

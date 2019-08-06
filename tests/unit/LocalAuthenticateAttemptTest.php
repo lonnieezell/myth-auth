@@ -5,9 +5,10 @@ use Myth\Auth\Config\Auth;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Config\Services;
 use Myth\Auth\Models\UserModel;
+use CodeIgniter\Test\CIUnitTestCase;
 use Myth\Auth\Authentication\LocalAuthenticator;
 
-class LocalAuthenticateAttemptTest extends \PHPUnit\Framework\TestCase
+class LocalAuthenticateAttemptTest extends CIUnitTestCase
 {
     /**
      * @var UserModel
@@ -22,7 +23,7 @@ class LocalAuthenticateAttemptTest extends \PHPUnit\Framework\TestCase
      */
     protected $request;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -34,7 +35,7 @@ class LocalAuthenticateAttemptTest extends \PHPUnit\Framework\TestCase
         Services::injectMock('CodeIgniter\HTTP\IncomingRequest', $this->request);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
         parent::tearDown();
@@ -48,7 +49,7 @@ class LocalAuthenticateAttemptTest extends \PHPUnit\Framework\TestCase
         ];
 
         $this->auth->shouldReceive('validate')->once()->with(\Mockery::subset($credentials), true)->andReturn(false);
-        $this->auth->shouldReceive('recordLoginAttempt')->once()->with($credentials, '0.0.0.0', null);
+        $this->auth->shouldReceive('recordLoginAttempt')->once()->with($credentials['email'], '0.0.0.0', null, false);
 
         $result = $this->auth->attempt($credentials, false);
 

@@ -4,9 +4,10 @@ use Mockery as m;
 use Myth\Auth\Config\Services;
 use Myth\Auth\Models\UserModel;
 use Myth\Auth\Models\LoginModel;
+use CodeIgniter\Test\CIUnitTestCase;
 use Myth\Auth\Authentication\LocalAuthenticator;
 
-class LocalAuthenticateValidateTest extends \PHPUnit\Framework\TestCase
+class LocalAuthenticateValidateTest extends CIUnitTestCase
 {
     /**
      * @var UserModel
@@ -25,7 +26,7 @@ class LocalAuthenticateValidateTest extends \PHPUnit\Framework\TestCase
      */
     protected $request;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->userModel = m::mock(UserModel::class);
@@ -36,7 +37,7 @@ class LocalAuthenticateValidateTest extends \PHPUnit\Framework\TestCase
         Services::injectMock('CodeIgniter\HTTP\IncomingRequest', $this->request);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
         parent::tearDown();
@@ -47,12 +48,11 @@ class LocalAuthenticateValidateTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($this->auth->validate([]));
     }
 
-    /**
-     * @expectedException \Myth\Auth\Exceptions\AuthException
-     * @expectedExceptionMessage Auth.tooManyCredentials
-     */
     public function testThrowsWithTooManyCredentials()
     {
+        $this->expectException('\Myth\Auth\Exceptions\AuthException');
+        $this->expectExceptionMessage('You may only validate against 1 credential other than a password.');
+
         $this->auth->validate([
             'password' => 'secret',
             'email' => 'joe@example.com',
@@ -60,12 +60,11 @@ class LocalAuthenticateValidateTest extends \PHPUnit\Framework\TestCase
         ]);
     }
 
-    /**
-     * @expectedException \Myth\Auth\Exceptions\AuthException
-     * @expectedExceptionMessage Auth.invalidField
-     */
     public function testThrowsWithInvalidFields()
     {
+        $this->expectException('\Myth\Auth\Exceptions\AuthException');
+        $this->expectExceptionMessage('The "foo" field cannot be used to validate credentials.');
+
         $this->auth->validate([
             'password' => 'secret',
             'foo' => 'bar'

@@ -1,56 +1,34 @@
 <?php namespace Myth\Auth\Entities;
 
 use CodeIgniter\Entity;
-use Myth\Auth\Config\Auth;
 
 class User extends Entity
 {
-	// Database Columns
-	protected $id;
-	protected $email;
-	protected $username;
-	protected $name;
-	protected $password_hash;
-	protected $reset_hash;
-	protected $reset_time;
-	protected $activate_hash;
-	protected $status;
-	protected $status_message;
-	protected $active           = false;
-	protected $force_pass_reset = false;
-	protected $permissions;
-	protected $deleted          = false;
-	protected $created_at;
-	protected $updated_at;
+    /**
+     * Maps names used in sets and gets against unique
+     * names within the class, allowing independence from
+     * database column names.
+     *
+     * Example:
+     *  $datamap = [
+     *      'db_name' => 'class_name'
+     *  ];
+     */
+    protected $datamap = [];
 
-	protected $_options = [
-		/*
-		 * Maps names used in sets and gets against unique
-		 * names within the class, allowing independence from
-		 * database column names.
-		 *
-		 * Example:
-		 *  $datamap = [
-		 *      'db_name' => 'class_name'
-		 *  ];
-		 */
-		'datamap' => [],
+    /**
+     * Define properties that are automatically converted to Time instances.
+     */
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
-		/*
-		 * Define properties that are automatically converted to Time instances.
-		 */
-		'dates'   => ['created_at', 'updated_at'],
-
-		/*
-		 * Array of field names and the type of value to cast them as
-		 * when they are accessed.
-		 */
-		'casts'   => [
-			'active'           => 'boolean',
-			'force_pass_reset' => 'boolean',
-			'deleted'          => 'boolean',
-		],
-	];
+    /**
+     * Array of field names and the type of value to cast them as
+     * when they are accessed.
+     */
+    protected $casts = [
+        'active'           => 'boolean',
+        'force_pass_reset' => 'boolean',
+    ];
 
 	/**
 	 * Automatically hashes the password when set.
@@ -61,9 +39,9 @@ class User extends Entity
 	 */
 	public function setPassword(string $password)
 	{
-        $config = config(Auth::class);
+        $config = config('Auth');
 
-		$this->password_hash = password_hash(
+		$this->attributes['password_hash'] = password_hash(
 			base64_encode(
 				hash('sha384', $password, true)
 			),
@@ -81,8 +59,8 @@ class User extends Entity
      */
 	public function generateResetHash()
 	{
-		$this->reset_hash = bin2hex(random_bytes(16));
-		$this->reset_start_time = date('Y-m-d H:i:s');
+		$this->attributes['reset_hash'] = bin2hex(random_bytes(16));
+		$this->attributes['reset_start_time'] = date('Y-m-d H:i:s');
 
 		return $this;
 	}
@@ -95,7 +73,7 @@ class User extends Entity
      */
 	public function generateActivateHash()
 	{
-		$this->activate_hash = bin2hex(random_bytes(16));
+		$this->attributes['activate_hash'] = bin2hex(random_bytes(16));
 
 		return $this;
 	}
@@ -109,8 +87,8 @@ class User extends Entity
 	 */
 	public function ban(string $reason)
 	{
-		$this->status = 'banned';
-		$this->status_message = $reason;
+		$this->attributes['status'] = 'banned';
+		$this->attributes['status_message'] = $reason;
 
 		return $this;
 	}
@@ -122,7 +100,7 @@ class User extends Entity
 	 */
 	public function unBan()
 	{
-		$this->status = $this->status_message = '';
+		$this->attributes['status'] = $this->status_message = '';
 
 		return $this;
 	}
@@ -134,7 +112,7 @@ class User extends Entity
 	 */
 	public function isBanned(): bool
 	{
-		return $this->status === 'banned';
+		return $this->attributes['status'] === 'banned';
 	}
 
     /**
@@ -158,9 +136,12 @@ class User extends Entity
      *
      * @return $this
      */
-    public function setPermissions(array $permissions)
+    public function setPermissions(array $permissions = null)
     {
-        $this->permissions = json_encode($permissions);
+        if (is_array($permissions))
+        {
+            $this->permissions = json_encode($permissions);
+        }
 
         return $this;
 	}

@@ -1,15 +1,16 @@
 <?php
 
+use CodeIgniter\Test\CIUnitTestCase;
 use Myth\Auth\Authentication\Passwords\CompositionValidator;
 
-class CompositionValidatorTest extends \PHPUnit\Framework\TestCase
+class CompositionValidatorTest extends CIUnitTestCase
 {
     /**
      * @var CompositionValidator
      */
     protected $validator;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

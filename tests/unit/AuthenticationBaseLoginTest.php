@@ -2,9 +2,10 @@
 
 use Mockery as m;
 use Myth\Auth\Models\LoginModel;
+use CodeIgniter\Test\CIUnitTestCase;
 use Myth\Auth\Authentication\AuthenticationBase;
 
-class AuthenticationBaseLoginTest extends \PHPUnit\Framework\TestCase
+class AuthenticationBaseLoginTest extends CIUnitTestCase
 {
     /**
      * @var AuthenticationBase
@@ -15,7 +16,7 @@ class AuthenticationBaseLoginTest extends \PHPUnit\Framework\TestCase
      */
     protected $loginModel;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

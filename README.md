@@ -29,11 +29,11 @@ Your best bet is to simply clone the repo for now:
 Once installed you need to let your CodeIgniter 4 application know where to find the libraries. In your application,
 perform the following setup: 
 
-1. Edit **application/Config/Autoload.php** and add the **Myth\Auth** namespace to the **$psr4** array.
-2. Edit **application/Config/Routes.php** and set **discoverLocal** to **true**.
-3. Edit **application/Config/Email.php** and verify that a **fromName** and **fromEmail** are set 
+1. Edit **app/Config/Autoload.php** and add the **Myth\Auth** namespace to the **$psr4** array.
+2. Edit **app/Config/Routes.php** and set **discoverLocal** to **true**.
+3. Edit **app/Config/Email.php** and verify that a **fromName** and **fromEmail** are set 
     as that is used when sending emails for password reset, etc. 
-4. Edit **application/Config/Validation.php** and add the following value to the **ruleSets** array: 
+4. Edit **app/Config/Validation.php** and add the following value to the **ruleSets** array: 
     `\Myth\Auth\Authentication\Passwords\ValidationRules::class`
 4. Ensure your database is setup correctly, then run the Auth migrations: 
 
@@ -51,7 +51,7 @@ by setting the `$allowRemembering` variable to be `true`.
 
 Routes are defined in Auth's **Config/Routes.php** file. This file is automatically located by CodeIgniter
 when it is processing the routes. If you would like to customize the routes, you should copy the file
-to the **application/Config** directory and make your changes there.
+to the **app/Config** directory and make your changes there.
 
 ### Views
 
@@ -69,7 +69,7 @@ within the `$views` variable:
     ];
 
 NOTE: If you're not familiar with how views can be namespaced in CodeIgniter, please refer to 
-[the user guide](https://bcit-ci.github.io/CodeIgniter4/general/modules.html) for CI4's 
+[the user guide](https://codeigniter4.github.io/CodeIgniter4/general/modules.html) for CI4's 
 Code Module support. 
 
 ## Services
@@ -81,11 +81,11 @@ The following Services are provided by the package:
 Provides access to any of the authenticacation packages that Myth:Auth knows about. By default
 it will return the "Local Authentication" library, which is the basic password-based system.
 
-    $authenticate = Myth\Auth\Services::authentication();
+    $authenticate = Myth\Auth\Config\Services::authentication();
     
 You can specify the library to use as the first argument:
 
-    $authenticate = Myth\Auth\Services::authentication('jwt');
+    $authenticate = Myth\Auth\Config\Services::authentication('jwt');
     
 **authorization**
 
@@ -93,7 +93,7 @@ Provides access to any of the authorization libraries that Myth:Auth knows about
 it will return the "Flat" authorization library, which is a Flat RBAC (role-based access control)
 as defined by NIST. It provides user-specific permissions as well as group (role) based permissions.
 
-    $authorize = $auth = Myth\Auth\Services::authorization();
+    $authorize = $auth = Myth\Auth\Config\Services::authorization();
 
 **passwords**
 
@@ -102,11 +102,11 @@ supports many of [NIST's latest Digital Identity guidelines](https://pages.nist.
 validator comes with a dictionary of over 620,000 common/leaked passwords that can be checked against.
 A handful of variations on the user's email/username are automatically checked against. 
 
-    $authenticate = Myth\Auth\Services::passwords();
+    $authenticate = Myth\Auth\Config\Services::passwords();
    
 Most of the time you should not need to access this library directly, though, as a new Validation rule
 is provided that can be used with the Validation library, `strong_password`. In order to enable this, 
-you must first edit **application/Config/Validation.php** and add the new ruleset to the available rule sets:
+you must first edit **app/Config/Validation.php** and add the new ruleset to the available rule sets:
 
      public $ruleSets = [
         \CodeIgniter\Validation\Rules::class,
@@ -123,9 +123,49 @@ Now you can use `strong_password` in any set of rules for validation:
         'password' => 'required|strong_password'
     ]);
 
+## Helper Functions
+
+Myth:Auth comes with its own [Helper](https://codeigniter4.github.io/CodeIgniter4/general/helpers.html) 
+that includes the following helper functions to ease access to basic features. Be sure to
+load the helper before using these functions: `helper('auth');`
+
+**Hint**: Add `'auth'` to any controller's `$helper` property to have it loaded automatically,
+or the same in **app/Controllers/BaseController.php** to have it globally available.
+
+**logged_in()**
+
+* Function: Checks to see if any user is logged in.
+* Parameters: None
+* Returns: `true` or `false`
+
+**user()**
+
+* Function: Returns the User instance for the current logged in user.
+* Parameters: None
+* Returns: The current User entity, or `null`
+
+**user_id()**
+
+* Function: Returns the User ID for the current logged in user.
+* Parameters: None
+* Returns: The current User's integer ID, or `null`
+
+**in_groups()**
+
+* Function: Ensures that the current user is in at least one of the passed in groups.
+* Parameters: Group IDs or names, as either a single item or an array of items.
+* Returns: `true` or `false`
+
+**has_permission()**
+
+* Function: Ensures that the current user has at least one of the passed in permissions.
+* Parameters: Permission ID or name.
+* Returns: `true` or `false`
+
+
 ## Users
 
-Myth:Auth uses [CodeIgniter Entities](https://bcit-ci.github.io/CodeIgniter4/database/entities.html) 
+Myth:Auth uses [CodeIgniter Entities](https://codeigniter4.github.io/CodeIgniter4/models/entities.html) 
 for it's User object, and your application must also use that class. This class
 provides automatic password hashing as well as utility methods for banning/un-banning, password
 reset hash generation, and more. 
@@ -134,17 +174,55 @@ It also provides a UserModel that should be used as it provides methods needed d
 password-reset flow, as well as basic validation rules. You are free to extend this class
 or modify it as needed.
 
-## Restricting by Route
+### Toolbar
 
-If you specify each of your routes within the `application/Config/Routes.php` file, you can restrict access
-to users by group/role or permission with []Controller Filters](https://bcit-ci.github.io/CodeIgniter4/general/filters.html).
-
-First, edit `application/Config/Filters.php` and add the following `role` and `permission` entries to the 
-`aliases` property::
+Myth:Auth includes a toolbar collector to make it easy for developers to work with and troubleshoot
+the authentication process. To enable the collector, edit **app/Config/Toolbar.php** and add it to
+the list of active collectors:
 
 ```
-    'role' => \Myth\Auth\Filters\RoleFilter::class,
+	public $collectors = [
+		\CodeIgniter\Debug\Toolbar\Collectors\Timers::class,
+		\CodeIgniter\Debug\Toolbar\Collectors\Database::class,
+        ...
+		\Myth\Auth\Collectors\Auth::class,
+	];
+```
+
+## Restricting by Route
+
+If you specify each of your routes within the `app/Config/Routes.php` file, you can restrict access
+to users by group/role or permission with [Controller Filters](https://codeigniter4.github.io/CodeIgniter4/incoming/filters.html).
+
+First, edit `application/Config/Filters.php` and add the following entries to the `aliases` property:
+
+```
+    'login'      => \Myth\Auth\Filters\LoginFilter::class,
+    'role'       => \Myth\Auth\Filters\RoleFilter::class,
     'permission' => \Myth\Auth\Filters\PermissionFilter::class,
+```
+
+**Global restrictions**
+
+The role and permission filters require additional parameters, but `LoginFilter` can be used to
+retrict portions of a site (or the entire site) to any authenticated user. If no logged in user is detected
+then the filter will redirect users to the login form.
+
+Restrict routes based on their URI pattern by editing **app/Config/Filters.php** and adding them to the
+`$filters` array, e.g.:
+```
+public filters = [
+    'login' => ['before' => ['account/*']],
+];
+```
+
+Or restrict your entire site by adding the `LoginFilter` to the `$globals` array:
+```
+    public $globals = [
+        'before' => [
+            'honeypot',
+            'login',
+    ...
 ```
 
 **Restricting a single route**
@@ -169,3 +247,10 @@ $routes->group('admin', ['filter' => 'role:admin,superadmin'], function($routes)
     ...
 });
 ```
+
+## Customization
+
+This library is intentionally slim on user identifying information, having only the fields necessary for
+authentication and authorization. You will likely want to add fields like a user's name or phone number.
+You can create your own migration to add these fields (see: [an example migration](bin/20190603101528_alter_table_users.php).
+If you used `auth:publish` you can also add these fields to your `UserModel`'s `$allowedFields` property.

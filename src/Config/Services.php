@@ -4,8 +4,8 @@ use CodeIgniter\Model;
 use Myth\Auth\Authorization\FlatAuthorization;
 use Myth\Auth\Models\UserModel;
 use Myth\Auth\Models\LoginModel;
-use Myth\Authorization\GroupModel;
-use Myth\Authorization\PermissionModel;
+use Myth\Auth\Authorization\GroupModel;
+use Myth\Auth\Authorization\PermissionModel;
 use Myth\Auth\Authentication\Passwords\PasswordValidator;
 use CodeIgniter\Config\BaseService;
 
@@ -17,8 +17,9 @@ class Services extends BaseService
         {
             return self::getSharedInstance('authentication', $lib, $userModel, $loginModel);
         }
-
-        $config = config(Auth::class);
+		
+		// config() checks first in app/Config
+		$config = config('Auth');
 
         $class = $config->authenticationLibs[$lib];
 
@@ -43,7 +44,7 @@ class Services extends BaseService
     {
         if ($getShared)
         {
-            return self::getSharedInstance('authorization', $groupModel, $permissionModel);
+            return self::getSharedInstance('authorization', $groupModel, $permissionModel, $userModel);
         }
 
         if (is_null($groupModel))

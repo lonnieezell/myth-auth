@@ -84,7 +84,7 @@ class FlatAuthorization implements AuthorizeInterface
         {
             if (is_numeric($group))
             {
-                $ids = array_column($userGroups, 'id');
+                $ids = array_column($userGroups, 'group_id');
                 if (in_array($group, $ids))
                 {
                     return true;
@@ -453,7 +453,7 @@ class FlatAuthorization implements AuthorizeInterface
             return $this->groupModel->find((int)$group);
         }
 
-        return $this->groupModel->findWhere('name', $group);
+        return $this->groupModel->where('name', $group)->first();
     }
 
     /**
@@ -558,7 +558,7 @@ class FlatAuthorization implements AuthorizeInterface
             return (int)$group;
         }
 
-        $g = $this->groupModel->findWhere('name', $group);
+        $g = $this->groupModel->where('name', $group)->first();
 
         if (! $g)
         {
@@ -588,7 +588,7 @@ class FlatAuthorization implements AuthorizeInterface
             return $this->permissionModel->find((int)$permission);
         }
 
-        return $this->permissionModel->findWhere('LOWER(name)', strtolower($permission));
+        return $this->permissionModel->where('LOWER(name)', strtolower($permission))->first();
     }
 
     /**

@@ -18,24 +18,46 @@ class RoleFilter implements FilterInterface
      * redirects, etc.
      *
      * @param \CodeIgniter\HTTP\RequestInterface $request
+     * @param array|null                         $params
      *
      * @return mixed
      */
     public function before(RequestInterface $request, $params = null)
     {
+		if (empty($params))
+		{
+			return;
+		}
+		
         $authenticate = Services::authentication();
-
-        if (! $authenticate->check() || empty($params))
+		
+		// if no user is logged in then send to the login form
+        if (! $authenticate->check())
         {
-            return;
+			session()->set('redirect_url', current_url());
+            return redirect('login');
         }
 
-        $user = $authenticate->user();
         $authorize = Services::authorization();
-
-        if (! $authorize->inGroup($params, $user->id))
+		$result = true;
+		
+		// Check each requested permission
+		foreach ($params as $group)
+		{
+			$result = $result && $authorize->inGroup($group, $authenticate->id());
+		}
+		
+        if (! $result)
         {
-            throw new \RuntimeException('You do not have permission to view that page.');
+        	if ($authenticate->silent())
+        	{
+				$redirectURL = session('redirect_url') ?? '/';
+				unset($_SESSION['redirect_url']);
+				return redirect()->to($redirectURL)->with('error', lang('Auth.notEnoughPrivilege'));
+        	}
+        	else {
+        		throw new \RuntimeException(lang('Auth.notEnoughPrivilege'));
+        	}
         }
     }
 

@@ -1,7 +1,6 @@
 <?php namespace Myth\Auth\Models;
 
 use CodeIgniter\Model;
-use Myth\Auth\Config\Auth;
 use Myth\Auth\Entities\User;
 
 class LoginModel extends Model
@@ -9,7 +8,7 @@ class LoginModel extends Model
     protected $table = 'auth_logins';
     protected $primaryKey = 'id';
 
-    protected $returnType = User::class;
+    protected $returnType = 'object';
     protected $useSoftDeletes = true;
 
     protected $allowedFields = [
@@ -99,7 +98,7 @@ class LoginModel extends Model
      */
     public function purgeOldRememberTokens()
     {
-        $config = config(Auth::class);
+        $config = config('Auth');
 
         if (! $config->allowRemembering)
         {
