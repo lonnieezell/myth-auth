@@ -48,6 +48,9 @@ class User extends Entity
 			PASSWORD_DEFAULT,
 			['cost' => $config->hashCost]
 		);
+
+        // Reset force_password_reset
+        $this->attributes['force_pass_reset'] = 0;
 	}
 
     /**
