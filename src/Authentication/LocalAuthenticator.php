@@ -151,7 +151,7 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
         // This would be due to the hash algorithm or hash
         // cost changing since the last time that a user
         // logged in.
-        if (password_needs_rehash($user->password_hash, PASSWORD_DEFAULT))
+        if (password_needs_rehash($user->password_hash, $this->config->hashAlgorithm))
         {
             $user->password = $password;
             $this->userModel->save($user);
