@@ -34,10 +34,15 @@ return [
     'errorPasswordPersonal'   => 'Passwords cannot contain re-hashed personal information.',
     'suggestPasswordPersonal' => 'Variations on your email address or username should not be used for passwords.',
     'errorPasswordEmpty'      => 'Passwords are required.',
+    'passwordChangeSuccess'   => 'Password changed successfully',
+    'userDoesNotExist'        => 'Password was not changed. User does not exist',
 
     // Groups
     'groupNotFound'           => 'Unable to locate group: {0}.',
 
     // Permissions
     'permissionNotFound'      => 'Unable to locate permission: {0}',
+
+    // Banned
+    'userIsBanned'            => 'User has been banned. Contact the administrator',
 ];
