@@ -5,7 +5,7 @@
         <div class="col-sm-6 offset-sm-3">
 
             <div class="card">
-                <h2 class="card-header">Register</h2>
+                <h2 class="card-header"><?=lang('Auth.register')?></h2>
                 <div class="card-body">
 
                     <?= view('Myth\Auth\Views\_message_block') ?>
@@ -14,36 +14,36 @@
                         <?= csrf_field() ?>
 
                         <div class="form-group">
-                            <label for="email">Email address</label>
+                            <label for="email"><?=lang('Auth.email')?></label>
                             <input type="email" class="form-control <?php if(session('errors.email')) : ?>is-invalid<?php endif ?>"
-                                   name="email" aria-describedby="emailHelp" placeholder="Enter email" value="<?= old('email') ?>">
-                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                                   name="email" aria-describedby="emailHelp" placeholder="e-Mail" value="<?= old('email') ?>">
+                            <small id="emailHelp" class="form-text text-muted"><?=lang('Auth.weNeverShare')?></small>
                         </div>
 
                         <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" class="form-control <?php if(session('errors.username')) : ?>is-invalid<?php endif ?>" name="username" placeholder="Johnny Appleseed" value="<?= old('username') ?>">
+                            <label for="username"><?=lang('Auth.username')?></label>
+                            <input type="text" class="form-control <?php if(session('errors.username')) : ?>is-invalid<?php endif ?>" name="username" placeholder="Nombre de usuario" value="<?= old('username') ?>">
                         </div>
 
                         <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" name="password" class="form-control <?php if(session('errors.password')) : ?>is-invalid<?php endif ?>" placeholder="Password" autocomplete="off">
+                            <label for="password"><?=lang('Auth.password')?></label>
+                            <input type="password" name="password" class="form-control <?php if(session('errors.password')) : ?>is-invalid<?php endif ?>" placeholder="Contraseña" autocomplete="off">
                         </div>
 
                         <div class="form-group">
-                            <label for="pass_confirm">Password (again)</label>
-                            <input type="password" name="pass_confirm" class="form-control <?php if(session('errors.pass_confirm')) : ?>is-invalid<?php endif ?>" placeholder="Password (again)" autocomplete="off">
+                            <label for="pass_confirm"><?=lang('Auth.repeatPassword')?></label>
+                            <input type="password" name="pass_confirm" class="form-control <?php if(session('errors.pass_confirm')) : ?>is-invalid<?php endif ?>" placeholder="Repetir Contraseña" autocomplete="off">
                         </div>
 
                         <br>
 
-                        <button type="submit" class="btn btn-primary btn-block">Register</button>
+                        <button type="submit" class="btn btn-primary btn-block"><?=lang('Auth.register')?></button>
                     </form>
 
 
                     <hr>
 
-                    <p>Already registered? <a href="<?= route_to('login') ?>">Sign in</a></p>
+                    <p><?=lang('Auth.alreadyRegistered')?> <a href="<?= route_to('login') ?>"><?=lang('Auth.signIn')?></a></p>
                 </div>
             </div>
 
