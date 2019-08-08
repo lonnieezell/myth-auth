@@ -41,14 +41,29 @@ class User extends Entity
 	{
         $config = config('Auth');
 
-		$this->attributes['password_hash'] = password_hash(
-			base64_encode(
-				hash('sha384', $password, true)
-			),
-			PASSWORD_DEFAULT,
-			['cost' => $config->hashCost]
-		);
+        if($config->hashAlgorithm == PASSWORD_ARGON2I)
+        {
+            $hashOptions = [
+                'memory_cost' => $config->hashMemoryCost,
+                'time_cost'   => $config->hashTimeCost,
+                'threads'     => $config->hashThreads
+                ];
+        }
+        else
+        {
+            $hashOptions = [
+                'cost' => $config->hashCost
+                ];
+        }
 
+        $this->attributes['password_hash'] = password_hash(
+            base64_encode(
+                hash('sha384', $password, true)
+            ),
+            $config->hashAlgorithm,
+            $hashOptions
+        );
+        
         // Reset force_password_reset
         $this->attributes['force_pass_reset'] = 0;
 	}
