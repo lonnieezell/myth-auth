@@ -69,6 +69,23 @@ class Auth extends BaseConfig
     //
     public $silent = false;
 
+    // Valid values are PASSWORD_DEFAULT, PASSWORD_BCRYPT and PASSWORD_ARGON2I.
+    public $hashAlgorithm = PASSWORD_ARGON2I;
+
+    //--------------------------------------------------------------------
+    // ARGON2i Algorithm options
+    //--------------------------------------------------------------------
+    // The ARGON2I method of encryption allows you to define the "memory_cost",
+    // the "time_cost" and the number of "threads", whenever a password hash is created.
+    // This defaults to a value of 10 which is an acceptable number.
+    // However, depending on the security needs of your application
+    // and the power of your hardware, you might want to increase the
+    // cost. This makes the hashing process takes longer.
+    //
+    public $hashMemoryCost = PASSWORD_ARGON2_DEFAULT_MEMORY_COST;  // 1024
+    public $hashTimeCost = PASSWORD_ARGON2_DEFAULT_TIME_COST;      // 2
+    public $hashThreads = PASSWORD_ARGON2_DEFAULT_THREADS;         // 2
+
     //--------------------------------------------------------------------
     // Password Hashing Cost
     //--------------------------------------------------------------------
