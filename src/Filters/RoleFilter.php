@@ -39,30 +39,25 @@ class RoleFilter implements FilterInterface
         }
 
         $authorize = Services::authorization();
-		$result = false;
 		
 		// Check each requested permission
 		foreach ($params as $group)
 		{
-            if(! $result)
+            if($authorize->inGroup($group, $authenticate->id()))
             {
-                $result = $authorize->inGroup($group, $authenticate->id());
+                return;
             }
-            else return;
 		}
 		
-        if (! $result)
-        {
-        	if ($authenticate->silent())
-        	{
-				$redirectURL = session('redirect_url') ?? '/';
-				unset($_SESSION['redirect_url']);
-				return redirect()->to($redirectURL)->with('error', lang('Auth.notEnoughPrivilege'));
-        	}
-        	else {
-        		throw new \RuntimeException(lang('Auth.notEnoughPrivilege'));
-        	}
-        }
+    	if ($authenticate->silent())
+    	{
+			$redirectURL = session('redirect_url') ?? '/';
+			unset($_SESSION['redirect_url']);
+			return redirect()->to($redirectURL)->with('error', lang('Auth.notEnoughPrivilege'));
+    	}
+    	else {
+    		throw new \RuntimeException(lang('Auth.notEnoughPrivilege'));
+    	}
     }
 
     //--------------------------------------------------------------------
