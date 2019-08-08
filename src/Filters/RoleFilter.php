@@ -48,6 +48,7 @@ class RoleFilter implements FilterInterface
             {
                 $result = $authorize->inGroup($group, $authenticate->id());
             }
+            else return;
 		}
 		
         if (! $result)
