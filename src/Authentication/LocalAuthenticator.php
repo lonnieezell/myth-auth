@@ -28,6 +28,16 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
             return false;
         }
 
+        if ($this->user->isBanned())
+            {
+                // Always record a login attempt, whether success or not.
+                $ipAddress = Services::request()->getIPAddress();
+                $this->recordLoginAttempt($credentials['email'], $ipAddress, $this->user->id ?? null, false);
+    
+                $this->user = null;
+                return false;
+            }
+
         return $this->login($this->user, $remember);
     }
 
