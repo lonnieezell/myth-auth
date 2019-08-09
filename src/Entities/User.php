@@ -41,7 +41,11 @@ class User extends Entity
 	{
         $config = config('Auth');
 
-        if($config->hashAlgorithm == PASSWORD_ARGON2I)
+        if (
+            (defined('PASSWORD_ARGON2I') && $config->hashAlgorithm == PASSWORD_ARGON2I)
+                ||
+            (defined('PASSWORD_ARGON2ID') && $config->hashAlgorithm == PASSWORD_ARGON2ID)
+            )
         {
             $hashOptions = [
                 'memory_cost' => $config->hashMemoryCost,
