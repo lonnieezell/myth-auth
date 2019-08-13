@@ -18,7 +18,7 @@
                         <div class="form-group">
                             <label for="token"><?=lang('Auth.token')?></label>
                             <input type="text" class="form-control <?php if(session('errors.token')) : ?>is-invalid<?php endif ?>"
-                                   name="token" placeholder="Código" value="<?= old('token', $token ?? '') ?>">
+                                   name="token" placeholder="<?=lang('Auth.token')?>" value="<?= old('token', $token ?? '') ?>">
                             <div class="invalid-feedback">
                                 <?= session('errors.token') ?>
                             </div>
@@ -27,7 +27,7 @@
                         <div class="form-group">
                             <label for="email"><?=lang('Auth.email')?></label>
                             <input type="email" class="form-control <?php if(session('errors.email')) : ?>is-invalid<?php endif ?>"
-                                   name="email" aria-describedby="emailHelp" placeholder="e-Mail" value="<?= old('email') ?>">
+                                   name="email" aria-describedby="emailHelp" placeholder="<?=lang('Auth.email')?>" value="<?= old('email') ?>">
                             <div class="invalid-feedback">
                                 <?= session('errors.email') ?>
                             </div>
