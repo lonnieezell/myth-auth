@@ -258,7 +258,13 @@ class AuthController extends Controller
 			return redirect()->back()->withInput()->with('errors', $users->errors());
 		}
 
-		$user = $users->where('email', $this->request->getPost('email'))->first();
+		$user = $users->where('email', $this->request->getPost('email'))
+					  ->where('reset_hash', $this->request->getPost('token'))
+					  ->first();
+
+		// TODO: Get "reset_time" (ie: 60 mins) and check with "reset_start_time"
+		// to see how much time has passed since hash has been generated.
+		// Then, if time that's passed is less than "reset_time", everything's OK
 
 		if (is_null($user))
 		{
@@ -266,8 +272,9 @@ class AuthController extends Controller
 		}
 
 		// Success! Save the new password, and cleanup the reset hash.
-		$user->password = $this->request->getPost('password');
-		$user->reset_hash = null;
+		$user->password 		= $this->request->getPost('password');
+		$user->reset_hash 		= null;
+		$user->reset_time 		= null;
 		$user->reset_start_time = null;
 		$users->save($user);
 
