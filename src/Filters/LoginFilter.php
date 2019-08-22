@@ -24,7 +24,7 @@ class LoginFilter implements FilterInterface
 	public function before(RequestInterface $request)
 	{
 		// Make sure this isn't already a login route
-		if (current_url() == site_url(route_to('login')))
+		if ((current_url() == site_url(route_to('login'))) || (current_url() == site_url(route_to('forgot'))) || (current_url() == site_url(route_to('reset-password'))))
 		{
 			return;
 		}
