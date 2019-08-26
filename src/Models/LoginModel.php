@@ -9,7 +9,7 @@ class LoginModel extends Model
     protected $primaryKey = 'id';
 
     protected $returnType = 'object';
-    protected $useSoftDeletes = true;
+    protected $useSoftDeletes = false;
 
     protected $allowedFields = [
         'ip_address', 'email', 'user_id', 'date', 'success'
