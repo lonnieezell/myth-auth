@@ -166,7 +166,7 @@ class Migration_create_auth_tables extends Migration
         }
 
 		$this->forge->dropTable('users', true);
-		$this->forge->dropTable('auth_login', true);
+		$this->forge->dropTable('auth_logins', true);
 		$this->forge->dropTable('auth_tokens', true);
 		$this->forge->dropTable('auth_reset_attempts', true);
 		$this->forge->dropTable('auth_groups', true);
