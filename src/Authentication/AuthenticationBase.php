@@ -136,7 +136,7 @@ class AuthenticationBase
             // Store our current user object
             $this->user = $this->userModel->find($userID);
 
-            return true;
+            return $this->user instanceof User;
         }
 
         return false;

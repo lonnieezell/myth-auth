@@ -17,7 +17,7 @@ class Services extends BaseService
         {
             return self::getSharedInstance('authentication', $lib, $userModel, $loginModel);
         }
-		
+
 		// config() checks first in app/Config
 		$config = config('Auth');
 

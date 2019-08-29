@@ -88,6 +88,7 @@ class LocalAuthTest extends \CIDatabaseTestCase
 
     public function testCheckNotRemembered()
     {
+        $_SESSION = [];
         $user = $this->createUser();
 
         $this->assertFalse($this->auth->check());

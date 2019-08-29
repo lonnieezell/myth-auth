@@ -131,7 +131,7 @@ class User extends Entity
 	 */
 	public function isBanned(): bool
 	{
-		return $this->attributes['status'] === 'banned';
+		return isset($this->attributes['status']) && $this->attributes['status'] === 'banned';
 	}
 
     /**

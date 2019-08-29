@@ -2,7 +2,7 @@
 
 use CodeIgniter\Database\Migration;
 
-class Migration_create_auth_tables extends Migration
+class CreateAuthTables extends Migration
 {
     public function up()
     {
