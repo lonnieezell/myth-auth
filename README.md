@@ -6,23 +6,21 @@ Flexible, Powerful, Secure auth package for CodeIgniter 4.
 
 ## Intended Features
 
-This is meant to be a one-stop shop for 99% of your authentication needs with CI4. The plan is 
-to include the following primary features: 
+This is meant to be a one-stop shop for 99% of your web-based authentication needs with CI4. It includes
+the following primary features: 
 
 - [x] Password-based authentication with remember-me functionality for web apps
-- [ ] JWT authentication for APIs that should work with password-based accounts
-- [ ] Social login integration by integrating [HybridAuth](https://hybridauth.github.io/). Works well with other accounts.
 - [x] Flat RBAC per NIST standards. (Will link it when I find it again)
-- [ ] all views/javascript necessary in cross-browser manner
+- [x] all views/javascript necessary in cross-browser manner
 - [x] easy to "publish" files to the main application for easy customization. Done via a CLI command.
-- [ ] Debug Toolbar integration
+- [x] Debug Toolbar integration
 
 ## Installation
 
-Since this version is still under heavy development, installation is not as smooth as it will be. 
-Your best bet is to simply clone the repo for now:
+Installation is intended to be done via Composer. Assuming Composer is installed globally, you may use
+the following command: 
 
-    > git clone https://github.com/lonnieezell/myth-auth.git ./auth 
+    > composer require myth/auth
 
 ### Configuration
 
@@ -205,11 +203,12 @@ First, edit `application/Config/Filters.php` and add the following entries to th
 **Global restrictions**
 
 The role and permission filters require additional parameters, but `LoginFilter` can be used to
-retrict portions of a site (or the entire site) to any authenticated user. If no logged in user is detected
+restrict portions of a site (or the entire site) to any authenticated user. If no logged in user is detected
 then the filter will redirect users to the login form.
 
 Restrict routes based on their URI pattern by editing **app/Config/Filters.php** and adding them to the
 `$filters` array, e.g.:
+
 ```
 public filters = [
     'login' => ['before' => ['account/*']],

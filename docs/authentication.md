@@ -10,7 +10,7 @@ Do not modify the contents of any of this code directly, including views, config
 copy the file to the appropriate spot in your application, and modify the namespace of the file. This allows you to 
 upgrade to newer versions without overwriting your own code. 
 
-A CLI command has been provided to take of this for you. Run the following command from the command prompt, and
+A CLI command has been provided to take care of this for you. Run the following command from the command prompt, and
 it will ask you which sections you would like to "publish" into your application. 
 
     > php spark auth:publish
@@ -40,8 +40,8 @@ You must include a field name `password`, though as it will be verified against 
 	$auth = Services::authenticate();
 	
 	$credentials = [
-		'email' => $this->input->post('email', true),
-		'password' => $this->input->post('password', true)
+		'email' => $this->request->getPost('email', true),
+		'password' => $this->request->getPost('password', true)
 	];
 	
 	$auth->attempt($credentials);

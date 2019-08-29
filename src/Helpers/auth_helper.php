@@ -66,12 +66,12 @@ if (! function_exists('in_groups'))
 	{
 		$authenticate = Services::authentication();
         $authorize    = Services::authorization();
-		
+
         if ($authenticate->check())
         {
             return $authorize->inGroup($groups, $authenticate->id());
         }
-        
+
         return false;
 	}
 }
@@ -90,12 +90,12 @@ if (! function_exists('has_permission'))
 	{
 		$authenticate = Services::authentication();
         $authorize    = Services::authorization();
-		
+
         if ($authenticate->check())
         {
             return $authorize->hasPermission($permission, $authenticate->id()) ?? false;
         }
-        
+
         return false;
 	}
 }
