@@ -1,5 +1,7 @@
 # Myth:Auth
 
+[![Build Status](https://travis-ci.org/codeigniter4/CodeIgniter4.svg?branch=develop)](https://travis-ci.org/codeigniter4/CodeIgniter4)
+
 Flexible, Powerful, Secure auth package for CodeIgniter 4.
 
 **NOTE: This package is under early development and is not ready for prime-time.**
