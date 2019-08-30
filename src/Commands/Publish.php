@@ -194,7 +194,7 @@ class Publish extends BaseCommand
             $this->writeFile("Database/Migrations/{$file}", $content);
         }
 
-        CLI::write('  Remember to run `spark migrate:latest` to migrate the database.', 'blue');
+        CLI::write('  Remember to run `spark migrate -all` to migrate the database.', 'blue');
     }
 
     protected function publishConfig()
