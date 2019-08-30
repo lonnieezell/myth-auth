@@ -37,7 +37,7 @@ perform the following setup:
     `\Myth\Auth\Authentication\Passwords\ValidationRules::class`
 4. Ensure your database is setup correctly, then run the Auth migrations: 
 
-    > php spark migrate:latest -all  
+    > php spark migrate -all  
 
 ## Overview
 
