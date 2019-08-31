@@ -22,7 +22,7 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
         {
             // Always record a login attempt, whether success or not.
             $ipAddress = Services::request()->getIPAddress();
-            $this->recordLoginAttempt($credentials['email'], $ipAddress, $this->user->id ?? null, false);
+            $this->recordLoginAttempt($credentials['email'] ?? $credentials['username'], $ipAddress, $this->user->id ?? null, false);
 
             $this->user = null;
             return false;
@@ -32,7 +32,7 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
         {
             // Always record a login attempt, whether success or not.
             $ipAddress = Services::request()->getIPAddress();
-            $this->recordLoginAttempt($credentials['email'], $ipAddress, $this->user->id ?? null, false);
+            $this->recordLoginAttempt($credentials['email'] ?? $credentials['username'], $ipAddress, $this->user->id ?? null, false);
 
             $this->user = null;
             return false;
