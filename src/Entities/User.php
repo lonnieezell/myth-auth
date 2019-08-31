@@ -79,7 +79,7 @@ class User extends Entity
         */
         $this->attributes['reset_hash'] = null;
         $this->attributes['reset_time'] = null;
-        $this->attributes['reset_start_time'] = null;
+        // $this->attributes['reset_start_time'] = null;
 	}
 
     /**
