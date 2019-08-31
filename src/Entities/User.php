@@ -67,6 +67,19 @@ class User extends Entity
             $config->hashAlgorithm,
             $hashOptions
         );
+
+        /*
+            Set these vars to null in case a reset password was asked.
+            Scenario:
+                user (a *dumb* one with short memory) requests a 
+                reset-token and then does nothing => asks the
+                administrator to reset his password.
+            User would have a new password but still anyone with the
+            reset-token would be able to change the password.
+        */
+        $this->attributes['reset_hash'] = null;
+        $this->attributes['reset_time'] = null;
+        $this->attributes['reset_start_time'] = null;
 	}
 
     /**
