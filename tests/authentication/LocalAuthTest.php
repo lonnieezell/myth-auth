@@ -1,10 +1,11 @@
 <?php
 
+use CIModuleTests\Support\AuthTestCase;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Models\UserModel;
 use Myth\Auth\Authentication\LocalAuthenticator;
 
-class LocalAuthTest extends \CIDatabaseTestCase
+class LocalAuthTest extends AuthTestCase
 {
     /**
      * @var LocalAuthenticator

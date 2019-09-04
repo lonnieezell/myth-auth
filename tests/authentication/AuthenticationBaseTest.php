@@ -1,8 +1,9 @@
 <?php
 
+use CIModuleTests\Support\AuthTestCase;
 use Myth\Auth\Authentication\LocalAuthenticator;
 
-class AuthenticationBaseTest extends CIDatabaseTestCase
+class AuthenticationBaseTest extends AuthTestCase
 {
     /**
      * @var LocalAuthenticator
