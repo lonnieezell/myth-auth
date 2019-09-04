@@ -29,7 +29,6 @@ class LocalAuthTest extends AuthTestCase
     public function testValidateNoPassword()
     {
         $this->hasInDatabase('users', [
-            'id' => 1,
             'email' => 'fred@example.com',
             'password_hash' => 'secret'
         ]);
@@ -40,7 +39,6 @@ class LocalAuthTest extends AuthTestCase
     public function testValidateOneCredential()
     {
         $this->hasInDatabase('users', [
-            'id' => 1,
             'email' => 'fred@example.com',
             'password_hash' => 'secret'
         ]);
@@ -53,7 +51,6 @@ class LocalAuthTest extends AuthTestCase
         $this->expectException(\Myth\Auth\Exceptions\AuthException::class);
 
         $this->hasInDatabase('users', [
-            'id' => 1,
             'email' => 'fred@example.com',
             'password_hash' => 'secret'
         ]);

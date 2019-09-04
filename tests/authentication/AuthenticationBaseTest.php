@@ -73,7 +73,7 @@ class AuthenticationBaseTest extends AuthTestCase
             'success' => 1
         ]);
 
-        $this->assertEquals(1, $_SESSION['logged_in']);
+        $this->assertEquals(4, $_SESSION['logged_in']);
 
         $this->dontSeeInDatabase('auth_tokens', [
             'user_id' => $user->id
@@ -98,7 +98,7 @@ class AuthenticationBaseTest extends AuthTestCase
             'success' => 1
         ]);
 
-        $this->assertEquals(1, $_SESSION['logged_in']);
+        $this->assertEquals(4, $_SESSION['logged_in']);
 
         $this->seeInDatabase('auth_tokens', [
             'user_id' => $user->id
