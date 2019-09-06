@@ -76,10 +76,10 @@ class AuthController extends Controller
 		$login = $this->request->getPost('login');
 		$password = $this->request->getPost('password');
 		$remember = (bool)$this->request->getPost('remember');
-		
+
 		// Determine credential type
 		$type = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-		
+
 		// Try to log them in...
 		if (! $this->auth->attempt([$type => $login, 'password' => $password], $remember))
 		{
@@ -125,7 +125,7 @@ class AuthController extends Controller
 		{
 			return redirect()->back()->withInput()->with('error', lang('Auth.registerDisabled'));
 		}
-		
+
 		echo view($this->config->views['register']);
 	}
 
@@ -139,7 +139,7 @@ class AuthController extends Controller
 		{
 			return redirect()->back()->withInput()->with('error', lang('Auth.registerDisabled'));
 		}
-		
+
 		$users = new UserModel();
 
 		// Validate here first, since some things,
@@ -262,20 +262,22 @@ class AuthController extends Controller
 					  ->where('reset_hash', $this->request->getPost('token'))
 					  ->first();
 
-		// TODO: Get "reset_time" (ie: 60 mins) and check with "reset_start_time"
-		// to see how much time has passed since hash has been generated.
-		// Then, if time that's passed is less than "reset_time", everything's OK
-
 		if (is_null($user))
 		{
 			return redirect()->back()->with('error', lang('Auth.forgotNoUser'));
 		}
 
+        // Reset token still valid?
+        if (! empty($user->reset_expires) && time() > $user->reset_expires)
+        {
+            return redirect()->back()->withInput()->with('error', lang('Auth.resetTokenExpired'));
+        }
+
 		// Success! Save the new password, and cleanup the reset hash.
 		$user->password 		= $this->request->getPost('password');
 		$user->reset_hash 		= null;
-		$user->reset_time 		= null;
-		$user->reset_start_time = null;
+		$user->reset_at 		= date('Y-m-d H:i:s');
+		$user->reset_expires    = null;
 		$users->save($user);
 
 		return redirect()->route('login')->with('message', lang('Auth.resetSuccess'));

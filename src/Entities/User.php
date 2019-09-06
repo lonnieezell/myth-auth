@@ -78,8 +78,8 @@ class User extends Entity
             reset-token would be able to change the password.
         */
         $this->attributes['reset_hash'] = null;
-        $this->attributes['reset_time'] = null;
-        $this->attributes['reset_start_time'] = null;
+        $this->attributes['reset_at'] = null;
+        $this->attributes['reset_expires'] = null;
 	}
 
     /**
@@ -92,7 +92,7 @@ class User extends Entity
 	public function generateResetHash()
 	{
 		$this->attributes['reset_hash'] = bin2hex(random_bytes(16));
-		$this->attributes['reset_start_time'] = date('Y-m-d H:i:s');
+		$this->attributes['reset_expires'] = date('Y-m-d H:i:s', time() + config('Auth')->resetTime);
 
 		return $this;
 	}

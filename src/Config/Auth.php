@@ -133,4 +133,11 @@ class Auth extends BaseConfig
         'Myth\Auth\Authentication\Passwords\DictionaryValidator',
     ];
 
+    //--------------------------------------------------------------------
+    // Reset Time
+    //--------------------------------------------------------------------
+    // The amount of time that a password reset-token is valid for,
+    // in seconds.
+    //
+    public $resetTime = 3600;
 }
