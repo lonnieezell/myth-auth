@@ -182,7 +182,7 @@ Returns `true` or `false` on success or failure.
 
 	$auth->deletePermission(12);
 
-###updatePermission()
+### updatePermission()
 Updates the details of a single permission. The first parameter is the ID. The second parameter is the name. The third (optional) parameter is the description. Returns `true` or `false` on success or failure.
 
 	$auth->updatePermission(12, 'new.perm.name', 'A better description goes here.');
