@@ -6,6 +6,8 @@ Flexible, Powerful, Secure auth package for CodeIgniter 4.
 
 **NOTE: This package is under early development and is not ready for prime-time.**
 
+This repo is maintained by volunteers. If you post an issue and haven't heard from us within 7 days, feel free to ping the issue so that we see it again. 
+
 ## Intended Features
 
 This is meant to be a one-stop shop for 99% of your web-based authentication needs with CI4. It includes

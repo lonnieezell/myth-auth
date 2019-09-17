@@ -270,7 +270,7 @@ class Publish extends BaseCommand
 
         if (! is_dir($directory))
         {
-            mkdir($directory);
+            mkdir($directory, 0777, true);
         }
 
         try
