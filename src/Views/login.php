@@ -41,12 +41,14 @@
 							</div>
 						</div>
 
+<?php if ($config->allowRemembering): ?>
 						<div class="form-check">
 							<label class="form-check-label">
 								<input type="checkbox" name="remember" class="form-check-input" <?php if(old('remember')) : ?> checked <?php endif ?>>
 								<?=lang('Auth.rememberMe')?>
 							</label>
 						</div>
+<?php endif; ?>
 
 						<br>
 
