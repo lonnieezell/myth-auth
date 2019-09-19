@@ -64,21 +64,21 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
         ]);
 
         $response = $client->get('range/' . $rangeHash, ['headers' => ['Accept' => 'text/plain']]);
-
-        foreach (explode("\r\n", $response->getBody()) as $line)
+        
+        $startPos = strpos($response->getBody(), $searchHash);
+        if($startPos === false)
         {
-            list($hash, $hits) = explode(':', $line);
-
-            if ($hash === $searchHash)
-            {
-                $this->error = lang('Auth.errorPasswordPwned', [(int) $hits]);
-                $this->suggestion = lang('Auth.suggestPasswordPwned');
-
-                return false;
-            }
+            return true;
         }
-
-        return true;
+        
+        $endPos = strpos($body, PHP_EOL, $startPos);
+        $line = substr($body, $startPos, $endPos - $startPos); 
+        list($hash, $hits) = explode(':', $line);
+        
+        $this->error = lang('Auth.errorPasswordPwned', [(int) $hits]);
+        $this->suggestion = lang('Auth.suggestPasswordPwned');
+        
+        return false;
     }
 
     /**
