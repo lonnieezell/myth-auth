@@ -210,7 +210,7 @@ class AuthController extends Controller
 
 		if (! $sent)
 		{
-			log_message('error', "Failed to send forgotten password email to: {$email}");
+			log_message('error', "Failed to send forgotten password email to: {$user->email}");
 			return redirect()->back()->withInput()->with('error', lang('Auth.unknownError'));
 		}
 
