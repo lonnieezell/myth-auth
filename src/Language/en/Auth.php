@@ -33,6 +33,8 @@ return [
     'suggestPasswordCommon'     => 'The password was checked against over 65k commonly used passwords or passwords that have been leaked through hacks.',
     'errorPasswordPersonal'     => 'Passwords cannot contain re-hashed personal information.',
     'suggestPasswordPersonal'   => 'Variations on your email address or username should not be used for passwords.',
+    'errorPasswordPwned'        => 'This password has been seen {0, number} times before. It was found in a database of compromised passwords.',
+    'suggestPasswordPwned'      => 'This password has previously appeared in a data breach and should never be used. If you\'ve used it anywhere before, change it immediately.',
     'errorPasswordEmpty'        => 'Passwords are required.',
     'passwordChangeSuccess'     => 'Password changed successfully',
     'userDoesNotExist'          => 'Password was not changed. User does not exist',

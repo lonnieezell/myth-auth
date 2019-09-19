@@ -131,6 +131,7 @@ class Auth extends BaseConfig
     public $passwordValidators = [
         'Myth\Auth\Authentication\Passwords\CompositionValidator',
         'Myth\Auth\Authentication\Passwords\DictionaryValidator',
+        //'Myth\Auth\Authentication\Passwords\PwnedValidator',
     ];
 
     //--------------------------------------------------------------------
