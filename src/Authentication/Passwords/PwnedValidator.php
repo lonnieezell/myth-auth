@@ -65,14 +65,7 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
 
         $response = $client->get('range/' . $rangeHash, ['headers' => ['Accept' => 'text/plain']]);
 
-        $body = $response->getBody();
-
-        if (strpos($body, ':') === false)
-        {
-            return true;
-        }
-
-        foreach (explode("\r\n", $body) as $line)
+        foreach (explode("\r\n", $response->getBody()) as $line)
         {
             list($hash, $hits) = explode(':', $line);
 
