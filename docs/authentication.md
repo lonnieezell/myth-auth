@@ -213,10 +213,15 @@ in succession. You can easily add your own should you need to customize the vali
     public $passwordValidators = [
         'Myth\Auth\Authentication\Passwords\CompositionValidator',
         'Myth\Auth\Authentication\Passwords\DictionaryValidator',
+        //'Myth\Auth\Authentication\Passwords\PwnedValidator',
     ];
 
 The default validators that come with Myth:Auth are:
 
 - CompositionValidator - per the latest NIST recommendations, simply checks password length.
 - DictionaryValidator - compares the password with over 600,000 leaked passwords and common words, as well as
-    variations on the user's personal info, like name and email. 
+    variations on the user's personal info, like name and email.
+- PwnedValidator - compares the password with over half a billion of real-world passwords previously exposed in data breaches. 
+    It uses a request to third-party API. This validator is optional and disabled by default since not everyone may be 
+    comfortable with using it. The decision to use it or not is up to you - more information and technical details can 
+    be found [here](https://www.troyhunt.com/ive-just-launched-pwned-passwords-version-2/#cloudflareprivacyandkanonymity).
