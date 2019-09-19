@@ -269,7 +269,7 @@ class AuthController extends Controller
 		}
 
         // Reset token still valid?
-        if (! empty($user->reset_expires) && time() > $user->reset_expires)
+        if (! empty($user->reset_expires) && time() > $user->reset_expires->getTimestamp())
         {
             return redirect()->back()->withInput()->with('error', lang('Auth.resetTokenExpired'));
         }
