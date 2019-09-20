@@ -64,8 +64,8 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
         ]);
 
         $response = $client->get('range/' . $rangeHash, ['headers' => ['Accept' => 'text/plain']]);
-        
-        $startPos = strpos($response->getBody(), $searchHash);
+        $body = $response->getBody();
+        $startPos = strpos($body, $searchHash);
         if($startPos === false)
         {
             return true;
