@@ -155,8 +155,8 @@ class User extends Entity
      */
     public function getPermissions()
     {
-        return ! empty($this->permissions)
-            ? json_decode($this->permissions, true)
+        return ! empty($this->attributes['permissions'])
+            ? json_decode($this->attributes['permissions'], true)
             : [];
 	}
 
@@ -172,7 +172,7 @@ class User extends Entity
     {
         if (is_array($permissions))
         {
-            $this->permissions = json_encode($permissions);
+            $this->attributes['permissions'] = json_encode($permissions);
         }
 
         return $this;
