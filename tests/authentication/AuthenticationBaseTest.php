@@ -1,8 +1,9 @@
 <?php
 
+use CIModuleTests\Support\AuthTestCase;
 use Myth\Auth\Authentication\LocalAuthenticator;
 
-class AuthenticationBaseTest extends CIDatabaseTestCase
+class AuthenticationBaseTest extends AuthTestCase
 {
     /**
      * @var LocalAuthenticator
@@ -72,7 +73,7 @@ class AuthenticationBaseTest extends CIDatabaseTestCase
             'success' => 1
         ]);
 
-        $this->assertEquals(1, $_SESSION['logged_in']);
+        $this->assertEquals(4, $_SESSION['logged_in']);
 
         $this->dontSeeInDatabase('auth_tokens', [
             'user_id' => $user->id
@@ -97,7 +98,7 @@ class AuthenticationBaseTest extends CIDatabaseTestCase
             'success' => 1
         ]);
 
-        $this->assertEquals(1, $_SESSION['logged_in']);
+        $this->assertEquals(4, $_SESSION['logged_in']);
 
         $this->seeInDatabase('auth_tokens', [
             'user_id' => $user->id

@@ -176,7 +176,7 @@ class FlatAuthorization implements AuthorizeInterface
 
         if (! $this->groupModel->addUserToGroup($userid, (int)$groupId))
         {
-            $this->error = $this->groupModel->error();
+            $this->error = $this->groupModel->errors();
 
             return false;
         }
@@ -221,7 +221,7 @@ class FlatAuthorization implements AuthorizeInterface
 
         if (! $this->groupModel->removeUserFromGroup($userId, $groupId))
         {
-            $this->error = $this->groupModel->error();
+            $this->error = $this->groupModel->errors();
 
             return false;
         }
@@ -259,7 +259,7 @@ class FlatAuthorization implements AuthorizeInterface
         // Remove it!
         if (! $this->groupModel->addPermissionToGroup($permissionId, $groupId))
         {
-            $this->error = $this->groupModel->error();
+            $this->error = $this->groupModel->errors();
 
             return false;
         }
@@ -295,7 +295,7 @@ class FlatAuthorization implements AuthorizeInterface
         // Remove it!
         if (! $this->groupModel->removePermissionFromGroup($permissionId, $groupId))
         {
-            $this->error = $this->groupModel->error();
+            $this->error = $this->groupModel->errors();
 
             return false;
         }
@@ -489,7 +489,7 @@ class FlatAuthorization implements AuthorizeInterface
             return (int)$id;
         }
 
-        $this->error = $this->groupModel->error();
+        $this->error = $this->groupModel->errors();
 
         return false;
     }
@@ -505,7 +505,7 @@ class FlatAuthorization implements AuthorizeInterface
     {
         if (! $this->groupModel->delete($groupId))
         {
-            $this->error = $this->groupModel->error();
+            $this->error = $this->groupModel->errors();
 
             return false;
         }
@@ -535,7 +535,7 @@ class FlatAuthorization implements AuthorizeInterface
 
         if (! $this->groupModel->update($id, $data))
         {
-            $this->error = $this->groupModel->error();
+            $this->error = $this->groupModel->errors();
 
             return false;
         }
@@ -623,7 +623,7 @@ class FlatAuthorization implements AuthorizeInterface
             return (int)$id;
         }
 
-        $this->error = $this->permissionModel->error();
+        $this->error = $this->permissionModel->errors();
 
         return false;
     }
@@ -639,7 +639,7 @@ class FlatAuthorization implements AuthorizeInterface
     {
         if (! $this->permissionModel->delete($permissionIdId))
         {
-            $this->error = $this->permissionModel->error();
+            $this->error = $this->permissionModel->errors();
 
             return false;
         }
@@ -672,7 +672,7 @@ class FlatAuthorization implements AuthorizeInterface
 
         if (! $this->permissionModel->update((int)$id, $data))
         {
-            $this->error = $this->permissionModel->error();
+            $this->error = $this->permissionModel->errors();
 
             return false;
         }

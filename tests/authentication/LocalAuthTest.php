@@ -1,10 +1,11 @@
 <?php
 
+use CIModuleTests\Support\AuthTestCase;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Models\UserModel;
 use Myth\Auth\Authentication\LocalAuthenticator;
 
-class LocalAuthTest extends \CIDatabaseTestCase
+class LocalAuthTest extends AuthTestCase
 {
     /**
      * @var LocalAuthenticator
@@ -28,7 +29,6 @@ class LocalAuthTest extends \CIDatabaseTestCase
     public function testValidateNoPassword()
     {
         $this->hasInDatabase('users', [
-            'id' => 1,
             'email' => 'fred@example.com',
             'password_hash' => 'secret'
         ]);
@@ -39,7 +39,6 @@ class LocalAuthTest extends \CIDatabaseTestCase
     public function testValidateOneCredential()
     {
         $this->hasInDatabase('users', [
-            'id' => 1,
             'email' => 'fred@example.com',
             'password_hash' => 'secret'
         ]);
@@ -52,7 +51,6 @@ class LocalAuthTest extends \CIDatabaseTestCase
         $this->expectException(\Myth\Auth\Exceptions\AuthException::class);
 
         $this->hasInDatabase('users', [
-            'id' => 1,
             'email' => 'fred@example.com',
             'password_hash' => 'secret'
         ]);

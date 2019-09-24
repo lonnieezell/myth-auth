@@ -33,6 +33,8 @@ return [
     'suggestPasswordCommon'     => 'La contraseña fue contrastada contra 65.000 de uso habitual y las que fueron hackeadas.',
     'errorPasswordPersonal'     => 'Las contraseñas no pueden contener información personal.',
     'suggestPasswordPersonal'   => 'Variaciones de su e-mail o usuario no deben usarse como contraseñas.',
+    'errorPasswordPwned'        => 'This password has been seen {0, number} times before. It was found in a database of compromised passwords.', // translate
+    'suggestPasswordPwned'      => 'This password has previously appeared in a data breach and should never be used. If you\'ve used it anywhere before, change it immediately.', // translate
     'errorPasswordEmpty'        => 'Se requiere una contraseña.',
     'passwordChangeSuccess'     => 'Contraseña cambiada',
     'userDoesNotExist'          => 'No se cambió la contraseña. El usuario no existe',

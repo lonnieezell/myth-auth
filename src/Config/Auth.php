@@ -131,6 +131,14 @@ class Auth extends BaseConfig
     public $passwordValidators = [
         'Myth\Auth\Authentication\Passwords\CompositionValidator',
         'Myth\Auth\Authentication\Passwords\DictionaryValidator',
+        //'Myth\Auth\Authentication\Passwords\PwnedValidator',
     ];
 
+    //--------------------------------------------------------------------
+    // Reset Time
+    //--------------------------------------------------------------------
+    // The amount of time that a password reset-token is valid for,
+    // in seconds.
+    //
+    public $resetTime = 3600;
 }

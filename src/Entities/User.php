@@ -19,7 +19,7 @@ class User extends Entity
     /**
      * Define properties that are automatically converted to Time instances.
      */
-    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    protected $dates = ['reset_at', 'reset_expires', 'created_at', 'updated_at', 'deleted_at'];
 
     /**
      * Array of field names and the type of value to cast them as
@@ -67,6 +67,19 @@ class User extends Entity
             $config->hashAlgorithm,
             $hashOptions
         );
+
+        /*
+            Set these vars to null in case a reset password was asked.
+            Scenario:
+                user (a *dumb* one with short memory) requests a
+                reset-token and then does nothing => asks the
+                administrator to reset his password.
+            User would have a new password but still anyone with the
+            reset-token would be able to change the password.
+        */
+        $this->attributes['reset_hash'] = null;
+        $this->attributes['reset_at'] = null;
+        $this->attributes['reset_expires'] = null;
 	}
 
     /**
@@ -79,7 +92,7 @@ class User extends Entity
 	public function generateResetHash()
 	{
 		$this->attributes['reset_hash'] = bin2hex(random_bytes(16));
-		$this->attributes['reset_start_time'] = date('Y-m-d H:i:s');
+		$this->attributes['reset_expires'] = date('Y-m-d H:i:s', time() + config('Auth')->resetTime);
 
 		return $this;
 	}

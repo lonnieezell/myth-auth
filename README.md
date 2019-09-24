@@ -1,10 +1,12 @@
 # Myth:Auth
 
-[![Build Status](https://travis-ci.org/codeigniter4/CodeIgniter4.svg?branch=develop)](https://travis-ci.org/codeigniter4/CodeIgniter4)
+[![Build Status](https://travis-ci.org/lonnieezell/myth-auth.svg?branch=develop)](https://travis-ci.org/lonnieezell/myth-auth)
 
 Flexible, Powerful, Secure auth package for CodeIgniter 4.
 
 **NOTE: This package is under early development and is not ready for prime-time.**
+
+This repo is maintained by volunteers. If you post an issue and haven't heard from us within 7 days, feel free to ping the issue so that we see it again. 
 
 ## Intended Features
 
