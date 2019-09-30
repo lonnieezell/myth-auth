@@ -14,7 +14,7 @@ This is meant to be a one-stop shop for 99% of your web-based authentication nee
 the following primary features: 
 
 - [x] Password-based authentication with remember-me functionality for web apps
-- [x] Flat RBAC per [NIST standards](https://csrc.nist.gov/Projects/Role-Based-Access-Control).
+- [x] Flat RBAC per NIST standards, described [here](https://csrc.nist.gov/Projects/Role-Based-Access-Control) and [here](https://pdfs.semanticscholar.org/aeb1/e9676e2d7694f268377fc22bdb510a13fab7.pdf).
 - [x] all views/javascript necessary in cross-browser manner
 - [x] easy to "publish" files to the main application for easy customization. Done via a CLI command.
 - [x] Debug Toolbar integration
