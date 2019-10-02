@@ -50,7 +50,7 @@ class Auth extends BaseConfig
     // When enabled, every registered user will receive an email message
     // with a special link he have to confirm to activate his account.
     //
-    public $requireActivation = true;
+    public $requireActivation = false;
 
     //--------------------------------------------------------------------
     // Allow Persistent Login Cookies (Remember me)
