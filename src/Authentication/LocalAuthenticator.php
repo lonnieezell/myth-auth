@@ -38,6 +38,18 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
             return false;
         }
 
+        if (! $this->user->isActivated())
+        {
+            // Always record a login attempt, whether success or not.
+            $ipAddress = Services::request()->getIPAddress();
+            $this->recordLoginAttempt($credentials['email'] ?? $credentials['username'], $ipAddress, $this->user->id ?? null, false);
+
+            $this->error = lang('Auth.notActivated');
+
+            $this->user = null;
+            return false;
+        }
+
         return $this->login($this->user, $remember);
     }
 

@@ -83,7 +83,7 @@ class AuthController extends Controller
 		// Try to log them in...
 		if (! $this->auth->attempt([$type => $login, 'password' => $password], $remember))
 		{
-			return redirect()->back()->withInput()->with('error', lang('Auth.badAttempt'));
+			return redirect()->back()->withInput()->with('error', $this->auth->error() ?? lang('Auth.badAttempt'));
 		}
 
 		// Is the user being forced to reset their password?
@@ -158,9 +158,33 @@ class AuthController extends Controller
 		// Save the user
 		$user = new User($this->request->getPost());
 
+		$this->config->requireActivation ? $user->generateActivateHash() : $user->activate();
+
 		if (! $users->save($user))
 		{
 			return redirect()->back()->withInput()->with('errors', $users->errors());
+		}
+
+		if ($this->config->requireActivation)
+		{
+			$email = Services::email();
+			$config = new Email();
+
+			$sent = $email->setFrom($config->fromEmail, $config->fromEmail)
+				  ->setTo($user->email)
+				  ->setSubject(lang('Auth.activationSubject'))
+				  ->setMessage(view($this->config->views['emailActivation'], ['hash' => $user->activate_hash]))
+				  ->setMailType('html')
+				  ->send();
+
+			if (! $sent)
+			{
+				log_message('error', "Failed to send activation email to: {$user->email}");
+				return redirect()->back()->withInput()->with('error', lang('Auth.unknownError'));
+			}
+
+			// Success!
+			return redirect()->route('login')->with('message', lang('Auth.activationSuccess'));
 		}
 
 		// Success!
@@ -282,5 +306,35 @@ class AuthController extends Controller
 		$users->save($user);
 
 		return redirect()->route('login')->with('message', lang('Auth.resetSuccess'));
+	}
+
+	/**
+	 * Activate account.
+	 */
+	public function activateAccount()
+	{
+		$throttler = Services::throttler();
+
+		if ($throttler->check($this->request->getIPAddress(), 2, MINUTE) === false)
+        {
+			return Services::response()->setStatusCode(429)->setBody(lang('Auth.tooManyRequests', [$throttler->getTokentime()]));
+        }
+
+		$users = new UserModel();
+
+		$user = $users->where('activate_hash', $this->request->getGet('token'))
+					  ->where('active', 0)
+					  ->first();
+
+		if (is_null($user))
+		{
+			return redirect()->route('login')->with('error', lang('Auth.activationNoUser'));
+		}
+
+		$user->activate_hash	= null;
+		$user->active			= 1;
+		$users->save($user);
+
+		return redirect()->route('login')->with('message', lang('Auth.registerSuccess'));
 	}
 }
