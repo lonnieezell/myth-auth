@@ -66,6 +66,7 @@ class LocalAuthenticateAttemptTest extends CIUnitTestCase
 
         $user = new User();
         $user->id = 5;
+        $user->active = true;
 
         $this->auth->shouldReceive('validate')->once()->with(\Mockery::subset($credentials), true)->andReturn($user);
         $this->auth->shouldReceive('login')->once()->andReturn(true);
