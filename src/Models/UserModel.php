@@ -20,7 +20,7 @@ class UserModel extends Model
 
     protected $validationRules = [
         'email'         => 'required|valid_email|is_unique[users.email,id,{id}]',
-        'username'      => 'required|alpha_numeric_space|min_length[3]',
+        'username'      => 'required|alpha_numeric_space|min_length[3]|is_unique[users.username,id,{id}]',
         'password_hash' => 'required',
     ];
     protected $validationMessages = [];
