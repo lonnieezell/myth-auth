@@ -313,14 +313,21 @@ class AuthController extends Controller
 	 */
 	public function activateAccount()
 	{
+		$users = new UserModel();
+
+		// First things first - log the activation attempt.
+		$users->logActivationAttempt(
+			$this->request->getGet('token'),
+			$this->request->getIPAddress(),
+			(string) $this->request->getUserAgent()
+		);
+
 		$throttler = Services::throttler();
 
 		if ($throttler->check($this->request->getIPAddress(), 2, MINUTE) === false)
         {
 			return Services::response()->setStatusCode(429)->setBody(lang('Auth.tooManyRequests', [$throttler->getTokentime()]));
         }
-
-		$users = new UserModel();
 
 		$user = $users->where('activate_hash', $this->request->getGet('token'))
 					  ->where('active', 0)
@@ -331,8 +338,8 @@ class AuthController extends Controller
 			return redirect()->route('login')->with('error', lang('Auth.activationNoUser'));
 		}
 
-		$user->activate_hash	= null;
-		$user->active			= 1;
+		$user->activate();
+
 		$users->save($user);
 
 		return redirect()->route('login')->with('message', lang('Auth.registerSuccess'));

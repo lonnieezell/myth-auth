@@ -128,7 +128,7 @@ class User extends Entity
      *
      * @return $this
      */
-    public function unActivate()
+    public function deactivate()
     {
         $this->attributes['active'] = 0;
 
