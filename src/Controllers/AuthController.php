@@ -158,29 +158,21 @@ class AuthController extends Controller
 		// Save the user
 		$user = new User($this->request->getPost());
 
-		$this->config->requireActivation ? $user->generateActivateHash() : $user->activate();
+		$this->config->requireActivation !== false ? $user->generateActivateHash() : $user->activate();
 
 		if (! $users->save($user))
 		{
 			return redirect()->back()->withInput()->with('errors', $users->errors());
 		}
 
-		if ($this->config->requireActivation)
+		if ($this->config->requireActivation !== false)
 		{
-			$email = Services::email();
-			$config = new Email();
-
-			$sent = $email->setFrom($config->fromEmail, $config->fromEmail)
-				  ->setTo($user->email)
-				  ->setSubject(lang('Auth.activationSubject'))
-				  ->setMessage(view($this->config->views['emailActivation'], ['hash' => $user->activate_hash]))
-				  ->setMailType('html')
-				  ->send();
-
+			$activator = Services::activator();
+			$sent = $activator->send($user);
+			
 			if (! $sent)
 			{
-				log_message('error', "Failed to send activation email to: {$user->email}");
-				return redirect()->back()->withInput()->with('error', lang('Auth.unknownError'));
+				return redirect()->back()->withInput()->with('error', $activator->error() ?? lang('Auth.unknownError'));
 			}
 
 			// Success!

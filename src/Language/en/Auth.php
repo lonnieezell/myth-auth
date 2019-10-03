@@ -22,6 +22,7 @@ return [
     'activationSubject'         => 'Activate your account',
     'activationSuccess'         => 'Please confirm your account by clicking the activation link in the email we have sent.',
     'notActivated'              => 'This user account is not yet activated.',
+    'errorSendingActivation'    => 'Failed to send activation message to: {0}',
 
     // Login
     'badAttempt'                => 'Unable to log you in. Please check your credentials.',

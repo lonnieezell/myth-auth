@@ -21,6 +21,7 @@ return [
     'activationSubject'         => 'Activate your account', // translate
     'activationSuccess'         => 'Please confirm your account by clicking the activation link in the email we have sent.', // translate
     'notActivated'              => 'This user account is not yet activated.', // translate
+    'errorSendingActivation'    => 'Failed to send activation message to: {0}', // translate
 
     // Login
     'badAttempt'                => 'No se pudo ingresar al sistema. Por favor, chequee sus credenciales.',
