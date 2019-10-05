@@ -27,11 +27,9 @@ class UserActivator
      */
     public function send(User $user = null): bool
     {
-        $result = false;
-
         if ($this->config->requireActivation === false)
         {
-            return $result;
+            return true;
         }
 
         $className = $this->config->requireActivation;
@@ -43,13 +41,11 @@ class UserActivator
         {
             log_message('error', "Failed to send activation messaage to: {$user->email}");
             $this->error = $class->error();
-        }
-        else
-        {
-            $result = true;
+
+            return false;
         }
 
-        return $result;
+        return true;
     }
 
     /**
