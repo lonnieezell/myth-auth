@@ -48,6 +48,26 @@ class PwnedValidatorTest extends CIUnitTestCase
 
         $this->assertFalse($this->validator->check($password));
     }
+    
+    public function testCheckFalseOnPwnedLastInRange()
+    {
+        $body = "81102569463BE3512984154C66C098B92C5:1\r\n53623B121FD34EE5426C792E5C33AF8C227:22\r\nC528C1B79D1BB387A30C33C5C35B4AC5137:333\r\n621B377E1F35302585D82F1604DF01FE106:1\r\n8371797B4241EBAA28F6A746C4EB2EEDFA3:55555";
+
+        $response  = new Response(new App());
+        $response->setBody($body);
+
+        $curlrequest = $this->getMockBuilder('CodeIgniter\HTTP\CURLRequest')
+                            ->disableOriginalConstructor()
+                            ->getMock();
+
+        $curlrequest->method('get')->willReturn($response);
+
+        Services::injectMock('curlrequest', $curlrequest);
+
+        $password = 'ziplock';        
+
+        $this->assertFalse($this->validator->check($password));
+    }
 
     public function testCheckTrueOnNotFound()
     {
