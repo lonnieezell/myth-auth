@@ -3,7 +3,7 @@
 use Config\App;
 use CodeIgniter\Events\Events;
 use CodeIgniter\Model;
-use Myth\Auth\Config\Services;
+use Config\Services;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Exceptions\AuthException;
 use Myth\Auth\Exceptions\UserNotFoundException;
