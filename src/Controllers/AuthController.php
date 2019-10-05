@@ -2,7 +2,7 @@
 
 use CodeIgniter\Controller;
 use Config\Email;
-use Myth\Auth\Config\Services;
+use Config\Services;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Models\UserModel;
 
