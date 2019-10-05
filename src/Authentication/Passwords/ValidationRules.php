@@ -1,6 +1,6 @@
 <?php namespace Myth\Auth\Authentication\Passwords;
 
-use Myth\Auth\Config\Services;
+use Config\Services;
 
 /**
  * Class ValidationRules

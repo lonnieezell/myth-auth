@@ -1,6 +1,6 @@
 <?php
 
-use Myth\Auth\Config\Services;
+use Config\Services;
 
 if (! function_exists('logged_in'))
 {
