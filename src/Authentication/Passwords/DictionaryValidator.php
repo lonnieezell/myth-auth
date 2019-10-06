@@ -22,51 +22,18 @@ class DictionaryValidator extends BaseValidator implements ValidatorInterface
     protected $suggestion;
 
     /**
-     * Checks the password and returns true/false
-     * if it passes muster. Must return either true/false.
-     * True means the password passes this test and
-     * the password will be passed to any remaining validators.
-     * False will immediately stop validation process
+     * Checks the password against the words in the file and returns false
+     * if a match is found. Returns true if no match is found.
+     * If true is returned the password will be passed to next validator.
+     * If false is returned the validation process will be immediately stopped.
      *
      * @param string $password
      * @param Entity $user
      *
-     * @return mixed
+     * @return boolean
      */
     public function check(string $password, Entity $user=null): bool
     {
-        $password = trim($password);
-
-        if (empty($password))
-        {
-            $this->error = lang('Auth.errorPasswordEmpty');
-
-            return false;
-        }
-
-        // Don't allow personal information as the password
-        if ($user !== null)
-        {
-            $names = [
-                strtolower($user->name),
-                strtolower(str_replace(' ', '', $user->name)),
-                strtolower(str_replace(' ', '.', $user->name)),
-                strtolower(str_replace(' ', '-', $user->name)),
-            ];
-
-            $tPassword = strtolower($password);
-            if ($tPassword == strtolower($user->email)
-                || in_array($tPassword, $names, $user->name)
-                || $tPassword == strtolower($user->username)
-            )
-            {
-                $this->error = lang('Auth.errorPasswordPersonal');
-                $this->suggestion = lang('Auth.suggestPasswordPersonal');
-
-                return false;
-            }
-        }
-
         // Loop over our file
         $fp = fopen(__DIR__ .'/_dictionary.txt', 'r');
         if ($fp)

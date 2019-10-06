@@ -207,8 +207,9 @@ Valid range is between 4 - 31.
 	public $hashCost = 10;
 
 ### auth.passwordValidators
-This list holds the validators that should be ran when checking that a password is valid. This are ran one at a time, 
-in succession. You can easily add your own should you need to customize the validation rules.  
+This list holds the validators that will be run when checking that a password is valid. 
+These are run one at a time in succession. 
+You can easily add your own should you need to customize the validation rules.  
 
     public $passwordValidators = [
         'Myth\Auth\Authentication\Passwords\CompositionValidator',
@@ -218,10 +219,10 @@ in succession. You can easily add your own should you need to customize the vali
 
 The default validators that come with Myth:Auth are:
 
-- CompositionValidator - per the latest NIST recommendations, simply checks password length.
-- DictionaryValidator - compares the password with over 600,000 leaked passwords and common words, as well as
-    variations on the user's personal info, like name and email.
-- PwnedValidator - compares the password with over half a billion of real-world passwords previously exposed in data breaches. 
-    It uses a request to third-party API. This validator is optional and disabled by default since not everyone may be 
-    comfortable with using it. The decision to use it or not is up to you - more information and technical details can 
-    be found [here](https://www.troyhunt.com/ive-just-launched-pwned-passwords-version-2/#cloudflareprivacyandkanonymity).
+- CompositionValidator - Per the latest NIST recommendations checks password length.
+- NothingPersonalValidator - Checks for variations on the user's personal info like name and email in the password.
+- DictionaryValidator - Compares the password with over 600,000 leaked passwords and common words in a dictionary included with this module. 
+- PwnedValidator - Looks for the password in a list of over 500 billion passwords exposed in data breaches.
+    Because PwnedValidator uses a request to third-party API not everyone may be comfortable with using it. Therefore, this validator is optional and disabled by default. The decision to use it or not is up to you. More information and technical details can be found [here](https://www.troyhunt.com/ive-just-launched-pwned-passwords-version-2/#cloudflareprivacyandkanonymity).
+    To use this validator simply remove the commented item in the $passwordValidators array.
+    PwnedValidator is a good replacement for the DictionaryValidator and you probably don't have to use both.

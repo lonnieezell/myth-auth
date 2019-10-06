@@ -30,6 +30,15 @@ class PasswordValidator
      */
     public function check(string $password, User $user=null): bool
     {
+        $password = trim($password);
+
+        if (empty($password))
+        {
+            $this->error = lang('Auth.errorPasswordEmpty');
+
+            return false;
+        }
+        
         $valid = false;
 
         foreach ($this->config->passwordValidators as $className)
