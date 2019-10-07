@@ -1,4 +1,6 @@
-build
+vendor/
+build/
+phpunit*.xml
+phpunit
 composer.lock
-vendor
 .DS_Store
