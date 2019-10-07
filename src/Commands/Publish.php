@@ -202,8 +202,8 @@ class Publish extends BaseCommand
         $path = "{$this->sourcePath}/Config/Auth.php";
 
         $content = file_get_contents($path);
-        $appNamespace = APP_NAMESPACE;
-        $content = str_replace('namespace Myth\Auth\Config', "namespace {$appNamespace}\Config", $content);
+        $content = str_replace('namespace Myth\Auth\Config', "namespace Config", $content);
+        $content = str_replace('extends BaseConfig', "extends \Myth\Auth\Config\Auth", $content);
 
         $this->writeFile("Config/Auth.php", $content);
     }

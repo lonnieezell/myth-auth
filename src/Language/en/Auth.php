@@ -15,6 +15,7 @@ return [
     // Registration
     'registerDisabled'          => 'Sorry, new user accounts are not allowed at this time.',
     'registerSuccess'           => 'Welcome aboard! Please login with your new credentials.',
+    'registerCLI'               => 'New user created: {0}, #{1}',
 
     // Login
     'badAttempt'                => 'Unable to log you in. Please check your credentials.',

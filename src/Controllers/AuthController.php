@@ -2,7 +2,7 @@
 
 use CodeIgniter\Controller;
 use Config\Email;
-use Myth\Auth\Config\Services;
+use Config\Services;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Models\UserModel;
 
@@ -269,7 +269,7 @@ class AuthController extends Controller
 		}
 
         // Reset token still valid?
-        if (! empty($user->reset_expires) && time() > $user->reset_expires)
+        if (! empty($user->reset_expires) && time() > $user->reset_expires->getTimestamp())
         {
             return redirect()->back()->withInput()->with('error', lang('Auth.resetTokenExpired'));
         }
