@@ -18,6 +18,7 @@ use Myth\Auth\Exceptions\AuthException;
  */
 class PwnedValidator extends BaseValidator implements ValidatorInterface
 {
+
     /**
      * Error message.
      *
@@ -46,7 +47,7 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
     {
         $pWord = trim($password);
 
-        if (empty($pWord))
+        if(empty($pWord))
         {
             $this->error = lang('Auth.errorPasswordEmpty');
 
@@ -54,23 +55,31 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
         }
 
         $hashedPword = strtoupper(sha1($pWord));
-        $rangeHash   = substr($hashedPword, 0, 5);
-        $searchHash  = substr($hashedPword, 5);
+        $rangeHash = substr($hashedPword, 0, 5);
+        $searchHash = substr($hashedPword, 5);
 
-        $client = Services::curlrequest([
-            'base_uri' => 'https://api.pwnedpasswords.com/',
-        ]);
+        try
+        {
+            $client = Services::curlrequest([
+                    'base_uri' => 'https://api.pwnedpasswords.com/',
+            ]);
 
-        $response = $client->get('range/'.$rangeHash,
-            ['headers' => ['Accept' => 'text/plain']]
-        );
+            $response = $client->get('range/'.$rangeHash,
+                ['headers' => ['Accept' => 'text/plain']]
+            );
+        }
+        catch(HTTPException $e)
+        {
+            throw AuthException::forHIBPCurlFail($e);
+        }
+
         $range = $response->getBody();
         $startPos = strpos($range, $searchHash);
         if($startPos === false)
         {
             return true;
         }
-        
+
         $startPos += 36; // right after the delimiter (:)
         $endPos = strpos($range, "\r\n", $startPos);
         if($endPos !== false)
@@ -82,11 +91,11 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
             // match is the last item in the range which does not end with "\r\n"
             $hits = (int) substr($range, $startPos);
         }
-        
+
         $wording = $hits > 1 ? "databases" : "a database";
         $this->error = lang('Auth.errorPasswordPwned', [$password, $hits, $wording]);
         $this->suggestion = lang('Auth.suggestPasswordPwned', [$password]);
-        
+
         return false;
     }
 
@@ -112,4 +121,5 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
     {
         return $this->suggestion;
     }
+
 }
