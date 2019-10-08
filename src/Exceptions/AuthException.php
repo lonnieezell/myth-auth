@@ -52,7 +52,7 @@ class AuthException extends \DomainException implements ExceptionInterface
      */
     public static function forHIBPCurlFail(HTTPException $e)
     {
-        return new self($e->getMessage(), $e->getCode);
+        return new self($e->getMessage(), $e->getCode());
     }
     
 }
