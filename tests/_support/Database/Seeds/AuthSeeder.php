@@ -1,4 +1,4 @@
-<?php namespace CIModuleTests\Support\Database\Seeds;
+<?php namespace ModuleTests\Support\Database\Seeds;
 
 use Myth\Auth\Entities\User;
 

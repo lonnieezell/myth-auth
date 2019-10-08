@@ -1,4 +1,4 @@
-<?php namespace CIModuleTests\Support;
+<?php namespace ModuleTests\Support;
 
 use CodeIgniter\Session\Handlers\ArrayHandler;
 use Myth\Auth\Entities\User;
@@ -19,7 +19,7 @@ class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
 	 *
 	 * @var string
 	 */
-	protected $seed = 'CIModuleTests\Support\Database\Seeds\AuthSeeder';
+	protected $seed = 'ModuleTests\Support\Database\Seeds\AuthSeeder';
 
 	/**
 	 * The path to where we can find the test Seeds directory.

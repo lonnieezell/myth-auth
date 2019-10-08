@@ -1,4 +1,4 @@
-<?php namespace CIModuleTests\Support;
+<?php namespace ModuleTests\Support;
 
 use CodeIgniter\Session\Handlers\ArrayHandler;
 use Tests\Support\Session\MockSession;
