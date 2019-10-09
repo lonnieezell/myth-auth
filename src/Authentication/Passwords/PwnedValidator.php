@@ -48,16 +48,16 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
      */
     public function check(string $password, Entity $user = null): bool
     {
-        $pWord = trim($password);
+        $password = trim($password);
 
-        if(empty($pWord))
+        if(empty($password))
         {
             $this->error = lang('Auth.errorPasswordEmpty');
 
             return false;
         }
 
-        $hashedPword = strtoupper(sha1($pWord));
+        $hashedPword = strtoupper(sha1($password));
         $rangeHash = substr($hashedPword, 0, 5);
         $searchHash = substr($hashedPword, 5);
 
@@ -73,7 +73,9 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
         }
         catch(HTTPException $e)
         {
-            throw AuthException::forHIBPCurlFail($e);
+            $exception = AuthException::forHIBPCurlFail($e);
+            Services::logger()->error('[ERROR] {exception}', ['exception' => $exception]);
+            throw $exception;
         }
 
         $range = $response->getBody();
