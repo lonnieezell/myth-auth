@@ -1,7 +1,10 @@
-<?php namespace Myth\Auth\Authentication\Passwords;
+<?php 
+
+namespace Myth\Auth\Authentication\Passwords;
 
 use CodeIgniter\Entity;
 use CodeIgniter\Config\Services;
+use CodeIgniter\HTTP\Exceptions\HTTPException;
 use Myth\Auth\Exceptions\AuthException;
 
 /**
@@ -18,6 +21,7 @@ use Myth\Auth\Exceptions\AuthException;
  */
 class PwnedValidator extends BaseValidator implements ValidatorInterface
 {
+
     /**
      * Error message.
      *
@@ -33,52 +37,71 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
     protected $suggestion;
 
     /**
-     * Checks the password and returns true/false
-     * if it passes muster. Must return either true/false.
-     * True means the password passes this test and
-     * the password will be passed to any remaining validators.
+     * Checks the password and returns true if it passes this test, or false if not.
+     * True means the password will be passed to any remaining validators.
      * False will immediately stop validation process
      *
      * @param string $password
      * @param Entity $user
      *
-     * @return bool
+     * @return boolean
      */
     public function check(string $password, Entity $user = null): bool
     {
         $password = trim($password);
 
-        if (empty($password))
+        if(empty($password))
         {
             $this->error = lang('Auth.errorPasswordEmpty');
 
             return false;
         }
 
-        $password   = strtoupper(sha1($password));
-        $rangeHash  = substr($password, 0, 5);
-        $searchHash = substr($password, 5);
+        $hashedPword = strtoupper(sha1($password));
+        $rangeHash = substr($hashedPword, 0, 5);
+        $searchHash = substr($hashedPword, 5);
 
-        $client = Services::curlrequest([
-            'base_uri' => 'https://api.pwnedpasswords.com/',
-        ]);
-
-        $response = $client->get('range/' . $rangeHash, ['headers' => ['Accept' => 'text/plain']]);
-
-        foreach (explode("\r\n", $response->getBody()) as $line)
+        try
         {
-            list($hash, $hits) = explode(':', $line);
+            $client = Services::curlrequest([
+                    'base_uri' => 'https://api.pwnedpasswords.com/',
+            ]);
 
-            if ($hash === $searchHash)
-            {
-                $this->error = lang('Auth.errorPasswordPwned', [(int) $hits]);
-                $this->suggestion = lang('Auth.suggestPasswordPwned');
-
-                return false;
-            }
+            $response = $client->get('range/'.$rangeHash,
+                ['headers' => ['Accept' => 'text/plain']]
+            );
+        }
+        catch(HTTPException $e)
+        {
+            $exception = AuthException::forHIBPCurlFail($e);
+            Services::logger()->error('[ERROR] {exception}', ['exception' => $exception]);
+            throw $exception;
         }
 
-        return true;
+        $range = $response->getBody();
+        $startPos = strpos($range, $searchHash);
+        if($startPos === false)
+        {
+            return true;
+        }
+
+        $startPos += 36; // right after the delimiter (:)
+        $endPos = strpos($range, "\r\n", $startPos);
+        if($endPos !== false)
+        {
+            $hits = (int) substr($range, $startPos, $endPos - $startPos);
+        }
+        else
+        {
+            // match is the last item in the range which does not end with "\r\n"
+            $hits = (int) substr($range, $startPos);
+        }
+
+        $wording = $hits > 1 ? "databases" : "a database";
+        $this->error = lang('Auth.errorPasswordPwned', [$password, $hits, $wording]);
+        $this->suggestion = lang('Auth.suggestPasswordPwned', [$password]);
+
+        return false;
     }
 
     /**
@@ -103,4 +126,5 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
     {
         return $this->suggestion;
     }
+
 }
