@@ -1,4 +1,5 @@
-<?= view('Myth\Auth\Views\_header') ?>
+<?= $this->extend($config->viewLayout) ?>
+<?= $this->section('main') ?>
 
 <div class="container">
     <div class="row">
@@ -36,4 +37,4 @@
     </div>
 </div>
 
-<?= view('Myth\Auth\Views\_footer') ?>
+<?= $this->endSection() ?>
