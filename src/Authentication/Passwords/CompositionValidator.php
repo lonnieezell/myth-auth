@@ -46,29 +46,6 @@ class CompositionValidator extends BaseValidator implements ValidatorInterface
             return false;
         }
         
-        // Don't allow personal information as the password
-        if ($user !== null)
-        {
-            $names = [
-                strtolower($user->name),
-                strtolower(str_replace(' ', '', $user->name)),
-                strtolower(str_replace(' ', '.', $user->name)),
-                strtolower(str_replace(' ', '-', $user->name)),
-            ];
-
-            $tPassword = strtolower($password);
-            if ($tPassword == strtolower($user->email)
-                || in_array($tPassword, $names, $user->name)
-                || $tPassword == strtolower($user->username)
-            )
-            {
-                $this->error = lang('Auth.errorPasswordPersonal');
-                $this->suggestion = lang('Auth.suggestPasswordPersonal');
-
-                return false;
-            }
-        }
-        
         return true;
     }
 

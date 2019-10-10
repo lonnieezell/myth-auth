@@ -4,6 +4,7 @@ return [
     // Exceptions
     'invalidModel'              => 'Se debe cargar el modelo {0} antes de usarlo.',
     'userNotFound'              => 'No se puede localizar al usuario con ID = {0, number}.',
+    'noUserEntity'              => 'User Entity must be provided for password validation.', //todo: translate
     'tooManyCredentials'        => 'Sólo se puede valir contra 1 credencial además de la contraseña.',
     'invalidFields'             => 'El campo "{0}" no puede utilizarse para validar credenciales.',
     'unsetPasswordLength'       => 'Se debe setear la variable `minimumPasswordLength` en la configuración.',
@@ -33,8 +34,8 @@ return [
     'suggestPasswordCommon'     => 'La contraseña fue contrastada contra 65.000 de uso habitual y las que fueron hackeadas.',
     'errorPasswordPersonal'     => 'Las contraseñas no pueden contener información personal.',
     'suggestPasswordPersonal'   => 'Variaciones de su e-mail o usuario no deben usarse como contraseñas.',
-    'errorPasswordPwned'        => 'This password has been seen {0, number} times before. It was found in a database of compromised passwords.', // translate
-    'suggestPasswordPwned'      => 'This password has previously appeared in a data breach and should never be used. If you\'ve used it anywhere before, change it immediately.', // translate
+    'errorPasswordPwned'        => 'The password {0} has been exposed due to a data breach and has been seen {1, number} times in {2} of compromised passwords.',//todo: translate
+    'suggestPasswordPwned'      => '{0} should never be used as a password. If you are using it anywhere change it immediately.', //todo: translate
     'errorPasswordEmpty'        => 'Se requiere una contraseña.',
     'passwordChangeSuccess'     => 'Contraseña cambiada',
     'userDoesNotExist'          => 'No se cambió la contraseña. El usuario no existe',

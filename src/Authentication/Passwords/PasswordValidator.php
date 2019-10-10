@@ -2,6 +2,7 @@
 
 use Myth\Auth\Config\Auth;
 use Myth\Auth\Entities\User;
+use Myth\Auth\Exceptions\AuthException;
 
 class PasswordValidator
 {
@@ -28,25 +29,30 @@ class PasswordValidator
      *
      * @return bool
      */
-    public function check(string $password, User $user=null): bool
+    public function check(string $password, User $user = null): bool
     {
+        if(is_null($user))
+        {
+            throw AuthException::forNoEntityProvided();
+        }
+
         $password = trim($password);
 
-        if (empty($password))
+        if(empty($password))
         {
             $this->error = lang('Auth.errorPasswordEmpty');
 
             return false;
         }
-        
+
         $valid = false;
 
-        foreach ($this->config->passwordValidators as $className)
+        foreach($this->config->passwordValidators as $className)
         {
             $class = new $className();
             $class->setConfig($this->config);
 
-            if ($class->check($password, $user) === false)
+            if($class->check($password, $user) === false)
             {
                 $this->error = $class->error();
                 $this->suggestion = $class->suggestion();
@@ -82,6 +88,5 @@ class PasswordValidator
     {
         return $this->suggestion;
     }
-
 
 }

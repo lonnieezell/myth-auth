@@ -4,6 +4,7 @@ return [
     // Exceptions
     'invalidModel'              => 'The {0} model must be loaded prior to use.',
     'userNotFound'              => 'Unable to locate a user with ID = {0, number}.',
+    'noUserEntity'              => 'User Entity must be provided for password validation.',
     'tooManyCredentials'        => 'You may only validate against 1 credential other than a password.',
     'invalidFields'             => 'The "{0}" field cannot be used to validate credentials.',
     'unsetPasswordLength'       => 'You must set the `minimumPasswordLength` setting in the Auth config file.',

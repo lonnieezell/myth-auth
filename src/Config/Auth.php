@@ -39,6 +39,20 @@ class Auth extends BaseConfig
     public $validFields = [
         'email', 'username'
     ];
+    
+    //--------------------------------------------------------------------
+    // Additional "Nothing Personal" Fields
+    //--------------------------------------------------------------------
+    // The NothingPersonalValidator prevents personal information from 
+    // being used in passwords. The email and username fields are always 
+    // considered by the validator. An extend User Entity might include
+    // other personal info such as first and/or last names. $personalFields 
+    // is where you can add fields to be considered as "personal" 
+    // by the NothingPersonalValidator. 
+    // For example: 
+    //     $personalFields = ['firstname', 'lastname'];
+    
+    public $personalFields = [];
 
     //--------------------------------------------------------------------
     // Allow User Registration

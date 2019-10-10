@@ -1,4 +1,6 @@
-<?php namespace Myth\Auth\Authentication\Passwords;
+<?php
+
+namespace Myth\Auth\Authentication\Passwords;
 
 use CodeIgniter\Entity;
 
@@ -11,18 +13,20 @@ use CodeIgniter\Entity;
  */
 class NothingPersonalValidator extends BaseValidator implements ValidatorInterface
 {
+
     /**
      * @var string
      */
     protected $error;
+
     /**
      * @var string
      */
     protected $suggestion;
 
     /**
-     * Returns true if $password contains no part of the username or the user's email. 
-     * Otherwise, it returns false. 
+     * Returns true if $password contains no part of the username 
+     * or the user's email. Otherwise, it returns false. 
      * If true is returned the password will be passed to next validator.
      * If false is returned the validation process will be immediately stopped.
      *
@@ -31,32 +35,60 @@ class NothingPersonalValidator extends BaseValidator implements ValidatorInterfa
      *
      * @return boolean
      */
-    public function check(string $password, Entity $user=null): bool
+    public function check(string $password, Entity $user = null): bool
     {
-        // Don't allow personal information as the password
-        if ($user !== null)
+        $userName = \strtolower($user->username);
+        $email = \strtolower($user->email);
+        $password = \strtolower($password);
+        
+        // remove all spaces from $userName and password
+        $collapsedUserName = str_replace(' ', '', $userName);
+        $collapsedPassword = str_replace(' ', '', $password);
+
+        $valid = true;
+        if($userName === $email ||
+            $password === $email ||
+            $password === $userName ||
+            $collapsedPassword === $userName ||
+            $collapsedPassword === $collapsedUserName)
         {
-            $names = [
-                strtolower($user->name),
-                strtolower(str_replace(' ', '', $user->name)),
-                strtolower(str_replace(' ', '.', $user->name)),
-                strtolower(str_replace(' ', '-', $user->name)),
+            $valid = false;
+        }
+
+        if($valid)
+        {
+            // Use spaces to replace non-word characters and underscores in $password
+            $strippedPassword = trim(preg_replace('/[\W_]+/', ' ', $password));
+            $words = explode(' ', $strippedPassword);
+
+            $trivial = [
+                'a', 'an', 'and', 'as', 'at', 'but', 'for',
+                'if', 'in', 'not', 'of', 'or', 'so', 'the', 'then'
             ];
 
-            $tPassword = strtolower($password);
-            if ($tPassword == strtolower($user->email)
-                || in_array($tPassword, $names, $user->name)
-                || $tPassword == strtolower($user->username)
-            )
+            // search for password pieces in username - ignore trivials
+            foreach($words as $word)
             {
-                $this->error = lang('Auth.errorPasswordPersonal');
-                $this->suggestion = lang('Auth.suggestPasswordPersonal');
+                if(\in_array($word, $trivial))
+                {
+                    continue;
+                }
 
-                return false;
+                if(\strpos($userName, $word) !== false)
+                {
+                    $valid = false;
+                    break;
+                }
             }
         }
 
-        return true;
+        if( ! $valid)
+        {
+            $this->error = lang('Auth.errorPasswordPersonal');
+            $this->suggestion = lang('Auth.suggestPasswordPersonal');
+        }
+
+        return $valid;
     }
 
     /**
@@ -81,4 +113,5 @@ class NothingPersonalValidator extends BaseValidator implements ValidatorInterfa
     {
         return $this->suggestion ?? '';
     }
+
 }

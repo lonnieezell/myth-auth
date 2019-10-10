@@ -41,25 +41,4 @@ class DictionaryValidatorTest extends CIUnitTestCase
         $this->assertTrue($this->validator->check($password));
     }
 
-    public function testCheckFalseOnEmailMatch()
-    {
-        $user = new \Myth\Auth\Entities\User([
-            'email' => 'JoeSmith@example.com'
-        ]);
-
-        $password = 'joesmith@example.com';
-
-        $this->assertFalse($this->validator->check($password, $user));
-    }
-
-    public function testCheckFalseOnUsernameMatch()
-    {
-        $user = new \Myth\Auth\Entities\User([
-            'username' => 'CaptainJoe'
-        ]);
-
-        $password = 'captainjoe';
-
-        $this->assertFalse($this->validator->check($password, $user));
-    }
 }
