@@ -126,7 +126,7 @@ class AuthController extends Controller
 			return redirect()->back()->withInput()->with('error', lang('Auth.registerDisabled'));
 		}
 
-		echo view($this->config->views['register']);
+		echo view($this->config->views['register'], ['config' => $this->config]);
 	}
 
 	/**
@@ -176,7 +176,7 @@ class AuthController extends Controller
 	 */
 	public function forgotPassword()
 	{
-		echo view($this->config->views['forgot']);
+		echo view($this->config->views['forgot'], ['config' => $this->config]);
 	}
 
 	/**
@@ -225,7 +225,8 @@ class AuthController extends Controller
 		$token = $this->request->getGet('token');
 
 		echo view($this->config->views['reset'], [
-			'token' => $token,
+			'config' => $this->config,
+			'token'  => $token,
 		]);
 	}
 

@@ -1,5 +1,7 @@
 <?php namespace Myth\Auth\Exceptions;
 
+use CodeIgniter\HTTP\Exceptions\HTTPException;
+
 class AuthException extends \DomainException implements ExceptionInterface
 {
     public static function forInvalidModel(string $model)
@@ -41,4 +43,16 @@ class AuthException extends \DomainException implements ExceptionInterface
     {
         return new self(lang('Auth.unsetPasswordLength'), 500);
     }
+
+    /**
+     * When the cURL request in PwnedValidator (to Have I Been Pwned) 
+     * throws a HTTPException it is re-thrown as this one
+     *
+     * @return AuthException
+     */
+    public static function forHIBPCurlFail(HTTPException $e)
+    {
+        return new self($e->getMessage(), $e->getCode(), $e);
+    }
+    
 }
