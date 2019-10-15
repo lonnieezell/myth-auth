@@ -20,13 +20,6 @@ class DictionaryValidatorTest extends CIUnitTestCase
         $this->validator->setConfig($config);
     }
 
-    public function testCheckFalseOnEmptyPassword()
-    {
-        $password = '';
-
-        $this->assertFalse($this->validator->check($password));
-    }
-
     public function testCheckFalseOnFoundPassword()
     {
         $password = '!!!gerard!!!';

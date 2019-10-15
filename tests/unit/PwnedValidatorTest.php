@@ -25,13 +25,6 @@ class PwnedValidatorTest extends CIUnitTestCase
         $this->validator = new PwnedValidator();
     }
 
-    public function testCheckFalseOnEmptyPassword()
-    {
-        $password = '';
-
-        $this->assertFalse($this->validator->check($password));
-    }
-
     public function testCheckFalseOnPwnedPassword()
     {
         $body = implode("\r\n",
