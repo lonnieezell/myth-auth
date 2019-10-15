@@ -220,9 +220,9 @@ You can easily add your own should you need to customize the validation rules.
 The default validators that come with Myth:Auth are:
 
 - CompositionValidator - Per the latest NIST recommendations checks password length.
-- NothingPersonalValidator - Checks for variations on the user's personal info like name and email in the password.
+- NothingPersonalValidator - Checks for variations on the user's personal info such as username and email in the password.
 - DictionaryValidator - Compares the password with over 600,000 leaked passwords and common words in a dictionary included with this module. 
-- PwnedValidator - Looks for the password in a list of over 500 billion passwords exposed in data breaches.
+- PwnedValidator - Looks for the password in a list of over 500 million passwords exposed in data breaches.
     Because PwnedValidator uses a request to third-party API not everyone may be comfortable with using it. Therefore, this validator is optional and disabled by default. The decision to use it or not is up to you. More information and technical details can be found [here](https://www.troyhunt.com/ive-just-launched-pwned-passwords-version-2/#cloudflareprivacyandkanonymity).
     To use this validator simply remove the commented item in the $passwordValidators array.
     PwnedValidator is a good replacement for the DictionaryValidator and you probably don't have to use both.
