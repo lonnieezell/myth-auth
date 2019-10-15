@@ -46,8 +46,8 @@ perform the following setup:
 When first installed, Myth:Auth is setup to provide all of the basic authentication services 
 for you, including new user registration, login/logout, and forgotten password flows.
 
-Remember me functionality is turned off by default, though that can be turned on in Config/Auth.php
-by setting the `$allowRemembering` variable to be `true`.
+"Remember Me" functionality is turned off by default though it can be turned on 
+by setting the `$allowRemembering` variable to be `true` in Config/Auth.php.
 
 ### Routes
 
