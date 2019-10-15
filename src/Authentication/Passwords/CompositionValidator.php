@@ -69,6 +69,6 @@ class CompositionValidator extends BaseValidator implements ValidatorInterface
      */
     public function suggestion(): string
     {
-        return ;
+        return $this->suggestion;
     }
 }
