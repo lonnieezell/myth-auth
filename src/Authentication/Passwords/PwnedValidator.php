@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Myth\Auth\Authentication\Passwords;
 
@@ -37,16 +37,10 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
     protected $suggestion;
 
     /**
-<<<<<<< HEAD
      * Checks the password against the online database and 
      * returns false if a match is found. Returns true if no match is found.
      * If true is returned the password will be passed to next validator.
      * If false is returned the validation process will be immediately stopped.
-=======
-     * Checks the password and returns true if it passes this test, or false if not.
-     * True means the password will be passed to any remaining validators.
-     * False will immediately stop validation process
->>>>>>> develop
      *
      * @param string $password
      * @param Entity $user
@@ -55,39 +49,6 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
      */
     public function check(string $password, Entity $user = null): bool
     {
-<<<<<<< HEAD
-        $password   = strtoupper(sha1($password));
-        $rangeHash  = substr($password, 0, 5);
-        $searchHash = substr($password, 5);
-
-        $client = Services::curlrequest([
-            'base_uri' => 'https://api.pwnedpasswords.com/',
-        ]);
-
-        $response = $client->get('range/' . $rangeHash, ['headers' => ['Accept' => 'text/plain']]);
-        $range = $response->getBody();
-        $startPos = strpos($range, $searchHash);
-        if($startPos === false)
-        {
-            return true;
-        }
-
-        $startPos += 36; // right after the delimiter (:)
-        $endPos = strpos($range, "\r\n", $startPos);
-        if($endPos !== false)
-            {
-            $hits = (int) substr($range, $startPos, $endPos - $startPos);
-            }
-=======
-        $password = trim($password);
-
-        if(empty($password))
-        {
-            $this->error = lang('Auth.errorPasswordEmpty');
-
-            return false;
-        }
-
         $hashedPword = strtoupper(sha1($password));
         $rangeHash = substr($hashedPword, 0, 5);
         $searchHash = substr($hashedPword, 5);
@@ -122,7 +83,6 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
         {
             $hits = (int) substr($range, $startPos, $endPos - $startPos);
         }
->>>>>>> develop
         else
         {
             // match is the last item in the range which does not end with "\r\n"
@@ -132,11 +92,7 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
         $wording = $hits > 1 ? "databases" : "a database";
         $this->error = lang('Auth.errorPasswordPwned', [$password, $hits, $wording]);
         $this->suggestion = lang('Auth.suggestPasswordPwned', [$password]);
-<<<<<<< HEAD
         
-=======
-
->>>>>>> develop
         return false;
     }
 

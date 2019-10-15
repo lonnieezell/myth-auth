@@ -4,17 +4,18 @@ return [
     // Exceptions
     'invalidModel'              => 'Se debe cargar el modelo {0} antes de usarlo.',
     'userNotFound'              => 'No se puede localizar al usuario con ID = {0, number}.',
+    'noUserEntity'              => 'User Entity must be provided for password validation.', //todo: translate
     'tooManyCredentials'        => 'Sólo se puede valir contra 1 credencial además de la contraseña.',
     'invalidFields'             => 'El campo "{0}" no puede utilizarse para validar credenciales.',
     'unsetPasswordLength'       => 'Se debe setear la variable `minimumPasswordLength` en la configuración.',
     'unknownError'              => 'Perdón, ocurrió un problema queriendo enviar el correo. Por favor intentá mas tarde.',
-
     'notLoggedIn'               => 'Se debe ingresar al sistema antes de poder acceder a esa página.',
     'notEnoughPrivilege'        => 'No tenés los permisos necesarios para poder acceder a esta página.',
 
     // Registration
     'registerDisabled'          => 'La creación de cuentas de usuario está deshabilitada.',
     'registerSuccess'           => '¡Bienvenido! Por favor ingrese sus credenciales.',
+    'registerCLI'               => 'New user created: {0}, #{1}', //todo: translate
 
     // Login
     'badAttempt'                => 'No se pudo ingresar al sistema. Por favor, chequee sus credenciales.',
@@ -33,11 +34,14 @@ return [
     'suggestPasswordCommon'     => 'La contraseña fue contrastada contra 65.000 de uso habitual y las que fueron hackeadas.',
     'errorPasswordPersonal'     => 'Las contraseñas no pueden contener información personal.',
     'suggestPasswordPersonal'   => 'Variaciones de su e-mail o usuario no deben usarse como contraseñas.',
-    'errorPasswordPwned'        => 'This password has been seen {0, number} times before. It was found in a database of compromised passwords.', // translate
-    'suggestPasswordPwned'      => 'This password has previously appeared in a data breach and should never be used. If you\'ve used it anywhere before, change it immediately.', // translate
+    'errorPasswordTooSimilar'    => 'Password is too similar to the username.',  //todo: translate
+    'suggestPasswordTooSimilar'  => 'Do not use parts of your username in your password.',  //todo: translate
+    'errorPasswordPwned'        => 'The password {0} has been exposed due to a data breach and has been seen {1, number} times in {2} of compromised passwords.',//todo: translate
+    'suggestPasswordPwned'      => '{0} should never be used as a password. If you are using it anywhere change it immediately.', //todo: translate
     'errorPasswordEmpty'        => 'Se requiere una contraseña.',
     'passwordChangeSuccess'     => 'Contraseña cambiada',
     'userDoesNotExist'          => 'No se cambió la contraseña. El usuario no existe',
+    'resetTokenExpired'         => 'Sorry. Your reset token has expired.', //todo: translate
 
     // Groups
     'groupNotFound'             => 'No se puede localizar al grupo: {0}.',
