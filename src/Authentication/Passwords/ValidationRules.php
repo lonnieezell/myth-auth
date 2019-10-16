@@ -1,6 +1,7 @@
 <?php namespace Myth\Auth\Authentication\Passwords;
 
 use Config\Services;
+use Myth\Auth\Entities\User;
 
 /**
  * Class ValidationRules
@@ -30,8 +31,9 @@ class ValidationRules
     public function strong_password(string $str, string &$error = null)
     {
         $checker = Services::passwords();
+        $user = $this->buildUserFromRequest();
 
-        $result = $checker->check($str);
+        $result = $checker->check($str, $user);
 
         if ($result === false)
         {
@@ -39,6 +41,22 @@ class ValidationRules
         }
 
         return $result;
+    }
+
+    /**
+     * Builds a new user instance from the global request.
+     *
+     * @return User
+     */
+    protected function buildUserFromRequest()
+    {
+        $config = config('Auth');
+        $fields = array_merge($config->validFields, $config->personalFields);
+        $fields[] = 'password';
+
+        $data = service('request')->getPost($fields);
+
+        return new User($data);
     }
 
 }
