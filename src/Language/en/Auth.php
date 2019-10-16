@@ -17,6 +17,13 @@ return [
     'registerSuccess'           => 'Welcome aboard! Please login with your new credentials.',
     'registerCLI'               => 'New user created: {0}, #{1}',
 
+    // Activation
+    'activationNoUser'          => 'Unable to locate a user with that activation code.',
+    'activationSubject'         => 'Activate your account',
+    'activationSuccess'         => 'Please confirm your account by clicking the activation link in the email we have sent.',
+    'notActivated'              => 'This user account is not yet activated.',
+    'errorSendingActivation'    => 'Failed to send activation message to: {0}',
+
     // Login
     'badAttempt'                => 'Unable to log you in. Please check your credentials.',
     'loginSuccess'              => 'Welcome back!',
@@ -51,6 +58,9 @@ return [
 
     // Banned
     'userIsBanned'              => 'User has been banned. Contact the administrator',
+
+    // Too many requests
+    'tooManyRequests'           => 'Too many requests. Please wait {0, number} seconds.',
 
     // Login views
     'home'                      => 'Home',

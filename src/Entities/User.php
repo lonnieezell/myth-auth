@@ -110,6 +110,41 @@ class User extends Entity
 		return $this;
 	}
 
+    /**
+     * Activate user.
+     *
+     * @return $this
+     */
+    public function activate()
+    {
+        $this->attributes['active'] = 1;
+        $this->attributes['activate_hash'] = null;
+
+        return $this;
+    }
+
+    /**
+     * Unactivate user.
+     *
+     * @return $this
+     */
+    public function deactivate()
+    {
+        $this->attributes['active'] = 0;
+
+        return $this;
+    }
+
+    /**
+     * Checks to see if a user is active.
+     *
+     * @return bool
+     */
+    public function isActivated(): bool
+    {
+        return isset($this->attributes['active']) && $this->attributes['active'] === true;
+    }
+
 	/**
 	 * Bans a user.
 	 *

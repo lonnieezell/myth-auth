@@ -160,6 +160,20 @@ The only parameter is the email of the user.
 
 	$auth->purgeLoginAttempts($email);
 
+## User account activation
+
+After the user has registered in our app, we have the option to activate the account immediately or ask for confirmation.
+This is done via `$requireActivation` config variable.
+
+Confirmation can be done in many ways. Traditionally, this is usually done by sending an email to the email address that was
+used during registration. We use the `Activator` service for this.
+
+	$activator = Services::activator();
+	$activator->send($user);
+
+By default, we provide one type of activator and this is `EmailActivator`. You can also prepare your own activator,
+which will e.g. use an SMS to confirm activation. There are many possibilities.
+
 ## Configuration
 Many aspects of the system can be configured in the `Config/Auth.php` config file. These options are described here. 
 
@@ -181,6 +195,23 @@ The names of the fields in the user table that are allowed by used when testing 
 This can be either true or false, and determines whether or not the system allows unregistered users to make a new
 account by accessing `AuthController->register()`. NOTE: This setting is not enforced by `UserModel` so if you add
 or edit controller and views you are responsible for checking this value.
+
+### auth.requireActivation
+This can be either false or string with a namespaced class name. Using a class name will force `activator` service to use this
+class to send an activation message.
+
+	public $requireActivation = 'Myth\Auth\Authentication\Activators\EmailActivator';
+
+### auth.userActivators
+This is a list of available activators, along with their optional configuration variables. Class names listed here can be used
+by `requireActivation` config variable.
+
+	public $userActivators = [
+        'Myth\Auth\Authentication\Activators\EmailActivator' => [
+            'fromEmail' => null,
+            'fromName' => null,
+        ],
+    ];
 
 ### auth.allowRemembering
 This can be either true or false, and determines whether or not the system allows persistent logins (Remember Me). 

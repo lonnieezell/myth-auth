@@ -83,7 +83,7 @@ class AuthController extends Controller
 		// Try to log them in...
 		if (! $this->auth->attempt([$type => $login, 'password' => $password], $remember))
 		{
-			return redirect()->back()->withInput()->with('error', lang('Auth.badAttempt'));
+			return redirect()->back()->withInput()->with('error', $this->auth->error() ?? lang('Auth.badAttempt'));
 		}
 
 		// Is the user being forced to reset their password?
@@ -158,9 +158,25 @@ class AuthController extends Controller
 		// Save the user
 		$user = new User($this->request->getPost());
 
+		$this->config->requireActivation !== false ? $user->generateActivateHash() : $user->activate();
+
 		if (! $users->save($user))
 		{
 			return redirect()->back()->withInput()->with('errors', $users->errors());
+		}
+
+		if ($this->config->requireActivation !== false)
+		{
+			$activator = Services::activator();
+			$sent = $activator->send($user);
+			
+			if (! $sent)
+			{
+				return redirect()->back()->withInput()->with('error', $activator->error() ?? lang('Auth.unknownError'));
+			}
+
+			// Success!
+			return redirect()->route('login')->with('message', lang('Auth.activationSuccess'));
 		}
 
 		// Success!
@@ -283,5 +299,42 @@ class AuthController extends Controller
 		$users->save($user);
 
 		return redirect()->route('login')->with('message', lang('Auth.resetSuccess'));
+	}
+
+	/**
+	 * Activate account.
+	 */
+	public function activateAccount()
+	{
+		$users = new UserModel();
+
+		// First things first - log the activation attempt.
+		$users->logActivationAttempt(
+			$this->request->getGet('token'),
+			$this->request->getIPAddress(),
+			(string) $this->request->getUserAgent()
+		);
+
+		$throttler = Services::throttler();
+
+		if ($throttler->check($this->request->getIPAddress(), 2, MINUTE) === false)
+        {
+			return Services::response()->setStatusCode(429)->setBody(lang('Auth.tooManyRequests', [$throttler->getTokentime()]));
+        }
+
+		$user = $users->where('activate_hash', $this->request->getGet('token'))
+					  ->where('active', 0)
+					  ->first();
+
+		if (is_null($user))
+		{
+			return redirect()->route('login')->with('error', lang('Auth.activationNoUser'));
+		}
+
+		$user->activate();
+
+		$users->save($user);
+
+		return redirect()->route('login')->with('message', lang('Auth.registerSuccess'));
 	}
 }

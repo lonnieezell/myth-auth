@@ -45,4 +45,21 @@ class UserModel extends Model
         ]);
     }
 
+    /**
+     * Logs an activation attempt for posterity sake.
+     *
+     * @param string|null $token
+     * @param string|null $ipAddress
+     * @param string|null $userAgent
+     */
+    public function logActivationAttempt(string $token = null, string $ipAddress = null, string $userAgent = null)
+    {
+        $this->db->table('auth_activation_attempts')->insert([
+            'ip_address' => $ipAddress,
+            'user_agent' => $userAgent,
+            'token' => $token,
+            'created_at' => date('Y-m-d H:i:s')
+        ]);
+    }
+
 }

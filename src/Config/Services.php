@@ -7,6 +7,7 @@ use Myth\Auth\Models\LoginModel;
 use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Authorization\PermissionModel;
 use Myth\Auth\Authentication\Passwords\PasswordValidator;
+use Myth\Auth\Authentication\Activators\UserActivator;
 use CodeIgniter\Config\BaseService;
 
 class Services extends BaseService
@@ -88,5 +89,28 @@ class Services extends BaseService
         }
 
         return new PasswordValidator($config);
+    }
+
+    /**
+     * Returns an instance of the activator.
+     *
+     * @param null $config
+     * @param bool $getShared
+     *
+     * @return mixed|Activator
+     */
+    public static function activator($config = null, bool $getShared = true)
+    {
+        if ($getShared)
+        {
+            return self::getSharedInstance('activator', $config);
+        }
+
+        if (empty($config))
+        {
+            $config = config(Auth::class);
+        }
+
+        return new UserActivator($config);
     }
 }

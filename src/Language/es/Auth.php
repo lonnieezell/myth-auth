@@ -17,6 +17,13 @@ return [
     'registerSuccess'           => '¡Bienvenido! Por favor ingrese sus credenciales.',
     'registerCLI'               => 'New user created: {0}, #{1}', //todo: translate
 
+    // Activation
+    'activationNoUser'          => 'Unable to locate a user with that activation code.', // translate
+    'activationSubject'         => 'Activate your account', // translate
+    'activationSuccess'         => 'Please confirm your account by clicking the activation link in the email we have sent.', // translate
+    'notActivated'              => 'This user account is not yet activated.', // translate
+    'errorSendingActivation'    => 'Failed to send activation message to: {0}', // translate
+
     // Login
     'badAttempt'                => 'No se pudo ingresar al sistema. Por favor, chequee sus credenciales.',
     'loginSuccess'              => '¡Bienvenido nuevamente!',
@@ -51,6 +58,9 @@ return [
 
     // Banned
     'userIsBanned'              => 'El usuario está deshabilitado. Contacte al administrador',
+
+    // Too many requests
+    'tooManyRequests'           => 'Too many requests. Please wait {0, number} seconds.', // translate
 
     // Login views
     'home'                      => 'Login',
