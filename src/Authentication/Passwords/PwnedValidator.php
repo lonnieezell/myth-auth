@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Myth\Auth\Authentication\Passwords;
 
@@ -10,11 +10,11 @@ use Myth\Auth\Exceptions\AuthException;
 /**
  * Class PwnedValidator
  *
- * Checks if the password has been compromised.
+ * Checks if the password has been compromised by checking against 
+ * an online database of over 555 million stolen passwords.
+ * @see https://www.troyhunt.com/ive-just-launched-pwned-passwords-version-2/
  *
  * NIST recommend to check passwords against those obtained from previous data breaches.
- *
- * @see https://www.troyhunt.com/ive-just-launched-pwned-passwords-version-2/
  * @see https://pages.nist.gov/800-63-3/sp800-63b.html#sec5
  *
  * @package Myth\Auth\Authentication\Passwords\Validators
@@ -37,9 +37,10 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
     protected $suggestion;
 
     /**
-     * Checks the password and returns true if it passes this test, or false if not.
-     * True means the password will be passed to any remaining validators.
-     * False will immediately stop validation process
+     * Checks the password against the online database and 
+     * returns false if a match is found. Returns true if no match is found.
+     * If true is returned the password will be passed to next validator.
+     * If false is returned the validation process will be immediately stopped.
      *
      * @param string $password
      * @param Entity $user
@@ -48,15 +49,6 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
      */
     public function check(string $password, Entity $user = null): bool
     {
-        $password = trim($password);
-
-        if(empty($password))
-        {
-            $this->error = lang('Auth.errorPasswordEmpty');
-
-            return false;
-        }
-
         $hashedPword = strtoupper(sha1($password));
         $rangeHash = substr($hashedPword, 0, 5);
         $searchHash = substr($hashedPword, 5);
@@ -100,7 +92,7 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
         $wording = $hits > 1 ? "databases" : "a database";
         $this->error = lang('Auth.errorPasswordPwned', [$password, $hits, $wording]);
         $this->suggestion = lang('Auth.suggestPasswordPwned', [$password]);
-
+        
         return false;
     }
 

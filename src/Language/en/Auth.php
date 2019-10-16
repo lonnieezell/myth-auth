@@ -4,11 +4,11 @@ return [
     // Exceptions
     'invalidModel'              => 'The {0} model must be loaded prior to use.',
     'userNotFound'              => 'Unable to locate a user with ID = {0, number}.',
+    'noUserEntity'              => 'User Entity must be provided for password validation.',
     'tooManyCredentials'        => 'You may only validate against 1 credential other than a password.',
     'invalidFields'             => 'The "{0}" field cannot be used to validate credentials.',
     'unsetPasswordLength'       => 'You must set the `minimumPasswordLength` setting in the Auth config file.',
     'unknownError'              => 'Sorry, we encountered an issue sending the email to you. Please try again later.',
-
     'notLoggedIn'               => 'You must be logged in to access that page.',
     'notEnoughPrivilege'        => 'You do not have sufficient permissions to access that page.',
 
@@ -34,6 +34,8 @@ return [
     'suggestPasswordCommon'     => 'The password was checked against over 65k commonly used passwords or passwords that have been leaked through hacks.',
     'errorPasswordPersonal'     => 'Passwords cannot contain re-hashed personal information.',
     'suggestPasswordPersonal'   => 'Variations on your email address or username should not be used for passwords.',
+    'errorPasswordTooSimilar'    => 'Password is too similar to the username.',
+    'suggestPasswordTooSimilar'  => 'Do not use parts of your username in your password.',
     'errorPasswordPwned'        => 'The password {0} has been exposed due to a data breach and has been seen {1, number} times in {2} of compromised passwords.',
     'suggestPasswordPwned'      => '{0} should never be used as a password. If you are using it anywhere change it immediately.',
     'errorPasswordEmpty'        => 'A Password is required.',

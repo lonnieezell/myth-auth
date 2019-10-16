@@ -10,25 +10,24 @@ use Myth\Auth\Exceptions\AuthException;
  *
  * While older composition checks might have included different character
  * groups that you had to include, current NIST standards prefer to simply
- * set a minimum length, a long maximum (128+ chars).
+ * set a minimum length and a long maximum (128+ chars).
  *
  * @see https://pages.nist.gov/800-63-3/sp800-63b.html#sec5
+ * 
  *
  * @package Myth\Auth\Authentication\Passwords\Validators
  */
 class CompositionValidator extends BaseValidator implements ValidatorInterface
 {
     /**
-     * Checks the password and returns true/false
-     * if it passes muster. Must return either true/false.
-     * True means the password passes this test and
-     * the password will be passed to any remaining validators.
+     * Returns true when the password passes this test. 
+     * The password will be passed to any remaining validators.
      * False will immediately stop validation process
      *
      * @param string $password
      * @param Entity $user
      *
-     * @return mixed
+     * @return boolean
      */
     public function check(string $password, Entity $user=null): bool
     {
@@ -39,7 +38,15 @@ class CompositionValidator extends BaseValidator implements ValidatorInterface
 
         $passed = strlen($password) >= $this->config->minimumPasswordLength;
 
-        return $passed;
+        if(! $passed)
+        {
+            $this->error = lang('Auth.errorPasswordLength', [$this->config->minimumPasswordLength]);
+            $this->suggestion = lang('Auth.suggestPasswordLength');
+            
+            return false;
+        }
+        
+        return true;
     }
 
     /**
@@ -49,7 +56,7 @@ class CompositionValidator extends BaseValidator implements ValidatorInterface
      */
     public function error(): string
     {
-        return lang('Auth.errorPasswordLength', [$this->config->minimumPasswordLength]);
+        return $this->error;
     }
 
     /**
@@ -62,6 +69,6 @@ class CompositionValidator extends BaseValidator implements ValidatorInterface
      */
     public function suggestion(): string
     {
-        return lang('Auth.suggestPasswordLength');
+        return $this->suggestion;
     }
 }

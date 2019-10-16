@@ -45,7 +45,7 @@ class AuthException extends \DomainException implements ExceptionInterface
     }
 
     /**
-     * When the cURL request in PwnedValidator (to Have I Been Pwned) 
+     * When the cURL request (to Have I Been Pwned) in PwnedValidator 
      * throws a HTTPException it is re-thrown as this one
      *
      * @return AuthException
@@ -54,5 +54,15 @@ class AuthException extends \DomainException implements ExceptionInterface
     {
         return new self($e->getMessage(), $e->getCode(), $e);
     }
-    
+
+    /**
+     * When no User Entity is passed into PasswordValidator::check()
+     *
+     * @return AuthException
+     */
+    public static function forNoEntityProvided()
+    {
+        return new self(lang('Auth.noUserEntity'), 500);
+    }
+
 }
