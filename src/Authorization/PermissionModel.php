@@ -28,31 +28,24 @@ class PermissionModel extends Model
      */
     public function doesUserHavePermission(int $userId, int $permissionId): bool
     {
-        // Get user permissions
-        $user_permissions = $this->builder()
-            ->join('auth_users_permissions', 'auth_users_permissions.permission_id = auth_permissions.id', 'inner')
-            ->where('auth_users_permissions.user_id', $userId)
-            ->get()->getResultArray();
+        // Check user permissions
+        $count = $this->db->table('auth_users_permissions')
+            ->where('permission_id', $permissionId)
+            ->where('user_id', $userId)
+            ->countAll();
 
-        $userIds = array_column($user_permissions, 'permission_id');
+        if ($count > 0)
+        {
+            return true;
+        }
 
-        // Get group permissions
-        $group_permissions = $this->builder()
-            ->join('auth_groups_permissions', 'auth_groups_permissions.permission_id = auth_permissions.id', 'inner')
-            ->join('auth_groups_users', 'auth_groups_users.group_id = auth_groups_permissions.group_id', 'inner')
+        // Check group permissions
+        $count = $this->db->table('auth_groups_permissions')
+            ->join('auth_groups_users', 'auth_groups_users.user_id = '. $this->db->escape($userId), 'inner')
+            ->where('auth_groups_permissions.permission_id', $permissionId)
             ->where('auth_groups_users.user_id', $userId)
-            ->get()->getResult();
+            ->countAll();
 
-        $groupIds = array_column($group_permissions, 'permission_id');
-
-        // Merge both permissions into an array
-        // Order is important as User permissions override Group permissions
-        $ids = array_merge($userIds, $groupIds);
-
-        // Remove duplicates giving more preference
-        // to user permissions over group permissions
-        $unique_permissions = array_unique($ids);
-
-        return in_array($permissionId, $unique_permissions);
+        return $count > 0;
     }
 }
