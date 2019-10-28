@@ -142,7 +142,7 @@ class User extends Entity
      */
     public function isActivated(): bool
     {
-        return isset($this->attributes['active']) && $this->attributes['active'] === true;
+        return isset($this->attributes['active']) && $this->attributes['active'] == true;
     }
 
 	/**
