@@ -40,6 +40,8 @@ class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
 	 */
 	protected $users;
 
+	protected $faker;
+
 	/**
 	 * @var SessionHandler
 	 */
@@ -48,11 +50,13 @@ class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
 	public function setUp(): void
 	{
 		parent::setUp();
-		
+
 		$this->users = new UserModel();
 		$this->mockSession();
+
+		$this->faker = \Faker\Factory::create();
 	}
-	
+
 	/**
 	 * Pre-loads the mock session driver into $this->session.
 	 *
@@ -64,7 +68,7 @@ class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
 		$this->session = new MockSession(new ArrayHandler($config, '0.0.0.0'), $config);
 		\Config\Services::injectMock('session', $this->session);
 	}
-	
+
 	/**
 	 * Creates a user on-the-fly.
 	 *
@@ -80,10 +84,50 @@ class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
 		];
 		$info = array_merge($info, $defaults);
 		$user = new User($info);
-		
+
 		$userId = $this->users->insert($user);
 		$user = $this->users->find($userId);
 
 		return $user;
 	}
+
+    /**
+     * Creates a group on the fly
+     *
+     * @param array $info
+     *
+     * @return mixed
+     */
+	protected function createGroup(array $info = [])
+    {
+        $defaults = [
+            'name' => $this->faker->word,
+            'description' => $this->faker->sentence
+        ];
+        $info = array_merge($info, $defaults);
+
+        $this->db->table('auth_groups')->insert($info);
+
+        return $this->db->table('auth_groups')->where('id', $this->db->insertID())->get()->getResultObject()[0];
+    }
+
+    /**
+     * Creates a new permission on the fly.
+     *
+     * @param array $info
+     *
+     * @return mixed
+     */
+    protected function createPermission(array $info = [])
+    {
+        $defaults = [
+            'name' => $this->faker->word,
+            'description' => $this->faker->sentence
+        ];
+        $info = array_merge($info, $defaults);
+
+        $this->db->table('auth_permissions')->insert($info);
+
+        return $this->db->table('auth_permissions')->where('id', $this->db->insertID())->get()->getResultObject()[0];
+    }
 }
