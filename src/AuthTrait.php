@@ -1,6 +1,7 @@
 <?php namespace Myth\Auth;
 
 use Config\Services;
+use CodeIgniter\Router\Exceptions\RedirectException;
 
 trait AuthTrait {
 
@@ -33,6 +34,7 @@ trait AuthTrait {
      * @param bool   $returnOnly
      *
      * @return bool
+     * @throws RedirectException
      */
     public function restrict(string $uri=null, bool $returnOnly=false)
     {
@@ -55,10 +57,10 @@ trait AuthTrait {
 
         if (empty($uri))
         {
-            redirect( route_to('login') );
+            throw new RedirectException( route_to('login') );
         }
 
-        redirect($uri);
+        throw new RedirectException($uri);
     }
 
 
@@ -78,9 +80,10 @@ trait AuthTrait {
      *  restrictToGroups( ['admins', 'moderators'] );
      *
      * @param mixed  $groups
-     * @param string $uri   The URI to redirect to on fail.
+     * @param string $uri The URI to redirect to on fail.
      *
      * @return bool
+     * @throws RedirectException
      */
     public function restrictToGroups($groups, $uri=null)
     {
@@ -101,10 +104,10 @@ trait AuthTrait {
 
         if (empty($uri))
         {
-            redirect( route_to('login') .'?request_uri='. current_url() );
+            throw new RedirectException( route_to('login') .'?request_uri='. current_url() );
         }
 
-        redirect($uri .'?request_uri='. current_url());
+        throw new RedirectException($uri .'?request_uri='. current_url());
     }
 
     /**
@@ -116,10 +119,11 @@ trait AuthTrait {
      * the user to the URI set in $url or the site root, and attempt
      * to set a status message.
      *
-     * @param $permissions
-     * @param string $uri   The URI to redirect to on fail.
+     * @param        $permissions
+     * @param string $uri The URI to redirect to on fail.
      *
      * @return bool
+     * @throws RedirectException
      */
     public function restrictWithPermissions($permissions, $uri=null)
     {
@@ -140,10 +144,10 @@ trait AuthTrait {
 
         if (empty($uri))
         {
-            redirect( route_to('login') .'?request_uri='. current_url() );
+            throw new RedirectException( route_to('login') .'?request_uri='. current_url() );
         }
 
-        redirect($uri .'?request_uri='. current_url());
+        throw new RedirectException($uri .'?request_uri='. current_url());
     }
 
     /**
