@@ -61,7 +61,7 @@ class LocalAuthTest extends AuthTestCase
     public function testValidateUserNotFound()
     {
         $this->assertFalse($this->auth->validate(['email' => 'fred@example.com', 'password' => 'bar']));
-        $this->assertEquals(lang('Auth.invalidUser'), $this->auth->error());
+        $this->assertEquals(lang('Auth.badAttempt'), $this->auth->error());
     }
 
     public function testValidateBadPassword()
