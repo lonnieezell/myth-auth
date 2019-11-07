@@ -35,7 +35,15 @@ in order to use **Myth\Auth** while it is in beta.
 
 Should you choose not to use Composer to install, you can clone or download this repo and
 then enable it by editing **app/Config/Autoload.php** and adding the **Myth\Auth**
-namespace to the **$psr4** array.
+namespace to the **$psr4** array. For example, if you copied it into **app/ThirdParty**:
+```
+    $psr4 = [
+        'Config'      => APPPATH . 'Config',
+        APP_NAMESPACE => APPPATH,
+        'App'         => APPPATH,
+        'Myth\Auth'   => APPPATH .'ThirdParty/myth-auth/src',
+    ];
+```
 
 ## Configuration
 
