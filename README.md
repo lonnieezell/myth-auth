@@ -32,10 +32,9 @@ Once installed you need to let your CodeIgniter 4 application know where to find
 perform the following setup: 
 
 1. Edit **app/Config/Autoload.php** and add the **Myth\Auth** namespace to the **$psr4** array.
-2. Edit **app/Config/Routes.php** and set **discoverLocal** to **true**.
-3. Edit **app/Config/Email.php** and verify that a **fromName** and **fromEmail** are set 
+2. Edit **app/Config/Email.php** and verify that a **fromName** and **fromEmail** are set 
     as that is used when sending emails for password reset, etc. 
-4. Edit **app/Config/Validation.php** and add the following value to the **ruleSets** array: 
+3. Edit **app/Config/Validation.php** and add the following value to the **ruleSets** array: 
     `\Myth\Auth\Authentication\Passwords\ValidationRules::class`
 4. Ensure your database is setup correctly, then run the Auth migrations: 
 
