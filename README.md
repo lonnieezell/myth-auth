@@ -15,8 +15,8 @@ the following primary features:
 
 - [x] Password-based authentication with remember-me functionality for web apps
 - [x] Flat RBAC per NIST standards, described [here](https://csrc.nist.gov/Projects/Role-Based-Access-Control) and [here](https://pdfs.semanticscholar.org/aeb1/e9676e2d7694f268377fc22bdb510a13fab7.pdf).
-- [x] all views/javascript necessary in cross-browser manner
-- [x] easy to "publish" files to the main application for easy customization. Done via a CLI command.
+- [x] All views/javascript necessary in cross-browser manner
+- [x] Publish files to the main application via a CLI command for easy customization
 - [x] Debug Toolbar integration
 
 ## Installation
@@ -26,17 +26,29 @@ the following command:
 
     > composer require myth/auth
 
-### Configuration
+This will add the latest stable release of **Myth\Auth** as a module to your project. Note that
+you may need to adjust your project's
+[minimum stability ](http://webtips.krajee.com/setting-composer-minimum-stability-application/)
+in order to use **Myth\Auth** while it is in beta.
 
-Once installed you need to let your CodeIgniter 4 application know where to find the libraries. In your application,
-perform the following setup: 
+### Manual Installation
 
-1. Edit **app/Config/Autoload.php** and add the **Myth\Auth** namespace to the **$psr4** array.
-2. Edit **app/Config/Email.php** and verify that a **fromName** and **fromEmail** are set 
+Should you choose not to use Composer to install, you can clone or download this repo and
+then enable it by editing **app/Config/Autoload.php** and adding the **Myth\Auth**
+namespace to the **$psr4** array.
+
+## Configuration
+
+Once installed you need to configure the framework to use the **Myth\Auth** library.
+In your application, perform the following setup: 
+
+1. Edit **app/Config/Email.php** and verify that a **fromName** and **fromEmail** are set 
     as that is used when sending emails for password reset, etc. 
-3. Edit **app/Config/Validation.php** and add the following value to the **ruleSets** array: 
+
+2. Edit **app/Config/Validation.php** and add the following value to the **ruleSets** array: 
     `\Myth\Auth\Authentication\Passwords\ValidationRules::class`
-4. Ensure your database is setup correctly, then run the Auth migrations: 
+
+3. Ensure your database is setup correctly, then run the Auth migrations: 
 
     > php spark migrate -all  
 
