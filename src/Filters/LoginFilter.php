@@ -23,16 +23,21 @@ class LoginFilter implements FilterInterface
 	 */
 	public function before(RequestInterface $request)
 	{
-        $current = (string)current_url(true)
-            ->setHost('')
-            ->setScheme('')
-            ->stripQuery('token');
+		if (! function_exists('logged_in'))
+		{
+			helper('auth');
+		}
 
-        // Make sure this isn't already a login route
-        if (in_array((string)$current, [route_to('login'), route_to('forgot'), route_to('reset-password')]))
-        {
-            return;
-        }
+		$current = (string)current_url(true)
+			->setHost('')
+			->setScheme('')
+			->stripQuery('token');
+
+		// Make sure this isn't already a login route
+		if (in_array((string)$current, [route_to('login'), route_to('forgot'), route_to('reset-password')]))
+		{
+			return;
+		}
 
 		// if no user is logged in then send to the login form
 		$authenticate = Services::authentication();
