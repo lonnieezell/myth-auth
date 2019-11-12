@@ -88,6 +88,9 @@ class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
 		$userId = $this->users->insert($user);
 		$user = $this->users->find($userId);
 
+		// Delete any cached permissions
+        cache()->delete("{$userId}_permissions");
+
 		return $user;
 	}
 

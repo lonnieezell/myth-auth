@@ -338,10 +338,7 @@ class FlatAuthorization implements AuthorizeInterface
 
         if (! in_array($permissionId, $permissions))
         {
-            $permissions[] = $permissionId;
-
-            $user->setPermissions($permissions);
-            $this->userModel->save($user);
+            $this->permissionModel->addPermissionToUser($permissionId, $user->id);
         }
 
         return true;
@@ -354,6 +351,8 @@ class FlatAuthorization implements AuthorizeInterface
      *
      * @param int/string $permission
      * @param int $userId
+     *
+     * @return bool|mixed|null
      */
     public function removePermissionFromUser($permission, int $userId)
     {
@@ -376,28 +375,7 @@ class FlatAuthorization implements AuthorizeInterface
             return false;
         }
 
-        $user = $this->userModel->find($userId);
-
-        if (! $user)
-        {
-            $this->error = lang('Auth.userNotFound', [$userId]);
-            return false;
-        }
-
-        // Grab the existing permissions for this user, and remove
-        // the permission id from the list.
-        $permissions = $user->getPermissions();
-
-        if (in_array($permissionId, $permissions))
-        {
-            unset($permissions[array_search($permissionId, $permissions)]);
-
-            $user->setPermissions($permissions);
-            $this->userModel->save($user);
-        }
-
-        // Save the updated permissions
-        return true;
+        return $this->permissionModel->removePermissionFromUser($permissionId, $userId);
     }
 
     /**
@@ -422,17 +400,7 @@ class FlatAuthorization implements AuthorizeInterface
             return null;
         }
 
-        $user = $this->userModel->find($userId);
-
-        if (! $user)
-        {
-            $this->error = lang('Auth.userNotFound', [$userId]);
-            return false;
-        }
-
-        $permissions = $user->getPermissions();
-
-        return in_array($permissionId, $permissions);
+        return $this->permissionModel->doesUserHavePermission($userId, $permissionId);
     }
 
     //--------------------------------------------------------------------

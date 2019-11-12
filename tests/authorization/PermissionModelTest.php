@@ -57,4 +57,27 @@ class PermissionModelTest extends AuthTestCase
 
         $this->assertTrue($this->model->doesUserHavePermission($user->id, $permission->id));
     }
+
+    public function testGetPermissionsForUser()
+    {
+        $user = $this->createUser();
+        $permission1 = $this->createPermission(['name' => 'first']);
+        $permission2 = $this->createPermission(['name' => 'second']);
+
+        $this->hasInDatabase('auth_users_permissions', [
+            'user_id' => $user->id,
+            'permission_id' => $permission1->id
+        ]);
+        $this->hasInDatabase('auth_users_permissions', [
+            'user_id' => $user->id,
+            'permission_id' => $permission2->id
+        ]);
+
+        $expected = [
+            $permission1->id => $permission1->name,
+            $permission2->id => $permission2->name,
+        ];
+
+        $this->assertEquals($expected, $this->model->getPermissionsForUser($user->id));
+    }
 }

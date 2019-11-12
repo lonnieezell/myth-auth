@@ -1,6 +1,7 @@
 <?php namespace Myth\Auth\Entities;
 
 use CodeIgniter\Entity;
+use Myth\Auth\Authorization\PermissionModel;
 
 class User extends Entity
 {
@@ -29,6 +30,12 @@ class User extends Entity
         'active'           => 'boolean',
         'force_pass_reset' => 'boolean',
     ];
+
+    /**
+     * Per-user permissions cache
+     * @var array
+     */
+    protected $permissions = [];
 
 	/**
 	 * Automatically hashes the password when set.
@@ -183,21 +190,44 @@ class User extends Entity
 	}
 
     /**
-     * Returns the user's permissions, automatically
-     * json_decoding them into an associative array.
+     * Determines whether the user has the appropriate permission,
+     * either directly, or through one of it's groups.
+     *
+     * @param string $permission
+     *
+     * @return bool
+     */
+    public function can(string $permission)
+    {
+        $permission = strtolower($permission);
+        $permissions = $this->getPermissions();
+
+        return in_array($permission, $permissions);
+	}
+
+    /**
+     * Returns the user's permissions, formatted for simple checking:
+     *
+     * [
+     *    id => name,
+     *    id=> name,
+     * ]
      *
      * @return array|mixed
      */
     public function getPermissions()
     {
-        return ! empty($this->attributes['permissions'])
-            ? json_decode($this->attributes['permissions'], true)
-            : [];
+        if (empty($this->permissions))
+        {
+            $this->permissions = (new PermissionModel())->getPermissionsForUser($this->id);
+        }
+
+        return $this->permissions;
 	}
 
     /**
-     * Stores the permissions, automatically json_encoding
-     * them for saving.
+     * Warns the developer it won't work, so they don't spend
+     * hours tracking stuff down.
      *
      * @param array $permissions
      *
@@ -205,11 +235,6 @@ class User extends Entity
      */
     public function setPermissions(array $permissions = null)
     {
-        if (is_array($permissions))
-        {
-            $this->attributes['permissions'] = json_encode($permissions);
-        }
-
-        return $this;
+        throw new \RuntimeException('User entity does not support saving permissions directly.');
 	}
 }
