@@ -144,7 +144,7 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
 
         if (! $user)
         {
-            $this->error = lang('Auth.invalidUser');
+            $this->error = lang('Auth.badAttempt');
             return false;
         }
 

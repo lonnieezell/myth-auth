@@ -41,7 +41,7 @@ class PermissionModel extends Model
             ->join('auth_groups_users', 'auth_groups_users.user_id = '. $this->db->escape($userId), 'inner')
             ->where('auth_groups_permissions.permission_id', $permissionId)
             ->where('auth_groups_users.user_id', $userId)
-            ->countAll();
+            ->countAllResults();
 
         return $count > 0;
     }
