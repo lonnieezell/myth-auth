@@ -151,7 +151,8 @@ that includes the following helper functions to ease access to basic features. B
 load the helper before using these functions: `helper('auth');`
 
 **Hint**: Add `'auth'` to any controller's `$helper` property to have it loaded automatically,
-or the same in **app/Controllers/BaseController.php** to have it globally available.
+or the same in **app/Controllers/BaseController.php** to have it globally available. the
+auth filters all pre-load the helper so it is available on any filtered routes.
 
 **logged_in()**
 
