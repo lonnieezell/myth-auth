@@ -339,4 +339,140 @@ class FlatAuthorizationTest extends AuthTestCase
 
         $this->assertTrue($this->auth->doesUserHavePermission($user->id, $permission->id));
     }
+
+    public function testGroupNotFound()
+    {
+        $this->assertNull($this->auth->group('some_group'));
+    }
+
+    public function testGroupWithId()
+    {
+        $group = $this->createGroup();
+
+        $found = $this->auth->group($group->id);
+
+        $this->assertEquals($group->id, $found->id);
+        $this->assertEquals($group->name, $found->name);
+        $this->assertEquals($group->description, $found->description);
+    }
+
+    public function testGroupWithName()
+    {
+        $group = $this->createGroup();
+
+        $found = $this->auth->group($group->name);
+
+        $this->assertEquals($group->id, $found->id);
+        $this->assertEquals($group->name, $found->name);
+        $this->assertEquals($group->description, $found->description);
+    }
+
+    public function testCreateGroupSuccess()
+    {
+        $result = $this->auth->createGroup('Group A', 'Description');
+
+        $this->assertIsInt($result);
+
+        $this->seeInDatabase('auth_groups', [
+            'id' => $result,
+            'name' => 'Group A',
+            'description' => 'Description'
+        ]);
+    }
+
+    public function testDeleteGroup()
+    {
+        $group = $this->createGroup();
+
+        $this->seeInDatabase('auth_groups', [
+            'id' => $group->id
+        ]);
+
+        $this->assertTrue($this->auth->deleteGroup($group->id));
+
+        $this->dontSeeInDatabase('auth_groups', [
+            'id' => $group->id
+        ]);
+    }
+
+    public function testUpdateGroup()
+    {
+        $group = $this->createGroup();
+
+        $this->assertTrue($this->auth->updateGroup($group->id, 'Group B', 'More Words'));
+
+        $this->seeInDatabase('auth_groups', [
+            'id' => $group->id,
+            'name' => 'Group B',
+            'description' => 'More Words'
+        ]);
+    }
+
+    public function testPermissionNotFound()
+    {
+        $this->assertNull($this->auth->permission(1234));
+    }
+
+    public function testPermissionWithId()
+    {
+        $perm = $this->createPermission();
+
+        $found = $this->auth->permission($perm->id);
+
+        $this->assertEquals($perm->id, $found['id']);
+        $this->assertEquals($perm->name, $found['name']);
+        $this->assertEquals($perm->description, $found['description']);
+    }
+
+    public function testPermissionWithName()
+    {
+        $perm = $this->createPermission();
+
+        $found = $this->auth->permission($perm->name);
+
+        $this->assertEquals($perm->id, $found['id']);
+        $this->assertEquals($perm->name, $found['name']);
+        $this->assertEquals($perm->description, $found['description']);
+    }
+
+    public function testCreatePermissionSuccess()
+    {
+        $perm = $this->auth->createPermission('Perm A', 'Description');
+
+        $this->assertIsInt($perm);
+
+        $this->seeInDatabase('auth_permissions', [
+            'id' => $perm,
+            'name' => 'Perm A',
+            'description' => 'Description'
+        ]);
+    }
+
+    public function testDeletePermission()
+    {
+        $perm = $this->createPermission();
+
+        $this->seeInDatabase('auth_permissions', [
+            'id' => $perm->id
+        ]);
+
+        $this->auth->deletePermission($perm->id);
+
+        $this->dontSeeInDatabase('auth_permissions', [
+            'id' => $perm->id
+        ]);
+    }
+
+    public function testUpdatePermission()
+    {
+        $perm = $this->createPermission();
+
+        $this->assertTrue($this->auth->updatePermission($perm->id, 'Perm B', 'More Words'));
+
+        $this->seeInDatabase('auth_permissions', [
+            'id' => $perm->id,
+            'name' => 'Perm B',
+            'description' => 'More Words'
+        ]);
+    }
 }
