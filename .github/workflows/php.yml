@@ -1,6 +1,9 @@
 name: PHP Composer
 
-on: [push]
+on:
+  push:
+    branches: 
+      - develop
 
 jobs:
   build:
@@ -9,6 +12,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+
+    - name: setup PHP
+      uses: shivammathur/setup-php@master
+      with: 
+        php-version: '7.2'
+        extension-csv: intl, json, mbstring, mysqlnd. xdebug, xml
+        coverage: xdebug
 
     - name: Validate composer.json and composer.lock
       run: composer validate
