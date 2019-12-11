@@ -50,6 +50,9 @@ class AuthController extends Controller
 			return redirect()->to($redirectURL);
 		}
 
+        // Set a return URL if none is specified
+        $_SESSION['redirect_url'] = session('redirect_url') ?? previous_url() ?? '/';
+
 		echo view($this->config->views['login'], ['config' => $this->config]);
 	}
 
@@ -169,7 +172,7 @@ class AuthController extends Controller
 		{
 			$activator = Services::activator();
 			$sent = $activator->send($user);
-			
+
 			if (! $sent)
 			{
 				return redirect()->back()->withInput()->with('error', $activator->error() ?? lang('Auth.unknownError'));
