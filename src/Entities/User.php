@@ -217,6 +217,11 @@ class User extends Entity
      */
     public function getPermissions()
     {
+        if (empty($this->id))
+        {
+            throw new \RuntimeException('Users must be created before getting permissions.');
+        }
+
         if (empty($this->permissions))
         {
             $this->permissions = (new PermissionModel())->getPermissionsForUser($this->id);

@@ -1,9 +1,10 @@
 <?php
 
+use Myth\Auth\Authorization\PermissionModel;
 use Myth\Auth\Entities\User;
-use CodeIgniter\Test\CIUnitTestCase;
+use ModuleTests\Support\AuthTestCase;
 
-class UserEntityTest extends CIUnitTestCase
+class UserEntityTest extends AuthTestCase
 {
     /**
      * @var User
@@ -14,16 +15,29 @@ class UserEntityTest extends CIUnitTestCase
     {
         parent::setUp();
 
-        $this->user = new User(['username' => 'conscious4u', 'email' => 'jiminy.cricket@example.com']);
+        $this->user = $this->createUser();
     }
-    
-	public function testGetSetPermissions()
-	{
-		$this->assertEmpty($this->user->getPermissions());
-		
-		$permissions = [1, 2, 4, 5];
-		$this->user->setPermissions($permissions);
 
-		$this->assertEquals($permissions, $this->user->getPermissions());
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Users must be created before getting permissions.
+     */
+    public function testGetPermissionsNotSaved()
+    {
+        $user = new User();
+
+        $this->assertEmpty($user->getPermissions());
+    }
+
+	public function testGetPermissionSuccess()
+	{
+	    $perm = $this->createPermission();
+	    $model = new PermissionModel();
+
+		$this->assertEmpty($this->user->getPermissions());
+
+		$model->addPermissionToUser($perm->id, $this->user->id);
+
+		$this->assertTrue(in_array($perm->name, $this->user->getPermissions()));
 	}
 }
