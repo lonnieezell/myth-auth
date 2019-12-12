@@ -37,6 +37,9 @@ class FlatAuthorizationTest extends AuthTestCase
 
         $this->auth = new FlatAuthorization($this->groups, $this->permissions);
         $this->auth->setUserModel($this->users);
+
+        db_connect()->table('auth_groups_users')->truncate();
+        cache()->clean();
     }
 
     public function testInGroupSingleId()

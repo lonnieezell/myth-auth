@@ -35,6 +35,8 @@ class GroupModel extends Model
      */
     public function addUserToGroup(int $userId, int $groupId)
     {
+        cache()->delete("{$userId}_groups");
+
         $data = [
             'user_id'   => (int)$userId,
             'group_id'  => (int)$groupId
@@ -53,6 +55,8 @@ class GroupModel extends Model
      */
     public function removeUserFromGroup(int $userId, $groupId)
     {
+        cache()->delete("{$userId}_groups");
+
         return $this->db->table('auth_groups_users')
             ->where([
                 'user_id' => (int)$userId,
@@ -69,6 +73,8 @@ class GroupModel extends Model
      */
     public function removeUserFromAllGroups(int $userId)
     {
+        cache()->delete("{$userId}_groups");
+
         return $this->db->table('auth_groups_users')
             ->where('user_id', (int)$userId)
             ->delete();
@@ -83,11 +89,18 @@ class GroupModel extends Model
      */
     public function getGroupsForUser(int $userId)
     {
-        return $this->builder()
-            ->select('auth_groups_users.*, auth_groups.name, auth_groups.description')
-            ->join('auth_groups_users', 'auth_groups_users.group_id = auth_groups.id', 'left')
-            ->where('user_id', $userId)
-            ->get()->getResultArray();
+        if (! $found = cache("{$userId}_groups"))
+        {
+            $found = $this->builder()
+                ->select('auth_groups_users.*, auth_groups.name, auth_groups.description')
+                ->join('auth_groups_users', 'auth_groups_users.group_id = auth_groups.id', 'left')
+                ->where('user_id', $userId)
+                ->get()->getResultArray();
+
+            cache()->save("{$userId}_groups", $found, 300);
+        }
+
+        return $found;
     }
 
 

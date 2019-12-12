@@ -60,6 +60,11 @@ In your application, perform the following setup:
 
     > php spark migrate -all  
 
+NOTE: This library uses your application's cache settings to reduce database lookups. If you want
+to make use of this, simply make sure that your are using a cache engine other than `dummy` and 
+it is properly setup. The `GroupModel` and `PermissionModel` will handle caching and invalidation
+in the background for you.
+
 ## Overview
 
 When first installed, Myth:Auth is setup to provide all of the basic authentication services 

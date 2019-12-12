@@ -75,7 +75,7 @@ class FlatAuthorization implements AuthorizeInterface
 
         $userGroups = $this->groupModel->getGroupsForUser((int)$userId);
 
-        if (! $userGroups)
+        if (empty($userGroups))
         {
             return false;
         }
@@ -92,8 +92,9 @@ class FlatAuthorization implements AuthorizeInterface
             }
             else if (is_string($group))
             {
-                $ids = array_column($userGroups, 'name');
-                if (in_array($group, $ids))
+                $names = array_column($userGroups, 'name');
+
+                if (in_array($group, $names))
                 {
                     return true;
                 }

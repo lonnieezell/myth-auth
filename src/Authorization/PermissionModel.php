@@ -113,17 +113,17 @@ class PermissionModel extends Model
                 ->get()
                 ->getResultObject();
 
-            $found = array_merge($fromUser, $fromGroup);
+            $combined = array_merge($fromUser, $fromGroup);
 
-            $result = [];
-            foreach ($found as $row)
+            $found = [];
+            foreach ($combined as $row)
             {
-                $result[$row->id] = strtolower($row->name);
+                $found[$row->id] = strtolower($row->name);
             }
 
-            cache("{$userId}_permissions", $result, config('App'), 300);
+            cache()->save("{$userId}_permissions", $found, 300);
         }
 
-        return $result;
+        return $found;
     }
 }
