@@ -199,10 +199,7 @@ class User extends Entity
      */
     public function can(string $permission)
     {
-        $permission = strtolower($permission);
-        $permissions = $this->getPermissions();
-
-        return in_array($permission, $permissions);
+        return in_array(strtolower($permission), $this->getPermissions());
 	}
 
     /**
