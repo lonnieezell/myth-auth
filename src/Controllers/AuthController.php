@@ -111,7 +111,7 @@ class AuthController extends Controller
 			$this->auth->logout();
 		}
 
-		return redirect('/');
+		return redirect()->to('/');
 	}
 
 	//--------------------------------------------------------------------
