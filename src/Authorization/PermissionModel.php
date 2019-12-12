@@ -56,6 +56,8 @@ class PermissionModel extends Model
      */
     public function addPermissionToUser(int $permissionId, int $userId)
     {
+        cache()->delete("{$userId}_permissions");
+
         return $this->db->table('auth_users_permissions')->insert([
             'user_id' => $userId,
             'permission_id' => $permissionId
