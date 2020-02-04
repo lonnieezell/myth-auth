@@ -26,6 +26,7 @@ return [
 
     // Login
     'badAttempt'                => 'No se pudo ingresar al sistema. Por favor, chequee sus credenciales.',
+    'badLogin'                  => 'These credentials do not match our records.',
     'loginSuccess'              => '¡Bienvenido nuevamente!',
 
     // Forgotten Passwords

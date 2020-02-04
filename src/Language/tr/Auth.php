@@ -26,6 +26,7 @@ return [
 
     // Login
     'badAttempt'                => 'Giriş yapılamıyor. Lütfen bilgilerinizi kontrol edin.',
+    'badLogin'                  => 'These credentials do not match our records.',
     'loginSuccess'              => 'Tekrar Hoşgeldiniz!',
 
     // Forgotten Passwords

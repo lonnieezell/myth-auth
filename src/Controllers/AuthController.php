@@ -62,6 +62,8 @@ class AuthController extends Controller
 	 */
 	public function attemptLogin()
 	{
+		$users = new UserModel();
+
 		$rules = [
 			'login'	=> 'required',
 			'password' => 'required',
@@ -82,6 +84,14 @@ class AuthController extends Controller
 
 		// Determine credential type
 		$type = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+		$user = $users->where($type, $login)->first();
+
+		// Check if username/email is not record?
+		if (is_null($user))
+		{
+			return redirect()->back()->withInput()->with('error', lang('Auth.badLogin'));
+		}
 
 		// Try to log them in...
 		if (! $this->auth->attempt([$type => $login, 'password' => $password], $remember))

@@ -26,6 +26,7 @@ return [
 
     // Login
     'badAttempt'                => 'Unable to log you in. Please check your credentials.',
+    'badLogin'                  => 'These credentials do not match our records.',
     'loginSuccess'              => 'Welcome back!',
 
     // Forgotten Passwords
