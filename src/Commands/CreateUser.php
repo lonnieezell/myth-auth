@@ -11,7 +11,7 @@ class CreateUser extends BaseCommand
     protected $group       = 'Auth';
     protected $name        = 'auth:create_user';
     protected $description = "Adds a new user to the database.";
-    
+
 	protected $usage     = "auth:create_user [username] [email]";
 	protected $arguments = [
 		'username'        => "The username of the new user to create",
@@ -20,15 +20,19 @@ class CreateUser extends BaseCommand
 
 	public function run(array $params = [])
     {
-    	$row = [];
-    	
+		// Start with the fields required for the account to be usable
+		$row = [
+			'active'   => 1,
+			'password' => bin2hex(random_bytes(24)),
+		];
+
 		// Consume or prompt for username
 		$row['username'] = array_shift($params);
 		if (empty($row['username']))
 		{
 			$row['username'] = CLI::prompt('Username', null, 'required');
 		}
-		
+
 		// Consume or prompt for email
 		$row['email'] = array_shift($params);
 		if (empty($row['email']))
@@ -36,10 +40,10 @@ class CreateUser extends BaseCommand
 			$row['email'] = CLI::prompt('Email', null, 'required');
 		}
 
-		// Save the user
-		$users = new UserModel();
+		// Run the user through the entity and save it
 		$user = new User($row);
 
+		$users = new UserModel();
 		if ($userId = $users->insert($user))
 		{
 			CLI::write(lang('Auth.registerCLI', [$row['username'], $userId]), 'green');
