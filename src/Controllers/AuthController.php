@@ -306,6 +306,8 @@ class AuthController extends Controller
 
 	/**
 	 * Activate account.
+	 *
+	 * @return mixed
 	 */
 	public function activateAccount()
 	{
@@ -339,5 +341,51 @@ class AuthController extends Controller
 		$users->save($user);
 
 		return redirect()->route('login')->with('message', lang('Auth.registerSuccess'));
+	}
+
+	/**
+	 * Resend activation account.
+	 *
+	 * @return mixed
+	 */
+	public function resendActivateAccount()
+	{
+		if ($this->config->requireActivation === false)
+		{
+			return redirect()->route('login');
+		}
+
+		$throttler = Services::throttler();
+
+		if ($throttler->check($this->request->getIPAddress(), 2, MINUTE) === false)
+		{
+			return Services::response()->setStatusCode(429)->setBody(lang('Auth.tooManyRequests', [$throttler->getTokentime()]));
+		}
+
+		$login = urldecode($this->request->getGet('login'));
+		$type = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+		$users = new UserModel();
+
+		$user = $users->where($type, $login)
+					  ->where('active', 0)
+					  ->first();
+
+		if (is_null($user))
+		{
+			return redirect()->route('login')->with('error', lang('Auth.activationNoUser'));
+		}
+
+		$activator = Services::activator();
+		$sent = $activator->send($user);
+
+		if (! $sent)
+		{
+			return redirect()->back()->withInput()->with('error', $activator->error() ?? lang('Auth.unknownError'));
+		}
+
+		// Success!
+		return redirect()->route('login')->with('message', lang('Auth.activationSuccess'));
+		
 	}
 }

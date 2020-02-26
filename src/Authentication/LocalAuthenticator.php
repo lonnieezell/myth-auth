@@ -44,7 +44,11 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
             $ipAddress = Services::request()->getIPAddress();
             $this->recordLoginAttempt($credentials['email'] ?? $credentials['username'], $ipAddress, $this->user->id ?? null, false);
 
-            $this->error = lang('Auth.notActivated');
+            $param = http_build_query([
+                'login' => urlencode($credentials['email'] ?? $credentials['username'])
+            ]);
+
+            $this->error = lang('Auth.notActivated') .' '. anchor(route_to('resend-activate-account').'?'.$param, lang('Auth.activationResend'));
 
             $this->user = null;
             return false;
