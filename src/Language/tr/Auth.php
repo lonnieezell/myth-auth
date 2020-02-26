@@ -21,6 +21,7 @@ return [
     'activationNoUser'          => 'Bu aktivasyon koduna sahip bir kullanıcı bulunamıyor.',
     'activationSubject'         => 'Hesabını etkinleştir.',
     'activationSuccess'         => 'Lütfen bizim gönderdiğimiz emaildeki aktivasyon linkine tıklayarak hesabınızı doğrulayın.',
+    'activationResend'          => 'Resend activation message one more time.', // translate
     'notActivated'              => 'Bu kullanıcı henüz etkinleştirilmedi.',
     'errorSendingActivation'    => 'Aktivasyon mesajı gönderilemedi: {0}',
 
