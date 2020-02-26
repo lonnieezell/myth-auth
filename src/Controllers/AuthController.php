@@ -358,14 +358,14 @@ class AuthController extends Controller
 		$throttler = Services::throttler();
 
 		if ($throttler->check($this->request->getIPAddress(), 2, MINUTE) === false)
-        {
+		{
 			return Services::response()->setStatusCode(429)->setBody(lang('Auth.tooManyRequests', [$throttler->getTokentime()]));
-        }
+		}
 
-        $login = urldecode($this->request->getGet('login'));
-        $type = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+		$login = urldecode($this->request->getGet('login'));
+		$type = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
-        $users = new UserModel();
+		$users = new UserModel();
 
 		$user = $users->where($type, $login)
 					  ->where('active', 0)
