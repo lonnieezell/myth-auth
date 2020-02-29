@@ -28,6 +28,7 @@ return [
     // Login
     'badAttempt'                => 'Giriş yapılamıyor. Lütfen bilgilerinizi kontrol edin.',
     'loginSuccess'              => 'Tekrar Hoşgeldiniz!',
+    'invalidPassword'           => 'Giriş yapılamıyor. Lütfen bilgilerinizi kontrol edin.',
 
     // Forgotten Passwords
     'forgotNoUser'              => 'Bu emaile sahip bir kullanıcı bulunamıyor.',

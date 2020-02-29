@@ -28,6 +28,7 @@ return [
     // Login
     'badAttempt'                => 'No se pudo ingresar al sistema. Por favor, chequee sus credenciales.',
     'loginSuccess'              => '¡Bienvenido nuevamente!',
+    'invalidPassword'           => 'No se pudo ingresar al sistema. Por favor, chequee sus credenciales.',
 
     // Forgotten Passwords
     'forgotNoUser'              => 'No se pudo localizar un usuario con ese correo electrónico.',
