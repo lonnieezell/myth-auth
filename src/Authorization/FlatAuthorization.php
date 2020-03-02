@@ -522,7 +522,7 @@ class FlatAuthorization implements AuthorizeInterface
      */
     protected function getGroupID($group)
     {
-        if (is_int($group))
+        if (is_numeric($group))
         {
             return (int)$group;
         }
