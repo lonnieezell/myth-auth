@@ -98,11 +98,6 @@ class AuthController extends Controller
 		$redirectURL = session('redirect_url') ?? '/';
 		unset($_SESSION['redirect_url']);
 
-        if($redirectURL == site_url('logout'))
-        {
-            $redirectURL = '/';
-        }
-
 		return redirect()->to($redirectURL)->with('message', lang('Auth.loginSuccess'));
 	}
 
