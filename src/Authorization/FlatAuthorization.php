@@ -2,6 +2,7 @@
 
 use CodeIgniter\Model;
 use CodeIgniter\Events\Events;
+use Config\Services;
 
 class FlatAuthorization implements AuthorizeInterface
 {
@@ -451,6 +452,18 @@ class FlatAuthorization implements AuthorizeInterface
             'description' => $description,
         ];
 
+        $validation = Services::validation(null, false);
+        $validation->setRules([
+            'name'        => 'required|max_length[255]|is_unique[auth_groups.name]',
+            'description' => 'max_length[255]',
+        ]);
+
+        if (! $validation->run($data))
+        {
+            $this->error = $validation->getErrors();
+            return false;
+        }
+
         $id = $this->groupModel->insert($data);
 
         if (is_numeric($id))
@@ -584,6 +597,18 @@ class FlatAuthorization implements AuthorizeInterface
             'name'        => $name,
             'description' => $description,
         ];
+
+        $validation = Services::validation(null, false);
+        $validation->setRules([
+            'name'        => 'required|max_length[255]|is_unique[auth_permissions.name]',
+            'description' => 'max_length[255]',
+        ]);
+
+        if (! $validation->run($data))
+        {
+            $this->error = $validation->getErrors();
+            return false;
+        }
 
         $id = $this->permissionModel->insert($data);
 

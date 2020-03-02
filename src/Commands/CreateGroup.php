@@ -37,7 +37,13 @@ class CreateGroup extends BaseCommand
 
 		try
 		{
-			$auth->createGroup($name, $description);
+			if (! $auth->createGroup($name, $description))
+			{
+				foreach ($auth->error() as $message)
+				{
+					CLI::write($message, 'red');
+				}
+			}
 		}
 		catch (\Exception $e)
 		{
