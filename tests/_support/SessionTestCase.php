@@ -1,7 +1,7 @@
 <?php namespace ModuleTests\Support;
 
 use CodeIgniter\Session\Handlers\ArrayHandler;
-use Tests\Support\Session\MockSession;
+use CodeIgniter\Test\Mock\MockSession;
 
 class SessionTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
 {
@@ -24,7 +24,7 @@ class SessionTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
      */
     protected function mockSession()
     {
-        require_once ROOTPATH . 'tests/_support/Session/MockSession.php';
+        require_once SYSTEMPATH . 'Test/Mock/MockSession.php';
         $config = config('App');
         $this->session = new MockSession(new ArrayHandler($config, '0.0.0.0'), $config);
         \Config\Services::injectMock('session', $this->session);
