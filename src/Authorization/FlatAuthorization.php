@@ -464,7 +464,7 @@ class FlatAuthorization implements AuthorizeInterface
             return false;
         }
 
-        $id = $this->groupModel->insert($data);
+        $id = $this->groupModel->skipValidation()->insert($data);
 
         if (is_numeric($id))
         {
@@ -610,7 +610,7 @@ class FlatAuthorization implements AuthorizeInterface
             return false;
         }
 
-        $id = $this->permissionModel->insert($data);
+        $id = $this->permissionModel->skipValidation()->insert($data);
 
         if (is_numeric($id))
         {
