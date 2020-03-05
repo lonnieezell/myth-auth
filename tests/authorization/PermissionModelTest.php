@@ -80,4 +80,40 @@ class PermissionModelTest extends AuthTestCase
 
         $this->assertEquals($expected, $this->model->getPermissionsForUser($user->id));
     }
+
+    public function testDoesUserHavePermissionByGroupAssign()
+    {
+        $user = $this->createUser();
+        $group1 = $this->createGroup();
+        $group2 = $this->createGroup();
+        $permission1 = $this->createPermission();
+        $permission2 = $this->createPermission();
+
+        // group1 has both permissions
+        $this->hasInDatabase('auth_groups_permissions', [
+            'group_id' => $group1->id,
+            'permission_id' => $permission1->id
+        ]);
+        $this->hasInDatabase('auth_groups_permissions', [
+            'group_id' => $group1->id,
+            'permission_id' => $permission2->id
+        ]);
+
+        // group2 has only one permission
+        $this->hasInDatabase('auth_groups_permissions', [
+            'group_id' => $group2->id,
+            'permission_id' => $permission2->id
+        ]);
+
+        // user is assigned to proup2 
+        $this->hasInDatabase('auth_groups_users', [
+            'group_id' => $group2->id,
+            'user_id' => $user->id
+        ]);
+
+        // no permission for permission1
+        $this->assertFalse($this->model->doesUserHavePermission($user->id, $permission1->id));
+        // but he has permission for permission2
+        $this->assertTrue($this->model->doesUserHavePermission($user->id, $permission2->id));
+    }
 }
