@@ -67,6 +67,7 @@ class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
 		$config = config('App');
 		$this->session = new MockSession(new ArrayHandler($config, '0.0.0.0'), $config);
 		\Config\Services::injectMock('session', $this->session);
+		$_SESSION = [];
 	}
 
 	/**

@@ -8,7 +8,7 @@ use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Authorization\PermissionModel;
 use Myth\Auth\Authentication\Passwords\PasswordValidator;
 use Myth\Auth\Authentication\Activators\UserActivator;
-use CodeIgniter\Config\BaseService;
+use Config\Services as BaseService;
 
 class Services extends BaseService
 {

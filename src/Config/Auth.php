@@ -43,14 +43,14 @@ class Auth extends BaseConfig
     //--------------------------------------------------------------------
     // Additional Fields for "Nothing Personal"
     //--------------------------------------------------------------------
-    // The NothingPersonalValidator prevents personal information from 
-    // being used in passwords. The email and username fields are always 
+    // The NothingPersonalValidator prevents personal information from
+    // being used in passwords. The email and username fields are always
     // considered by the validator. Do not enter those field names here.
-    // 
-    // An extend User Entity might include other personal info such as 
-    // first and/or last names. $personalFields is where you can add 
-    // fields to be considered as "personal" by the NothingPersonalValidator. 
-    // For example: 
+    //
+    // An extend User Entity might include other personal info such as
+    // first and/or last names. $personalFields is where you can add
+    // fields to be considered as "personal" by the NothingPersonalValidator.
+    // For example:
     //     $personalFields = ['firstname', 'lastname'];
 
     public $personalFields = [];
@@ -58,35 +58,35 @@ class Auth extends BaseConfig
     //--------------------------------------------------------------------
     // Password / Username Similarity
     //--------------------------------------------------------------------
-    //  Among other things, the NothingPersonalValidator checks the 
-    //  amount of sameness between the password and username. 
-    //  Passwords that are too much like the username are invalid. 
-    //  
+    //  Among other things, the NothingPersonalValidator checks the
+    //  amount of sameness between the password and username.
+    //  Passwords that are too much like the username are invalid.
+    //
     //  The value set for $maxSimilarity represents the maximum percentage
     //  of similarity at which the password will be accepted. In other words, any
     //  calculated similarity equal to, or greater than $maxSimilarity
     //  is rejected.
-    //   
+    //
     //  The accepted range is 0-100, with 0 (zero) meaning don't check similarity.
-    //  Using values at either extreme of the *working range* (1-100) is 
-    //  not advised. The low end is too restrictive and the high end is too permissive.  
-    //  The suggested value for $maxSimilarity is 50. 
-    //  
+    //  Using values at either extreme of the *working range* (1-100) is
+    //  not advised. The low end is too restrictive and the high end is too permissive.
+    //  The suggested value for $maxSimilarity is 50.
+    //
     //  You may be thinking that a value of 100 should have the effect of accepting
-    //  everything like a value of 0 does. That's logical and probably true, 
-    //  but is unproven and untested. Besides, 0 skips the work involved 
+    //  everything like a value of 0 does. That's logical and probably true,
+    //  but is unproven and untested. Besides, 0 skips the work involved
     //  making the calculation unlike when using 100.
-    //  
-    //  The (admittedly limited) testing that's been done suggests a useful working range 
+    //
+    //  The (admittedly limited) testing that's been done suggests a useful working range
     //  of 50 to 60. You can set it lower than 50, but site users will probably start
-    //  to complain about the large number of proposed passwords getting rejected. 
-    //  At around 60 or more it starts to see pairs like 'captain joe' and 'joe*captain' as 
+    //  to complain about the large number of proposed passwords getting rejected.
+    //  At around 60 or more it starts to see pairs like 'captain joe' and 'joe*captain' as
     //  perfectly acceptable which clearly they are not.
     //
- 
-    //  To disable similarity checking set the value to 0. 
-    //      public $maxSimilarity = 0; 
-    //      
+
+    //  To disable similarity checking set the value to 0.
+    //      public $maxSimilarity = 0;
+    //
     public $maxSimilarity = 50;
 
     //--------------------------------------------------------------------
@@ -204,7 +204,7 @@ class Auth extends BaseConfig
     //--------------------------------------------------------------------
     // Activator classes
     //--------------------------------------------------------------------
-    // Avaliable activators with config settings
+    // Available activators with config settings
     //
     public $userActivators = [
         'Myth\Auth\Authentication\Activators\EmailActivator' => [

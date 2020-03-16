@@ -104,7 +104,7 @@ The following Services are provided by the package:
 
 **authentication** 
 
-Provides access to any of the authenticacation packages that Myth:Auth knows about. By default
+Provides access to any of the authentication packages that Myth:Auth knows about. By default
 it will return the "Local Authentication" library, which is the basic password-based system.
 
     $authenticate = Config\Services::authentication();

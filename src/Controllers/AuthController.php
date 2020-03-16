@@ -129,7 +129,7 @@ class AuthController extends Controller
 			return redirect()->back()->withInput()->with('error', lang('Auth.registerDisabled'));
 		}
 
-		echo view($this->config->views['register'], ['config' => $this->config]);
+		return view($this->config->views['register'], ['config' => $this->config]);
 	}
 
 	/**
@@ -387,6 +387,6 @@ class AuthController extends Controller
 
 		// Success!
 		return redirect()->route('login')->with('message', lang('Auth.activationSuccess'));
-		
+
 	}
 }
