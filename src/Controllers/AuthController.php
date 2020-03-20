@@ -123,7 +123,13 @@ class AuthController extends Controller
 	 */
 	public function register()
 	{
-		// Check if registration is allowed
+        // check if already logged in.
+		if ($this->auth->check())
+		{
+			return redirect()->to('/');
+		}
+		
+        // Check if registration is allowed
 		if (! $this->config->allowRegistration)
 		{
 			return redirect()->back()->withInput()->with('error', lang('Auth.registerDisabled'));
