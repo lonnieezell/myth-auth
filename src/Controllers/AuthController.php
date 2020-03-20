@@ -126,9 +126,9 @@ class AuthController extends Controller
         // check if already logged in.
 		if ($this->auth->check())
 		{
-			return redirect()->to('/');
+			return redirect()->back();
 		}
-		
+
         // Check if registration is allowed
 		if (! $this->config->allowRegistration)
 		{
