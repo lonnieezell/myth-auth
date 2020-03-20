@@ -30,7 +30,7 @@ class ValidationRules
      */
     public function strong_password(string $str, string &$error = null)
     {
-        $checker = Services::passwords();
+        $checker = service('passwords');
         $user = $this->buildUserFromRequest();
 
         $result = $checker->check($str, $user);

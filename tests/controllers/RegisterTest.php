@@ -17,12 +17,20 @@ class RegisterTest extends AuthTestCase
         // Make sure our valiation rules include strong_password
         $vConfig = new \Config\Validation();
         $vConfig->ruleSets[] = \Myth\Auth\Authentication\Passwords\ValidationRules::class;
+        $vConfig->ruleSets = array_reverse($vConfig->ruleSets);
         \CodeIgniter\Config\Config::injectMock('Validation', $vConfig);
 
         // Make sure our routes are mapped
         $routes = service('routes');
         $routes->add('login', 'AuthController::login', ['as' => 'login']);
         \Config\Services::injectMock('routes', $routes);
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+
+        \Config\Services::reset();
     }
 
     public function testRegisterDisplaysForm()
@@ -92,5 +100,10 @@ class RegisterTest extends AuthTestCase
 
         $this->assertTrue($result->isRedirect());
         $this->assertEquals(lang('Auth.registerSuccess'), $_SESSION['message']);
+
+        $this->seeInDatabase('users', [
+            'username' => $data['username'],
+            'email' => $data['email'],
+        ]);
     }
 }
