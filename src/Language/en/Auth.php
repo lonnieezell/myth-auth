@@ -28,6 +28,7 @@ return [
     // Login
     'badAttempt'                => 'Unable to log you in. Please check your credentials.',
     'loginSuccess'              => 'Welcome back!',
+    'invalidPassword'           => 'Unable to log you in. Please check your password.',
 
     // Forgotten Passwords
     'forgotNoUser'              => 'Unable to locate a user with that email.',
