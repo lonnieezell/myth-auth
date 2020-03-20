@@ -164,6 +164,11 @@ class AuthController extends Controller
 
 		$this->config->requireActivation !== false ? $user->generateActivateHash() : $user->activate();
 
+		// Ensure default group gets assigned if set
+        if (! empty($this->config->defaultUserGroup)) {
+            $users = $users->withGroup($this->config->defaultUserGroup);
+        }
+
 		if (! $users->save($user))
 		{
 			return redirect()->back()->withInput()->with('errors', $users->errors());

@@ -6,6 +6,15 @@ use Myth\Auth\Authentication\LocalAuthenticator;
 class Auth extends BaseConfig
 {
     //--------------------------------------------------------------------
+    // Default User Group
+    //--------------------------------------------------------------------
+    // The name of a group a user will be added to when they register
+    //
+    // i.e. $defaultUserGroup = 'guests';
+    //
+    public $defaultUserGroup;
+
+    //--------------------------------------------------------------------
     // Libraries
     //--------------------------------------------------------------------
 
@@ -220,5 +229,6 @@ class Auth extends BaseConfig
     // in seconds.
     //
     public $resetTime = 3600;
+
 
 }

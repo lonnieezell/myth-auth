@@ -106,4 +106,50 @@ class RegisterTest extends AuthTestCase
             'email' => $data['email'],
         ]);
     }
+
+    public function testAttemptRegisterCreatesUserWithDefaultGroup()
+    {
+        // Set form input
+        $data = [
+            'username' => 'Joe Cool',
+            'email' => 'jc@example.com',
+            'password' => 'xaH96AhjglK',
+            'pass_confirm' => 'xaH96AhjglK'
+        ];
+        $globals = [
+            'request' => $data,
+            'post' => $data,
+        ];
+
+        $request = service('request', null, false);
+        $this->setPrivateProperty($request, 'globals', $globals);
+
+        $group = $this->createGroup();
+
+        // don't require activation for this...
+        $config = config('Auth');
+        $config->requireActivation = false;
+        $config->defaultUserGroup = $group->name;
+        \CodeIgniter\Config\Config::injectMock('Auth', $config);
+
+        $result = $this->withUri(site_url('register'))
+            ->withRequest($request)
+            ->controller(AuthController::class)
+            ->execute('attemptRegister');
+
+        $this->assertTrue($result->isRedirect());
+        $this->assertEquals(lang('Auth.registerSuccess'), $_SESSION['message']);
+
+        $this->seeInDatabase('users', [
+            'username' => $data['username'],
+            'email' => $data['email'],
+        ]);
+
+        $users = new \Myth\Auth\Models\UserModel();
+        $user = $users->where('username', $data['username'])->first();
+        $this->seeInDatabase('auth_groups_users', [
+            'user_id' => $user->id,
+            'group_id' => $group->id
+        ]);
+    }
 }

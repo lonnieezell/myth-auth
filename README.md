@@ -201,6 +201,19 @@ It also provides a UserModel that should be used as it provides methods needed d
 password-reset flow, as well as basic validation rules. You are free to extend this class
 or modify it as needed.
 
+The UserModel can automatically assign a role during user creation. Pass the group name to the 
+`withGroup()` method prior to calling `insert()` or `save()` to create a new user and the user 
+will be automatically added to that group.
+
+```
+    $user = $userModel
+                ->withGroup('guests')
+                ->insert($data);
+```
+
+User registration already handles this for you, and looks to the Auth config file's, `$defaultUserGroup` 
+setting for the name of the group to add the user to.
+
 ### Toolbar
 
 Myth:Auth includes a toolbar collector to make it easy for developers to work with and troubleshoot
