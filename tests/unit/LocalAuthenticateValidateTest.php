@@ -98,7 +98,7 @@ class LocalAuthenticateValidateTest extends CIUnitTestCase
         ]);
 
         $this->assertFalse($result);
-        $this->assertEquals('Auth.invalidPassword', $this->auth->error());
+        $this->assertEquals(lang('Auth.invalidPassword'), $this->auth->error());
     }
 
     public function testValidateSuccess()
