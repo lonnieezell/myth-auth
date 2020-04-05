@@ -5,7 +5,7 @@ return [
     'invalidModel'              => 'Il modello {0} deve essere caricato prima dell\'uso.',
     'userNotFound'              => 'Impossibile trovare un utente con l\'ID = {0, number}.',
     'noUserEntity'              => 'L\'entità utente deve essere fornita per la convalida della password.',
-    'tooManyCredentials'        => 'You may only validate against 1 credential other than a password.',                                             !!!!
+    'tooManyCredentials'        => 'Puoi fare la convalida solo con una credenziale diversa dalla password',
     'invalidFields'             => 'Non è possibile utilizzare il campo "{0}" per convalidare le credenziali.',
     'unsetPasswordLength'       => 'Devi impostare il valore `minimumPasswordLength` nel file di configurazione Auth.',
     'unknownError'              => 'Siamo spiacenti, si è verificato un problema durante l\'invio dell\'email. Riprova più tardi.',
