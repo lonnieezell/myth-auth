@@ -5,7 +5,7 @@ more roles, create and assign permissions to the roles, and restrict users from 
 
 This guide describes the libraries and methods involved with group and permissions management, as well as actions to use 
 with users for low-level security. While the class can easily be used on it's own, you are encouraged to use the 
-[Auth Trait](auth_trait) on your controllers to provide several Authentication and Authorization convenience methods.
+[Auth Trait](auth_trait.md) on your controllers to provide several Authentication and Authorization convenience methods.
 
 ## Authorization Service
 
