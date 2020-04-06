@@ -97,6 +97,12 @@ class Publish extends BaseCommand
             $this->publishViews();
         }
 
+        // Filters
+        if (CLI::prompt('Publish Filters?', ['y', 'n']) == 'y')
+        {
+            $this->publishFilters();
+        }
+
         // Config
         if (CLI::prompt('Publish Config file?', ['y', 'n']) == 'y')
         {
@@ -180,6 +186,21 @@ class Publish extends BaseCommand
         $content = str_replace('Myth\Auth\Views', $namespace.'\Auth', $content);
 
         $this->writeFile("Views/Auth/{$prefix}{$view}", $content);
+    }
+
+    protected function publishFilters()
+    {
+        $filters = ['LoginFilter', 'PermissionFilter', 'RoleFilter'];
+
+        foreach ($filters as $filter)
+        {
+            $path = "{$this->sourcePath}/Filters/{$filter}.php";
+
+            $content = file_get_contents($path);
+            $content = $this->replaceNamespace($content, 'Myth\Auth\Filters', 'Filters');
+
+            $this->writeFile("Filters/{$filter}.php", $content);
+        }
     }
 
     protected function publishMigration()
