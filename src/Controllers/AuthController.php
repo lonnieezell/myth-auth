@@ -45,6 +45,7 @@ class AuthController extends Controller
 		if ($this->auth->check())
 		{
 			$redirectURL = session('redirect_url') ?? '/';
+            if (site_url("login") === $redirectURL || site_url("logout") === $redirectURL) $redirectURL = site_url();
 			unset($_SESSION['redirect_url']);
 
 			return redirect()->to($redirectURL);
@@ -96,6 +97,7 @@ class AuthController extends Controller
 		}
 
 		$redirectURL = session('redirect_url') ?? '/';
+        if (site_url("login") === $redirectURL || site_url("logout") === $redirectURL) $redirectURL = site_url();
 		unset($_SESSION['redirect_url']);
 
 		return redirect()->to($redirectURL)->with('message', lang('Auth.loginSuccess'));
