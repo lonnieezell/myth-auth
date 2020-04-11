@@ -31,7 +31,7 @@ class ValidationRules
     public function strong_password(string $str, string &$error = null)
     {
         $checker = service('passwords');
-        $user = (function_exists("user") && user()) ? user() : $this->buildUserFromRequest();
+        $user = $this->buildUserFromRequest();
 
         $result = $checker->check($str, $user);
 
