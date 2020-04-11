@@ -1,6 +1,7 @@
 <?php namespace Myth\Auth\Entities;
 
 use CodeIgniter\Entity;
+use Myth\Auth\Authentication\GroupModel;
 use Myth\Auth\Authorization\PermissionModel;
 
 class User extends Entity
@@ -36,6 +37,12 @@ class User extends Entity
      * @var array
      */
     protected $permissions = [];
+
+    /**
+     * Per-user roles cache
+     * @var array
+     */
+    protected $roles = [];
 
 	/**
 	 * Automatically hashes the password when set.
@@ -225,6 +232,36 @@ class User extends Entity
         }
 
         return $this->permissions;
+    }
+
+    /**
+     * Returns the user's roles, formatted for simple checking:
+     *
+     * [
+     *    id => name,
+     *    id => name,
+     * ]
+     *
+     * @return array|mixed
+     */
+    public function getRoles()
+    {
+        if (empty($this->id))
+        {
+            throw new \RuntimeException('Users must be created before getting roles.');
+        }
+
+        if (empty($this->roles))
+        {
+            $groups = (new GroupModel())->getGroupsForUser($this->id);
+
+            foreach ($groups as $group)
+            {
+                $this->roles[$group['group_id']] = strtolower($group['name']);
+            }
+        }
+
+        return $this->roles;
 	}
 
     /**
