@@ -122,6 +122,9 @@ and will describe the process here so that you can understand the flow.
 If you do NOT want your users to be able to use persistent logins, you can turn this off in `app/Config/Auth.php`, 
 along with a number of other settings. See the section on [Configuration](#configuration), below.
 
+If enabled, the remember-me tokens are checked automatically during the LocalAuthenticator's `check()` method. 
+No further action is need on your part. 
+
 ### Security Flow
 
 - When a user is set to be remembered, a Token is created that consists of a modified version of the user's email and a random 128-character, alpha-numeric string.
@@ -129,19 +132,6 @@ along with a number of other settings. See the section on [Configuration](#confi
 - The Token is then salted, hashed and stored in the database. The original token is then discarded and the system doesn't know anything about it anymore.
 - When logging in automatically, the Token is retrieved from the cookie, salted and hashed and we attempt to find a match in the database.
 - After automatic logins, the old tokens are discarded, both from the cookie and the database, and a new Token is generated and the process continues as described here.
-
-### Automatic Logins
-You can attempt to log a user in automatically, if they've been remembered, with the `viaRemember()` method. There are 
-no parameters. The method will return either true or false on success/fail.
-
-	if (! $auth->check() )
-	{
-		if (! $auth->viaRemember() )
-		{
-			$this->session->set('redirect_url', current_url() );
-			return redirect()->route('login');
-		}
-	}
 	
 ## Removing All User's Persistent Logins
 To allow a user to remove all login attempts associated with their email address, across all devices they might be 
