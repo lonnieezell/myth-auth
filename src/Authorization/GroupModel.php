@@ -109,6 +109,37 @@ class GroupModel extends Model
     //--------------------------------------------------------------------
 
     /**
+     * Gets all permissions for a group in a way that can be
+     * easily used to check against:
+     *
+     * [
+     *  id => name,
+     *  id => name
+     * ]
+     *
+     * @param int $groupId
+     *
+     * @return array
+     */
+    public function getPermissionsForGroup(int $groupId): array
+    {
+        $permissionModel = model(PermissionModel::class);
+        $fromGroup = $permissionModel
+            ->select('auth_permissions.*')
+            ->join('auth_groups_permissions', 'auth_groups_permissions.permission_id = auth_permissions.id', 'inner')
+            ->where('group_id', $groupId)
+            ->findAll();
+
+        $found = [];
+        foreach ($fromGroup as $permission)
+        {
+            $found[$permission['id']] = $permission;
+        }
+
+        return $found;
+    }
+
+    /**
      * Add a single permission to a single group, by IDs.
      *
      * @param $permissionId

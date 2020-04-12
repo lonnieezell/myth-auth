@@ -367,7 +367,7 @@ class FlatAuthorizationTest extends AuthTestCase
             'permission_id' => $permission2->id
         ]);
 
-        // user is assigned to proup2 
+        // user is assigned to proup2
         $this->hasInDatabase('auth_groups_users', [
             'group_id' => $group2->id,
             'user_id' => $user->id
@@ -513,5 +513,25 @@ class FlatAuthorizationTest extends AuthTestCase
             'name' => 'Perm B',
             'description' => 'More Words'
         ]);
+    }
+
+    public function testGroupPermissionsEmpty()
+    {
+        $group = $this->createGroup();
+
+        $this->assertEquals([], $this->auth->groupPermissions($group->id));
+    }
+
+    public function testGroupPermissions()
+    {
+        $group = $this->createGroup();
+        $perm = $this->createPermission();
+
+        $this->auth->addPermissionToGroup($perm->id, $group->id);
+
+        $found = $this->auth->groupPermissions($group->id);
+
+        $this->assertTrue(isset($found[$perm->id]));
+        $this->assertEquals((array)$perm, $found[$perm->id]);
     }
 }
