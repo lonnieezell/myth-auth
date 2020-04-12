@@ -1,6 +1,8 @@
 <?php namespace ModuleTests\Support;
 
 use CodeIgniter\Session\Handlers\ArrayHandler;
+use Myth\Auth\Authorization\GroupModel;
+use Myth\Auth\Authorization\PermissionModel;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Models\UserModel;
 use CodeIgniter\Test\Mock\MockSession;
@@ -40,6 +42,16 @@ class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
 	 */
 	protected $users;
 
+    /**
+     * @var GroupModel
+     */
+	protected $groups;
+
+    /**
+     * @var PermissionModel
+     */
+	protected $permissions;
+
 	protected $faker;
 
 	/**
@@ -51,7 +63,9 @@ class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
 	{
 		parent::setUp();
 
-		$this->users = new UserModel();
+		$this->users = model(UserModel::class);
+		$this->groups = model(GroupModel::class);
+		$this->permissions = model(PermissionModel::class);
 		$this->mockSession();
 
 		$this->faker = \Faker\Factory::create();

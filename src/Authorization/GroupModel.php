@@ -123,18 +123,17 @@ class GroupModel extends Model
      */
     public function getPermissionsForGroup(int $groupId): array
     {
-        $fromGroup = $this->db->table('auth_groups')
-            ->select('auth_permissions.id, auth_permissions.name, auth_permissions.description')
-            ->join('auth_groups_permissions', 'auth_groups_permissions.group_id = auth_groups.id', 'inner')
-            ->join('auth_permissions', 'auth_permissions.id = auth_groups_permissions.permission_id', 'inner')
-            ->where('auth_groups.id', $groupId)
-            ->get()
-            ->getResultObject();
+        $permissionModel = model(PermissionModel::class);
+        $fromGroup = $permissionModel
+            ->select('auth_permissions.*')
+            ->join('auth_groups_permissions', 'auth_groups_permissions.permission_id = auth_permissions.id', 'inner')
+            ->where('group_id', $groupId)
+            ->findAll();
 
         $found = [];
         foreach ($fromGroup as $permission)
         {
-            $found[$permission->id] = $permission;
+            $found[$permission['id']] = $permission;
         }
 
         return $found;
