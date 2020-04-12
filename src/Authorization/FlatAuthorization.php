@@ -703,4 +703,25 @@ class FlatAuthorization implements AuthorizeInterface
         return (int)$p->id;
     }
 
+    /**
+     * Returns an array of all permissions in the system for a group
+     * The group can be either the ID or the name of the group.
+     *
+     * @param int|string $group
+     *
+     * @return mixed
+     */
+    public function groupPermissions($group)
+    {
+        if (is_numeric($group))
+        {
+            return $this->groupModel->getPermissionsForGroup($group);
+        }
+        else
+        {
+            $g = $this->groupModel->where('name', $group)->first();
+            return $this->groupModel->getPermissionsForGroup($g->id);
+        }
+    }
+
 }
