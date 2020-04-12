@@ -163,12 +163,12 @@ class FlatAuthorization implements AuthorizeInterface
             return null;
         }
 
-        if (! Events::trigger('beforeAddUserToGroup', $userid, $group))
+        $groupId = $this->getGroupID($group);
+
+        if (! Events::trigger('beforeAddUserToGroup', $userid, $groupId))
         {
             return false;
         }
-
-        $groupId = $this->getGroupID($group);
 
         // Group ID
         if (! is_numeric($groupId))
@@ -183,7 +183,7 @@ class FlatAuthorization implements AuthorizeInterface
             return false;
         }
 
-        Events::trigger('didAddUserToGroup', $userid, $group);
+        Events::trigger('didAddUserToGroup', $userid, $groupId);
 
         return true;
     }
@@ -208,12 +208,12 @@ class FlatAuthorization implements AuthorizeInterface
             return null;
         }
 
-        if (! Events::trigger('beforeRemoveUserFromGroup', $userId, $group))
+        $groupId = $this->getGroupID($group);
+
+        if (! Events::trigger('beforeRemoveUserFromGroup', $userId, $groupId))
         {
             return false;
         }
-
-        $groupId = $this->getGroupID($group);
 
         // Group ID
         if (! is_numeric($groupId))
@@ -228,7 +228,7 @@ class FlatAuthorization implements AuthorizeInterface
             return false;
         }
 
-        Events::trigger('didRemoveUserFromGroup', $userId, $group);
+        Events::trigger('didRemoveUserFromGroup', $userId, $groupId);
 
         return true;
     }
@@ -323,7 +323,7 @@ class FlatAuthorization implements AuthorizeInterface
             return null;
         }
 
-        if (! Events::trigger('beforeAddPermissionToUser', $userId, $permission))
+        if (! Events::trigger('beforeAddPermissionToUser', $userId, $permissionId))
         {
             return false;
         }
@@ -342,6 +342,8 @@ class FlatAuthorization implements AuthorizeInterface
         {
             $this->permissionModel->addPermissionToUser($permissionId, $user->id);
         }
+
+        Events::trigger('didAddPermissionToUser', $userId, $permissionId);
 
         return true;
     }
@@ -372,7 +374,7 @@ class FlatAuthorization implements AuthorizeInterface
 
         $userId = (int)$userId;
 
-        if (! Events::trigger('beforeRemovePermissionFromUser', $userId, $permission))
+        if (! Events::trigger('beforeRemovePermissionFromUser', $userId, $permissionId))
         {
             return false;
         }
