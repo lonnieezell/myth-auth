@@ -1,7 +1,7 @@
 <?php namespace Myth\Auth\Entities;
 
 use CodeIgniter\Entity;
-use Myth\Auth\Authentication\GroupModel;
+use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Authorization\PermissionModel;
 
 class User extends Entity
