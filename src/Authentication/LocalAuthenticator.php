@@ -1,5 +1,6 @@
 <?php namespace Myth\Auth\Authentication;
 
+use CodeIgniter\Router\Exceptions\RedirectException;
 use \Config\Services;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Exceptions\AuthException;
@@ -66,6 +67,12 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
     {
         if ($this->isLoggedIn())
         {
+            // Do we need to force the user to reset their password?
+            if ($this->user && $this->user->force_pass_reset)
+            {
+                throw new RedirectException(route_to('reset-password') .'?token='.$this->user->reset_hash);
+            }
+
             return true;
         }
 
@@ -78,7 +85,7 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
             return false;
         }
 
-        list($selector, $validator) = explode(':', $remember);
+        [$selector, $validator] = explode(':', $remember);
         $validator = hash('sha256', $validator);
 
         $token = $this->loginModel->getRememberToken($selector);

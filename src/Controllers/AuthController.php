@@ -92,7 +92,7 @@ class AuthController extends Controller
 		// Is the user being forced to reset their password?
 		if ($this->auth->user()->force_pass_reset === true)
 		{
-			return redirect('change_pass');
+			return redirect()->to(route_to('reset-password') .'?token='. $this->auth->user()->reset_hash);
 		}
 
 		$redirectURL = session('redirect_url') ?? '/';

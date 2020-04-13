@@ -43,6 +43,12 @@ class RoleFilter implements FilterInterface
 			return redirect('login');
 		}
 
+        // Is the user being forced to reset their password?
+        if (user()->force_pass_reset) {
+            session()->set('redirect_url', current_url());
+            return redirect('change_pass');
+        }
+
 		$authorize = Services::authorization();
 
 		// Check each requested permission

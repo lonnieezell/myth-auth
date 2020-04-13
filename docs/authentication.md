@@ -164,6 +164,18 @@ used during registration. We use the `Activator` service for this.
 By default, we provide one type of activator and this is `EmailActivator`. You can also prepare your own activator,
 which will e.g. use an SMS to confirm activation. There are many possibilities.
 
+## Force a password reset
+
+If you need to force a user to reset their password, you can use the `forcePasswordReset()` method on the User 
+entity to generate the required information on the model. This will then be checked during the LocalAuthenticator's
+`check()` method, which is used by the AuthTrait and all Filters. At this point, the user will not be able to 
+proceed to any protected pages. You must save the changes through the UserModel before the changes will persist.
+
+```
+$user->forcePasswordReset();
+$userModel->save($user);
+```
+
 ## Configuration
 Many aspects of the system can be configured in the `Config/Auth.php` config file. These options are described here. 
 
