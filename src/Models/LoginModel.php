@@ -1,7 +1,6 @@
 <?php namespace Myth\Auth\Models;
 
 use CodeIgniter\Model;
-use Myth\Auth\Entities\User;
 
 class LoginModel extends Model
 {
