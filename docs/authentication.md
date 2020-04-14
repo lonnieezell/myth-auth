@@ -122,6 +122,9 @@ and will describe the process here so that you can understand the flow.
 If you do NOT want your users to be able to use persistent logins, you can turn this off in `app/Config/Auth.php`, 
 along with a number of other settings. See the section on [Configuration](#configuration), below.
 
+If enabled, the remember-me tokens are checked automatically during the LocalAuthenticator's `check()` method. 
+No further action is need on your part. 
+
 ### Security Flow
 
 - When a user is set to be remembered, a Token is created that consists of a modified version of the user's email and a random 128-character, alpha-numeric string.
@@ -129,19 +132,6 @@ along with a number of other settings. See the section on [Configuration](#confi
 - The Token is then salted, hashed and stored in the database. The original token is then discarded and the system doesn't know anything about it anymore.
 - When logging in automatically, the Token is retrieved from the cookie, salted and hashed and we attempt to find a match in the database.
 - After automatic logins, the old tokens are discarded, both from the cookie and the database, and a new Token is generated and the process continues as described here.
-
-### Automatic Logins
-You can attempt to log a user in automatically, if they've been remembered, with the `viaRemember()` method. There are 
-no parameters. The method will return either true or false on success/fail.
-
-	if (! $auth->check() )
-	{
-		if (! $auth->viaRemember() )
-		{
-			$this->session->set('redirect_url', current_url() );
-			return redirect()->route('login');
-		}
-	}
 	
 ## Removing All User's Persistent Logins
 To allow a user to remove all login attempts associated with their email address, across all devices they might be 
@@ -173,6 +163,18 @@ used during registration. We use the `Activator` service for this.
 
 By default, we provide one type of activator and this is `EmailActivator`. You can also prepare your own activator,
 which will e.g. use an SMS to confirm activation. There are many possibilities.
+
+## Force a password reset
+
+If you need to force a user to reset their password, you can use the `forcePasswordReset()` method on the User 
+entity to generate the required information on the model. This will then be checked during the LocalAuthenticator's
+`check()` method, which is used by the AuthTrait and all Filters. At this point, the user will not be able to 
+proceed to any protected pages. You must save the changes through the UserModel before the changes will persist.
+
+```
+$user->forcePasswordReset();
+$userModel->save($user);
+```
 
 ## Configuration
 Many aspects of the system can be configured in the `Config/Auth.php` config file. These options are described here. 

@@ -12,6 +12,8 @@ class RegisterTest extends AuthTestCase
 
     public function setUp(): void
     {
+        \Config\Services::reset();
+
         parent::setUp();
 
         // Make sure our valiation rules include strong_password
@@ -23,14 +25,15 @@ class RegisterTest extends AuthTestCase
         // Make sure our routes are mapped
         $routes = service('routes');
         $routes->add('login', 'AuthController::login', ['as' => 'login']);
+        $routes->add('register', 'AuthController::register', ['as' => 'register']);
         \Config\Services::injectMock('routes', $routes);
+
+        $_SESSION = [];
     }
 
     public function tearDown(): void
     {
         parent::tearDown();
-
-        \Config\Services::reset();
     }
 
     public function testRegisterDisplaysForm()
