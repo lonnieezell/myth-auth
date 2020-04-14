@@ -1,10 +1,8 @@
 <?php namespace Myth\Auth\Controllers;
 
-use CodeIgniter\Controller;
 use Config\Email;
-use Config\Services;
+use CodeIgniter\Controller;
 use Myth\Auth\Entities\User;
-use Myth\Auth\Models\UserModel;
 
 class AuthController extends Controller
 {
@@ -23,10 +21,10 @@ class AuthController extends Controller
 	{
 		// Most services in this controller require
 		// the session to be started - so fire it up!
-		$this->session = Services::session();
+		$this->session = service('session');
 
 		$this->config = config('Auth');
-		$this->auth = Services::authentication();
+		$this->auth = service('authentication');
 	}
 
 	//--------------------------------------------------------------------
@@ -149,7 +147,7 @@ class AuthController extends Controller
 			return redirect()->back()->withInput()->with('error', lang('Auth.registerDisabled'));
 		}
 
-		$users = new UserModel();
+		$users = model('UserModel');
 
 		// Validate here first, since some things,
 		// like the password, can only be validated properly here.
@@ -182,7 +180,7 @@ class AuthController extends Controller
 
 		if ($this->config->requireActivation !== false)
 		{
-			$activator = Services::activator();
+			$activator = service('activator');
 			$sent = $activator->send($user);
 
 			if (! $sent)
@@ -216,7 +214,7 @@ class AuthController extends Controller
 	 */
 	public function attemptForgot()
 	{
-		$users = new UserModel();
+		$users = model('UserModel');
 
 		$user = $users->where('email', $this->request->getPost('email'))->first();
 
@@ -229,8 +227,8 @@ class AuthController extends Controller
 		$user->generateResetHash();
 		$users->save($user);
 
-		$email = Services::email();
-		$config = new Email();
+		$email = service('email');
+		$config = config(Email::class);
 
 		$sent = $email->setFrom($config->fromEmail, $config->fromEmail)
 			  ->setTo($user->email)
@@ -269,7 +267,7 @@ class AuthController extends Controller
 	 */
 	public function attemptReset()
 	{
-		$users = new UserModel();
+		$users = model('UserModel');
 
 		// First things first - log the reset attempt.
 		$users->logResetAttempt(
@@ -323,7 +321,7 @@ class AuthController extends Controller
 	 */
 	public function activateAccount()
 	{
-		$users = new UserModel();
+		$users = model('UserModel');
 
 		// First things first - log the activation attempt.
 		$users->logActivationAttempt(
@@ -332,11 +330,11 @@ class AuthController extends Controller
 			(string) $this->request->getUserAgent()
 		);
 
-		$throttler = Services::throttler();
+		$throttler = service('throttler');
 
 		if ($throttler->check($this->request->getIPAddress(), 2, MINUTE) === false)
         {
-			return Services::response()->setStatusCode(429)->setBody(lang('Auth.tooManyRequests', [$throttler->getTokentime()]));
+			return service('response')->setStatusCode(429)->setBody(lang('Auth.tooManyRequests', [$throttler->getTokentime()]));
         }
 
 		$user = $users->where('activate_hash', $this->request->getGet('token'))
@@ -367,17 +365,17 @@ class AuthController extends Controller
 			return redirect()->route('login');
 		}
 
-		$throttler = Services::throttler();
+		$throttler = service('throttler');
 
 		if ($throttler->check($this->request->getIPAddress(), 2, MINUTE) === false)
 		{
-			return Services::response()->setStatusCode(429)->setBody(lang('Auth.tooManyRequests', [$throttler->getTokentime()]));
+			return service('response')->setStatusCode(429)->setBody(lang('Auth.tooManyRequests', [$throttler->getTokentime()]));
 		}
 
 		$login = urldecode($this->request->getGet('login'));
 		$type = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
-		$users = new UserModel();
+		$users = model('UserModel');
 
 		$user = $users->where($type, $login)
 					  ->where('active', 0)
@@ -388,7 +386,7 @@ class AuthController extends Controller
 			return redirect()->route('login')->with('error', lang('Auth.activationNoUser'));
 		}
 
-		$activator = Services::activator();
+		$activator = service('activator');
 		$sent = $activator->send($user);
 
 		if (! $sent)

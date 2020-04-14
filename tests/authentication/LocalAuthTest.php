@@ -114,5 +114,7 @@ class LocalAuthTest extends AuthTestCase
         $this->expectExceptionMessage(route_to('reset-password') .'?token='. $user->reset_hash);
 
         $this->auth->check();
+
+        unset($_SESSION['logged_in']);
     }
 }
