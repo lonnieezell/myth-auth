@@ -309,6 +309,7 @@ class AuthController extends Controller
 		$user->reset_hash 		= null;
 		$user->reset_at 		= date('Y-m-d H:i:s');
 		$user->reset_expires    = null;
+        $user->force_pass_reset = false;
 		$users->save($user);
 
 		return redirect()->route('login')->with('message', lang('Auth.resetSuccess'));
