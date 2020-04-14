@@ -35,6 +35,8 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
             $ipAddress = Services::request()->getIPAddress();
             $this->recordLoginAttempt($credentials['email'] ?? $credentials['username'], $ipAddress, $this->user->id ?? null, false);
 
+            $this->error = lang('Auth.userIsBanned');
+            
             $this->user = null;
             return false;
         }
