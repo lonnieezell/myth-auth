@@ -1,8 +1,9 @@
 name: PHP Tests
 
 on:
+  pull_request:
   push:
-    branches: 
+    branches:
       - develop
 
 jobs:
@@ -15,7 +16,7 @@ jobs:
 
     - name: setup PHP
       uses: shivammathur/setup-php@master
-      with: 
+      with:
         php-version: '7.2'
         extension-csv: intl, json, mbstring, mysqlnd. xdebug, xml
         coverage: xdebug

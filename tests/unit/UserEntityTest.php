@@ -1,6 +1,7 @@
 <?php
 
 use Myth\Auth\Authorization\PermissionModel;
+use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Entities\User;
 use ModuleTests\Support\AuthTestCase;
 
@@ -45,5 +46,29 @@ class UserEntityTest extends AuthTestCase
 		$model->addPermissionToUser($perm->id, $user->id);
 
 		$this->assertTrue(in_array($perm->name, $user->getPermissions()));
-	}
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Users must be created before getting roles.
+     */
+    public function testGetRolesNotSaved()
+    {
+        $user = new User();
+
+        $this->assertEmpty($user->getRoles());
+    }
+
+    public function testGetRolesSuccess()
+    {
+        $user = $this->createUser();
+        $role = $this->createGroup();
+        $model = new GroupModel();
+
+        $this->assertEmpty($user->getRoles());
+
+        $model->addUserToGroup($user->id, $role->id);
+
+        $this->assertTrue(in_array($role->name, $user->getRoles()));
+    }
 }
