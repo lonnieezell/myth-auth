@@ -119,7 +119,7 @@ Provides access to any of the authorization libraries that Myth:Auth knows about
 it will return the "Flat" authorization library, which is a Flat RBAC (role-based access control)
 as defined by NIST. It provides user-specific permissions as well as group (role) based permissions.
 
-    $authorize = $auth = Config\Services::authorization();
+    $authorize = Config\Services::authorization();
 
 **passwords**
 
