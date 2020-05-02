@@ -249,6 +249,8 @@ class AuthenticationBase
             false,                          // Only send over HTTPS?
             true                            // Hide from Javascript?
         );
+
+        $response->send();
     }
 
     /**
