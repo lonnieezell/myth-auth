@@ -54,7 +54,17 @@ class ValidationRules
         $fields = array_merge($config->validFields, $config->personalFields);
         $fields[] = 'password';
 
-        $data = service('request')->getPost($fields);
+        $request = service('request');
+
+        if (in_array($request->getMethod(), ['put', 'patch', 'delete']))
+        {
+            $data = $request->getRawInput();
+            $data = array_intersect_key($data, array_fill_keys($fields, null));
+        }
+        else
+        {
+            $data = $request->getPost($fields);
+        }
 
         return new User($data);
     }
