@@ -160,7 +160,7 @@ class AuthController extends Controller
 
 		if (! $this->validate($rules))
 		{
-			return redirect()->back()->withInput()->with('errors', $users->errors());
+			return redirect()->back()->withInput()->with('errors', service('validation')->getErrors());
 		}
 
 		// Save the user
