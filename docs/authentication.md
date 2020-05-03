@@ -179,6 +179,11 @@ $userModel->save($user);
 ## Configuration
 Many aspects of the system can be configured in the `Config/Auth.php` config file. These options are described here. 
 
+### auth.defaultUserGroup
+Specifies the name of the group to which the user will be added during registration. By default, this variable is not set, so users will not be added to any group.
+
+    public $defaultUserGroup;
+
 ### auth.authenticationLibs
 Specifies the Authorization library that will be used by the Auth Trait. This should include the fully namespaced class name. 
 
