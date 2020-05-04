@@ -212,7 +212,7 @@ will be automatically added to that group.
 ```
 
 User registration already handles this for you, and looks to the Auth config file's, `$defaultUserGroup` 
-setting for the name of the group to add the user to.
+setting for the name of the group to add the user to. Please, keep in mind that `$defaultUserGroup` variable is not set by default.
 
 ### Toolbar
 
