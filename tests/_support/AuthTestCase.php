@@ -63,9 +63,9 @@ class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
 	{
 		parent::setUp();
 
-		$this->users = model(UserModel::class);
-		$this->groups = model(GroupModel::class);
-		$this->permissions = model(PermissionModel::class);
+		$this->users = model(UserModel::class, false);
+		$this->groups = model(GroupModel::class, false);
+		$this->permissions = model(PermissionModel::class, false);
 		$this->mockSession();
 
 		$this->faker = \Faker\Factory::create();
