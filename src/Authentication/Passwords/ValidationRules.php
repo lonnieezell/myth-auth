@@ -24,9 +24,9 @@ class ValidationRules
      * personalize based on a specific user at that point.
      *
      * @param string $value  Field value
-     * @param string $error1 Error that will be returned (for call with validation data array)
+     * @param string $error1 Error that will be returned (for call without validation data array)
      * @param array  $data   Validation data array
-     * @param string $error2 Error that will be returned (for call without validation data array)
+     * @param string $error2 Error that will be returned (for call with validation data array)
      *
      * @return bool
      */
