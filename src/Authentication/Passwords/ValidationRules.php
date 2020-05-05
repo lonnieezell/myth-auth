@@ -23,14 +23,14 @@ class ValidationRules
      * better security if this is done manually, since you can
      * personalize based on a specific user at that point.
      *
-     * @param string $value Field value
-     * @param string $param Rule parameter (not used here)
-     * @param array  $data  Validation data array
-     * @param string $error Error that will be returned
+     * @param string $value  Field value
+     * @param string $error1 Error that will be returned (for call with validation data array)
+     * @param array  $data   Validation data array
+     * @param string $error2 Error that will be returned (for call without validation data array)
      *
      * @return bool
      */
-    public function strong_password(string $value, string $param = null, array $data = [], string &$error = null)
+    public function strong_password(string $value, string &$error1 = null, array $data = [], string &$error2 = null)
     {
         $checker = service('passwords');
 
@@ -47,7 +47,14 @@ class ValidationRules
 
         if ($result === false)
         {
-            $error = $checker->error();
+            if (empty($data))
+            {
+                $error1 = $checker->error();
+            }
+            else
+            {
+                $error2 = $checker->error();
+            }
         }
 
         return $result;
