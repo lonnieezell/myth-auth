@@ -11,7 +11,7 @@ if (! function_exists('logged_in'))
 	 */
 	function logged_in()
 	{
-		return Services::authentication()->isLoggedIn();
+		return Services::authentication()->check();
 	}
 }
 
