@@ -69,19 +69,7 @@ class ValidationRules
     {
         $fields = $this->prepareValidFields();
 
-        $request = service('request');
-
-        if (in_array($request->getMethod(), ['put', 'patch', 'delete']))
-        {
-            $data = $request->getRawInput();
-
-            $fields = array_fill_keys($fields, null);
-            $data = array_intersect_key(array_merge($fields, $data), $fields);
-        }
-        else
-        {
-            $data = $request->getVar($fields);
-        }
+        $data = service('request')->getPost($fields);
 
         return new User($data);
     }
