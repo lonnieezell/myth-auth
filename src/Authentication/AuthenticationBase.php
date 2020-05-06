@@ -99,7 +99,7 @@ class AuthenticationBase
         // When logged in, ensure cache control headers are in place
         Services::response()->noCache();
 
-        if ($remember)
+        if ($remember && $this->config->allowRemembering)
         {
             $this->rememberUser($this->user->id);
         }

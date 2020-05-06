@@ -98,7 +98,7 @@ class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
 			'username' => 'Fred',
 			'password' => 'secret'
 		];
-		$info = array_merge($info, $defaults);
+		$info = array_merge($defaults, $info);
 		$user = new User($info);
 
 		$userId = $this->users->insert($user);
@@ -123,7 +123,7 @@ class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
             'name' => $this->faker->word,
             'description' => $this->faker->sentence
         ];
-        $info = array_merge($info, $defaults);
+        $info = array_merge($defaults, $info);
 
         $this->db->table('auth_groups')->insert($info);
 
@@ -143,7 +143,7 @@ class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
             'name' => $this->faker->word,
             'description' => $this->faker->sentence
         ];
-        $info = array_merge($info, $defaults);
+        $info = array_merge($defaults, $info);
 
         $this->db->table('auth_permissions')->insert($info);
 
