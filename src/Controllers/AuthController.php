@@ -51,7 +51,7 @@ class AuthController extends Controller
         // Set a return URL if none is specified
         $_SESSION['redirect_url'] = session('redirect_url') ?? previous_url() ?? '/';
 
-		echo view($this->config->views['login'], ['config' => $this->config]);
+		return view($this->config->views['login'], ['config' => $this->config]);
 	}
 
 	/**
