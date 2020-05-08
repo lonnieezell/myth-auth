@@ -109,22 +109,48 @@ class ValidationRulesTest extends CIUnitTestCase
 
     //--------------------------------------------------------------------
 
-    public function testStrongPasswordShortRuleWithRawInputRequest()
+    public function testStrongPasswordShortRuleWithErrors()
     {
-        $data = [
+        $_REQUEST = $data = [
             'email'    => 'john@smith.com',
-            'password' => '!!!gerard!!!abootylicious',
+            'password' => 'john12345',
         ];
 
         $request = service('request');
-        $request->setMethod('patch')->setBody(http_build_query($data));
+        $request->setMethod('post')->setGlobal('post', $data);
 
         $this->validation->setRules([
             'password' => 'strong_password',
         ]);
 
         $result = $this->validation->withRequest($request)->run();
-        $this->assertTrue($result);
+        $this->assertFalse($result);
+        $this->assertEquals([
+            'password' => 'Passwords cannot contain re-hashed personal information.'
+        ], $this->validation->getErrors());
+    }
+
+    //--------------------------------------------------------------------
+
+    public function testStrongPasswordLongRuleWithErrors()
+    {
+        $_REQUEST = $data = [
+            'email'    => 'john@smith.com',
+            'password' => 'john12345',
+        ];
+
+        $request = service('request');
+        $request->setMethod('patch')->setBody(http_build_query($data));
+
+        $this->validation->setRules([
+            'password' => 'strong_password[]',
+        ]);
+
+        $result = $this->validation->withRequest($request)->run();
+        $this->assertFalse($result);
+        $this->assertEquals([
+            'password' => 'Passwords cannot contain re-hashed personal information.'
+        ], $this->validation->getErrors());
     }
 
 }
