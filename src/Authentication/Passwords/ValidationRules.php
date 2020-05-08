@@ -23,21 +23,38 @@ class ValidationRules
      * better security if this is done manually, since you can
      * personalize based on a specific user at that point.
      *
-     * @param string      $str
-     * @param string|null $error
+     * @param string $value  Field value
+     * @param string $error1 Error that will be returned (for call without validation data array)
+     * @param array  $data   Validation data array
+     * @param string $error2 Error that will be returned (for call with validation data array)
      *
      * @return bool
      */
-    public function strong_password(string $str, string &$error = null)
+    public function strong_password(string $value, string &$error1 = null, array $data = [], string &$error2 = null)
     {
         $checker = service('passwords');
-        $user = (function_exists("user") && user()) ? user() : $this->buildUserFromRequest();
 
-        $result = $checker->check($str, $user);
+        if (function_exists('user') && user())
+        {
+            $user = user();
+        }
+        else
+        {
+            $user = empty($data) ? $this->buildUserFromRequest() : $this->buildUserFromData($data);
+        }
+
+        $result = $checker->check($value, $user);
 
         if ($result === false)
         {
-            $error = $checker->error();
+            if (empty($data))
+            {
+                $error1 = $checker->error();
+            }
+            else
+            {
+                $error2 = $checker->error();
+            }
         }
 
         return $result;
@@ -46,17 +63,45 @@ class ValidationRules
     /**
      * Builds a new user instance from the global request.
      *
-     * @return User
+     * @return \Myth\Auth\Entities\User
      */
     protected function buildUserFromRequest()
+    {
+        $fields = $this->prepareValidFields();
+
+        $data = service('request')->getPost($fields);
+
+        return new User($data);
+    }
+
+    /**
+     * Builds a new user instance from assigned data..
+     *
+     * @param array $data Assigned data
+     *
+     * @return \Myth\Auth\Entities\User
+     */
+    protected function buildUserFromData(array $data = [])
+    {
+        $fields = $this->prepareValidFields();
+
+        $data = array_intersect_key($data, array_fill_keys($fields, null));
+
+        return new User($data);
+    }
+
+    /**
+     * Prepare valid user fields
+     *
+     * @return array
+     */
+    protected function prepareValidFields(): array
     {
         $config = config('Auth');
         $fields = array_merge($config->validFields, $config->personalFields);
         $fields[] = 'password';
 
-        $data = service('request')->getPost($fields);
-
-        return new User($data);
+        return $fields;
     }
 
 }
