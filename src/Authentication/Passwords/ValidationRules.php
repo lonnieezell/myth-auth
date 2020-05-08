@@ -61,6 +61,27 @@ class ValidationRules
     }
 
     /**
+     * A validation helper method to check if the passed
+     * current user's password is valid
+     *
+     * @param string $password
+     *
+     * @return bool
+     */
+    public function valid_password(string $password)
+    {
+        helper('auth');
+        $user = user();
+
+        if (empty($user)) {
+            return false;
+        }
+
+        $authenticate = \Config\Services::authentication();
+        return  $authenticate->validate_password($user, $password);
+    }
+
+    /**
      * Builds a new user instance from the global request.
      *
      * @return \Myth\Auth\Entities\User

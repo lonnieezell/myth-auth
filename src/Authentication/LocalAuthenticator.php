@@ -161,9 +161,7 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
         }
 
         // Now, try matching the passwords.
-        $result = password_verify(base64_encode(
-            hash('sha384', $password, true)
-        ), $user->password_hash);
+        $result = $this->validate_password($user, $password);
 
         if (! $result)
         {
@@ -184,6 +182,25 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
         return $returnUser
             ? $user
             : true;
+    }
+
+    /**
+     * Validates the user password
+     *
+     * @param User $user
+     * @param string $password
+     *
+     * @return bool
+     */
+    public function validate_password(User $user, string $password) : bool
+    {
+        // Can't validate without a password.
+        if (empty($credentials['password']) || count($credentials) < 2)
+        {
+            return password_verify(base64_encode(
+                hash('sha384', $password, true)
+            ), $user->password_hash);
+        }
     }
 
 }

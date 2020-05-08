@@ -33,6 +33,16 @@ interface AuthenticatorInterface
     public function validate(array $credentials, bool $returnUser=false);
 
     /**
+     * Validates the user password
+     *
+     * @param User $user
+     * @param string $password
+     *
+     * @return bool
+     */
+    public function validate_password(User $user, string $password) : bool;
+
+    /**
      * Returns the User instance for the current logged in user.
      *
      * @return \Myth\Auth\Entities\User|null
