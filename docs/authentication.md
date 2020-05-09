@@ -220,6 +220,23 @@ by `requireActivation` config variable.
         ],
     ];
 
+### auth.activeResetter
+This can be either false or string with a namespaced class name. Using a class name will force `resetter` service to use this
+ class to send a reset message.
+
+	public $activeResetter = 'Myth\Auth\Authentication\Resetters\EmailResetter';
+
+### auth.userResetters
+This is a list of available resetters, along with their optional configuration variables. Class names listed here can be used
+by `activeResetter` config variable.
+
+	public $userResetters = [
+        'Myth\Auth\Authentication\Resetters\EmailResetter' => [
+            'fromEmail' => null,
+            'fromName' => null,
+        ],
+    ];
+
 ### auth.allowRemembering
 This can be either true or false, and determines whether or not the system allows persistent logins (Remember Me). 
 For most sites, you will likely want this turned on for your user's convenience. If your site holds extremely 

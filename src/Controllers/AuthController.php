@@ -205,7 +205,12 @@ class AuthController extends Controller
 	 */
 	public function forgotPassword()
 	{
-		echo view($this->config->views['forgot'], ['config' => $this->config]);
+		if ($this->config->activeResetter === false)
+		{
+			return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
+		}
+
+		return view($this->config->views['forgot'], ['config' => $this->config]);
 	}
 
 	/**
@@ -214,6 +219,11 @@ class AuthController extends Controller
 	 */
 	public function attemptForgot()
 	{
+		if ($this->config->activeResetter === false)
+		{
+			return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
+		}
+
 		$users = model('UserModel');
 
 		$user = $users->where('email', $this->request->getPost('email'))->first();
@@ -227,20 +237,12 @@ class AuthController extends Controller
 		$user->generateResetHash();
 		$users->save($user);
 
-		$email = service('email');
-		$config = config(Email::class);
-
-		$sent = $email->setFrom($config->fromEmail, $config->fromEmail)
-			  ->setTo($user->email)
-			  ->setSubject(lang('Auth.forgotSubject'))
-			  ->setMessage(view($this->config->views['emailForgot'], ['hash' => $user->reset_hash]))
-			  ->setMailType('html')
-			  ->send();
+		$resetter = service('resetter');
+		$sent = $resetter->send($user);
 
 		if (! $sent)
 		{
-			log_message('error', "Failed to send forgotten password email to: {$user->email}");
-			return redirect()->back()->withInput()->with('error', lang('Auth.unknownError'));
+			return redirect()->back()->withInput()->with('error', $resetter->error() ?? lang('Auth.unknownError'));
 		}
 
 		return redirect()->route('reset-password')->with('message', lang('Auth.forgotEmailSent'));
@@ -251,9 +253,14 @@ class AuthController extends Controller
 	 */
 	public function resetPassword()
 	{
+		if ($this->config->activeResetter === false)
+		{
+			return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
+		}
+
 		$token = $this->request->getGet('token');
 
-		echo view($this->config->views['reset'], [
+		return view($this->config->views['reset'], [
 			'config' => $this->config,
 			'token'  => $token,
 		]);
@@ -267,6 +274,11 @@ class AuthController extends Controller
 	 */
 	public function attemptReset()
 	{
+		if ($this->config->activeResetter === false)
+		{
+			return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
+		}
+
 		$users = model('UserModel');
 
 		// First things first - log the reset attempt.

@@ -116,6 +116,14 @@ class Auth extends BaseConfig
     public $requireActivation = 'Myth\Auth\Authentication\Activators\EmailActivator';
 
     //--------------------------------------------------------------------
+    // Allow to reset password via email
+    //--------------------------------------------------------------------
+    // When enabled, every user will have the option to reset his password
+    // via specified resetter. Default setting is email.
+    //
+    public $activeResetter = 'Myth\Auth\Authentication\Resetters\EmailResetter';
+
+    //--------------------------------------------------------------------
     // Allow Persistent Login Cookies (Remember me)
     //--------------------------------------------------------------------
     // While every attempt has been made to create a very strong protection
@@ -217,6 +225,18 @@ class Auth extends BaseConfig
     //
     public $userActivators = [
         'Myth\Auth\Authentication\Activators\EmailActivator' => [
+            'fromEmail' => null,
+            'fromName' => null,
+        ],
+    ];
+
+    //--------------------------------------------------------------------
+    // Resetter classes
+    //--------------------------------------------------------------------
+    // Available resetters with config settings
+    //
+    public $userResetters = [
+        'Myth\Auth\Authentication\Resetters\EmailResetter' => [
             'fromEmail' => null,
             'fromName' => null,
         ],

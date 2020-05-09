@@ -8,6 +8,7 @@ use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Authorization\PermissionModel;
 use Myth\Auth\Authentication\Passwords\PasswordValidator;
 use Myth\Auth\Authentication\Activators\UserActivator;
+use Myth\Auth\Authentication\Resetters\UserResetter;
 use Config\Services as BaseService;
 
 class Services extends BaseService
@@ -112,5 +113,28 @@ class Services extends BaseService
         }
 
         return new UserActivator($config);
+    }
+
+    /**
+     * Returns an instance of the resetter.
+     *
+     * @param null $config
+     * @param bool $getShared
+     *
+     * @return mixed|Activator
+     */
+    public static function resetter($config = null, bool $getShared = true)
+    {
+        if ($getShared)
+        {
+            return self::getSharedInstance('resetter', $config);
+        }
+
+        if (empty($config))
+        {
+            $config = config(Auth::class);
+        }
+
+        return new UserResetter($config);
     }
 }
