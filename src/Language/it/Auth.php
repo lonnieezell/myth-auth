@@ -31,10 +31,12 @@ return [
     'invalidPassword'           => 'Impossibile accedere. Verifica la password.',
 
     // Forgotten Passwords
+    'forgotDisabled'            => 'Resseting password option has been disabled.', // translate
     'forgotNoUser'              => 'Impossibile trovare un utente con questo indirizzo email.',
     'forgotSubject'             => 'Istruzioni per il Ripristino della Password',
     'resetSuccess'              => 'La tua password è stata cambiata con successo. Effettua l\'accesso con le tue nuove credenziali.',
     'forgotEmailSent'           => 'Un token di sicurezza è stato inviato al tuo indirizzo email. Inseriscilo nella casella qui sotto per continuare.',
+    'errorEmailSent'            => 'Unable to send email with password reset instructions to: {0}', // translate
 
     // Passwords
     'errorPasswordLength'       => 'La password deve contenere almeno {0, number} caratteri.',

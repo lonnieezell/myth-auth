@@ -31,10 +31,12 @@ return [
     'invalidPassword'           => 'Giriş yapılamıyor. Lütfen bilgilerinizi kontrol edin.',
 
     // Forgotten Passwords
+    'forgotDisabled'            => 'Resseting password option has been disabled.', // translate
     'forgotNoUser'              => 'Bu emaile sahip bir kullanıcı bulunamıyor.',
     'forgotSubject'             => 'Parola Sıfırlama Adımları',
     'resetSuccess'              => 'Parolanız başarıyla değiştirildi. Yeni parolanızla giriş yapabilirsiniz.',
     'forgotEmailSent'           => 'Email adresinize bir güvenlik kodu gönderildi. Devam etmek için bu kodu aşağıdaki alana girin.',
+    'errorEmailSent'            => 'Unable to send email with password reset instructions to: {0}', // translate
 
     // Passwords
     'errorPasswordLength'       => 'Parola en az {0, number} karakter uzunluğunda olmalıdır.',
