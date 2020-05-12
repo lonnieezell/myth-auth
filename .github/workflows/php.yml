@@ -4,11 +4,20 @@ on:
   push:
     branches: 
       - develop
+  pull_request:
+    branches: 
+      - develop
 
 jobs:
   build:
 
+    strategy:
+      matrix:
+        php-versions: ['7.2', '7.3', '7.4']
+
     runs-on: ubuntu-latest
+
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
 
     steps:
     - uses: actions/checkout@v1
@@ -16,7 +25,7 @@ jobs:
     - name: setup PHP
       uses: shivammathur/setup-php@master
       with: 
-        php-version: '7.2'
+        php-version: ${{ matrix.php-versions }}
         extension-csv: intl, json, mbstring, mysqlnd. xdebug, xml
         coverage: xdebug
 
