@@ -1,6 +1,8 @@
 <?php
 
+use CodeIgniter\Session\Handlers\ArrayHandler;
 use CodeIgniter\Test\CIUnitTestCase;
+use CodeIgniter\Test\Mock\MockSession;
 use CodeIgniter\Validation\Validation;
 use Config\Services;
 use Myth\Auth\Authentication\Passwords\ValidationRules;
@@ -17,11 +19,16 @@ class ValidationRulesTest extends CIUnitTestCase
 
     //--------------------------------------------------------------------
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
 
         Services::reset(true);
+
+        $config = config('App');
+        $this->session = new MockSession(new ArrayHandler($config, '0.0.0.0'), $config);
+        \Config\Services::injectMock('session', $this->session);
+        $_SESSION = [];
 
         $this->validation = new Validation((object) $this->config, \Config\Services::renderer());
         $this->validation->reset();
