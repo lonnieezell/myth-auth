@@ -8,20 +8,26 @@ Flexible, Powerful, Secure auth package for CodeIgniter 4.
 
 This repo is maintained by volunteers. If you post an issue and haven't heard from us within 7 days, feel free to ping the issue so that we see it again. 
 
-## Intended Features
+## Requirements
+
+- PHP 7.2+
+- CodeIgniter 4. Changes in beta-3 require the latest develop branch of CodeIgniter 4 to work correctly (4.0.3 won't do).
+
+## Features
 
 This is meant to be a one-stop shop for 99% of your web-based authentication needs with CI4. It includes
 the following primary features: 
 
-- [x] Password-based authentication with remember-me functionality for web apps
-- [x] Flat RBAC per NIST standards, described [here](https://csrc.nist.gov/Projects/Role-Based-Access-Control) and [here](https://pdfs.semanticscholar.org/aeb1/e9676e2d7694f268377fc22bdb510a13fab7.pdf).
-- [x] All views/javascript necessary in cross-browser manner
-- [x] Publish files to the main application via a CLI command for easy customization
-- [x] Debug Toolbar integration
+- Password-based authentication with remember-me functionality for web apps
+- Flat RBAC per NIST standards, described [here](https://csrc.nist.gov/Projects/Role-Based-Access-Control) and [here](https://pdfs.semanticscholar.org/aeb1/e9676e2d7694f268377fc22bdb510a13fab7.pdf).
+- All views necessary for login, registration and forgotten password flows.
+- Publish files to the main application via a CLI command for easy customization
+- Debug Toolbar integration
+- Email-based account verification
 
 ## Installation
 
-Installation is intended to be done via Composer. Assuming Composer is installed globally, you may use
+Installation is best done via Composer. Assuming Composer is installed globally, you may use
 the following command: 
 
     > composer require myth/auth
