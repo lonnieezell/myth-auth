@@ -186,6 +186,20 @@ class AuthenticationBase
 
         // Take care of any remember me functionality
         $this->loginModel->purgeRememberTokens($user->id);
+		
+		$appConfig = new App();
+
+        // Remove the cookie
+        set_cookie(
+            'remember',      							// Cookie Name
+            "", 										// Value
+            0,  										// # Seconds until it expires
+            $appConfig->cookieDomain,
+            $appConfig->cookiePath,
+            $appConfig->cookiePrefix,
+            $appConfig->cookieHTTPOnly,                 // Only send over HTTPS?
+            $appConfig->cookieSecure                  	// Hide from Javascript?
+        );
 
         // trigger logout event
 		Events::trigger('logout', $user);
@@ -240,14 +254,14 @@ class AuthenticationBase
 
         // Create the cookie
         $response->setCookie(
-            'remember',                     // Cookie Name
-            $token,                         // Value
-            $this->config->rememberLength,  // # Seconds until it expires
+            'remember',      							// Cookie Name
+            $token,                         			// Value
+            $this->config->rememberLength,  			// # Seconds until it expires
             $appConfig->cookieDomain,
             $appConfig->cookiePath,
             $appConfig->cookiePrefix,
-            false,                          // Only send over HTTPS?
-            true                            // Hide from Javascript?
+            $appConfig->cookieHTTPOnly,                 // Only send over HTTPS?
+            $appConfig->cookieSecure                    // Hide from Javascript?
         );
     }
 
@@ -281,14 +295,14 @@ class AuthenticationBase
 
         // Create the cookie
         set_cookie(
-            'remember',               // Cookie Name
-            $selector.':'.$validator, // Value
-            $this->config->rememberLength,  // # Seconds until it expires
+            'remember',      							// Cookie Name
+            $selector.':'.$validator, 					// Value
+            $this->config->rememberLength,  			// # Seconds until it expires
             $appConfig->cookieDomain,
             $appConfig->cookiePath,
             $appConfig->cookiePrefix,
-            false,                  // Only send over HTTPS?
-            true                  // Hide from Javascript?
+            $appConfig->cookieHTTPOnly,                 // Only send over HTTPS?
+            $appConfig->cookieSecure                  	// Hide from Javascript?
         );
     }
 
