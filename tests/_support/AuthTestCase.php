@@ -5,6 +5,10 @@ use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Authorization\PermissionModel;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Models\UserModel;
+use Myth\Auth\Test\Fakers\GroupFaker;
+use Myth\Auth\Test\Fakers\PermissionFaker;
+use Myth\Auth\Test\Fakers\UserFaker;
+use CodeIgniter\Test\Fabricator;
 use CodeIgniter\Test\Mock\MockSession;
 
 class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
@@ -52,6 +56,9 @@ class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
      */
 	protected $permissions;
 
+	/**
+	 * @var Faker\Generator
+	 */
 	protected $faker;
 
 	/**
@@ -99,13 +106,14 @@ class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
 			'password' => 'secret'
 		];
 		$info = array_merge($defaults, $info);
-		$user = new User($info);
 
-		$userId = $this->users->insert($user);
-		$user = $this->users->find($userId);
+		$fabricator = new Fabricator(UserFaker::class);
+		$fabricator->setOverrides($info, false);
+
+		$user = $fabricator->create();
 
 		// Delete any cached permissions
-        cache()->delete("{$userId}_permissions");
+        cache()->delete($user->id . '_permissions');
 
 		return $user;
 	}
@@ -119,15 +127,10 @@ class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
      */
 	protected function createGroup(array $info = [])
     {
-        $defaults = [
-            'name' => $this->faker->word,
-            'description' => $this->faker->sentence
-        ];
-        $info = array_merge($defaults, $info);
+		$fabricator = new Fabricator(GroupFaker::class);
+		$fabricator->setOverrides($info, false);
 
-        $this->db->table('auth_groups')->insert($info);
-
-        return $this->db->table('auth_groups')->where('id', $this->db->insertID())->get()->getResultObject()[0];
+        return $fabricator->create();
     }
 
     /**
@@ -139,14 +142,9 @@ class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
      */
     protected function createPermission(array $info = [])
     {
-        $defaults = [
-            'name' => $this->faker->word,
-            'description' => $this->faker->sentence
-        ];
-        $info = array_merge($defaults, $info);
+		$fabricator = new Fabricator(PermissionFaker::class);
+		$fabricator->setOverrides($info, false);
 
-        $this->db->table('auth_permissions')->insert($info);
-
-        return $this->db->table('auth_permissions')->where('id', $this->db->insertID())->get()->getResultObject()[0];
+        return (object) $fabricator->create();
     }
 }
