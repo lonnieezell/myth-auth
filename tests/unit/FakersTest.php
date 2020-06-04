@@ -1,10 +1,10 @@
 <?php
 
 use CodeIgniter\Test\Fabricator;
-use ModuleTests\Support\AuthTestCase;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Test\Fakers\GroupFaker;
 use Myth\Auth\Test\Fakers\UserFaker;
+use Tests\Support\AuthTestCase;
 
 class FakersTest extends AuthTestCase
 {

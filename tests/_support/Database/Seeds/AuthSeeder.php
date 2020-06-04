@@ -1,8 +1,9 @@
-<?php namespace ModuleTests\Support\Database\Seeds;
+<?php namespace Tests\Support\Database\Seeds;
 
+use CodeIgniter\Database\Seeder;
 use Myth\Auth\Entities\User;
 
-class AuthSeeder extends \CodeIgniter\Database\Seeder
+class AuthSeeder extends Seeder
 {
 	public function run()
 	{

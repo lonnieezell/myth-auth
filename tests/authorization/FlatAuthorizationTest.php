@@ -1,10 +1,10 @@
 <?php
 
-use Myth\Auth\Models\UserModel;
-use ModuleTests\Support\AuthTestCase;
 use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Authorization\PermissionModel;
 use Myth\Auth\Authorization\FlatAuthorization;
+use Myth\Auth\Models\UserModel;
+use Tests\Support\AuthTestCase;
 
 class FlatAuthorizationTest extends AuthTestCase
 {

@@ -1,7 +1,7 @@
 <?php
 
-use ModuleTests\Support\AuthTestCase;
 use Myth\Auth\Authentication\LocalAuthenticator;
+use Tests\Support\AuthTestCase;
 
 class AuthenticationBaseTest extends AuthTestCase
 {

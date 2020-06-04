@@ -1,8 +1,8 @@
 <?php
 
-use ModuleTests\Support\AuthTestCase;
 use CodeIgniter\Test\ControllerTester;
 use Myth\Auth\Controllers\AuthController;
+use Tests\Support\AuthTestCase;
 
 class LoginTest extends AuthTestCase
 {

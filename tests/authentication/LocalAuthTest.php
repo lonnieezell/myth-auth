@@ -1,9 +1,9 @@
 <?php
 
-use ModuleTests\Support\AuthTestCase;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Models\UserModel;
 use Myth\Auth\Authentication\LocalAuthenticator;
+use Tests\Support\AuthTestCase;
 
 class LocalAuthTest extends AuthTestCase
 {
