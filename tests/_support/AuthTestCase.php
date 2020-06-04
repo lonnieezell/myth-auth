@@ -1,6 +1,10 @@
-<?php namespace ModuleTests\Support;
+<?php namespace Tests\Support;
 
 use CodeIgniter\Session\Handlers\ArrayHandler;
+use CodeIgniter\Test\CIDatabaseTestCase;
+use CodeIgniter\Test\Fabricator;
+use CodeIgniter\Test\Mock\MockSession;
+use Config\Services;
 use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Authorization\PermissionModel;
 use Myth\Auth\Entities\User;
@@ -8,10 +12,8 @@ use Myth\Auth\Models\UserModel;
 use Myth\Auth\Test\Fakers\GroupFaker;
 use Myth\Auth\Test\Fakers\PermissionFaker;
 use Myth\Auth\Test\Fakers\UserFaker;
-use CodeIgniter\Test\Fabricator;
-use CodeIgniter\Test\Mock\MockSession;
 
-class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
+class AuthTestCase extends CIDatabaseTestCase
 {
 	/**
 	 * Should the database be refreshed before each test?
@@ -25,7 +27,7 @@ class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
 	 *
 	 * @var string
 	 */
-	protected $seed = 'ModuleTests\Support\Database\Seeds\AuthSeeder';
+	protected $seed = 'Tests\Support\Database\Seeds\AuthSeeder';
 
 	/**
 	 * The path to where we can find the test Seeds directory.
@@ -84,10 +86,9 @@ class AuthTestCase extends \CodeIgniter\Test\CIDatabaseTestCase
 	 */
 	protected function mockSession()
 	{
-		require_once SYSTEMPATH . 'Test/Mock/MockSession.php';
-		$config = config('App');
-		$this->session = new MockSession(new ArrayHandler($config, '0.0.0.0'), $config);
-		\Config\Services::injectMock('session', $this->session);
+        $config  = config('App');
+        $session = new MockSession(new ArrayHandler($config, '0.0.0.0'), $config);
+        Services::injectMock('session', $session);
 		$_SESSION = [];
 	}
 

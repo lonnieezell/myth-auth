@@ -2,7 +2,7 @@
 
 use Myth\Auth\Authorization\PermissionModel;
 use Myth\Auth\Entities\User;
-use ModuleTests\Support\AuthTestCase;
+use Tests\Support\AuthTestCase;
 
 class UserEntityTest extends AuthTestCase
 {

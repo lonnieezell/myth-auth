@@ -1,8 +1,8 @@
 <?php
 
 use Myth\Auth\Models\UserModel;
-use ModuleTests\Support\AuthTestCase;
 use Myth\Auth\Authorization\GroupModel;
+use Tests\Support\AuthTestCase;
 
 class UserModelTest extends AuthTestCase
 {

@@ -1,7 +1,7 @@
 <?php
 
-use ModuleTests\Support\AuthTestCase;
 use Myth\Auth\Authorization\PermissionModel;
+use Tests\Support\AuthTestCase;
 
 class PermissionModelTest extends AuthTestCase
 {

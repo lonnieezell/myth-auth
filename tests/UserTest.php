@@ -1,7 +1,7 @@
 <?php
 
 use Myth\Auth\Entities\User;
-use ModuleTests\Support\AuthTestCase;
+use Tests\Support\AuthTestCase;
 
 class UserTest extends AuthTestCase
 {
