@@ -109,4 +109,15 @@ class AuthenticationBaseTest extends AuthTestCase
         ]);
     }
 
+    public function testLogoutLogsOut()
+    {
+        $user = $this->createUser();
+
+        $this->assertTrue($this->auth->login($user));
+
+		$this->auth->logout();
+
+        $this->assertFalse($this->auth->isLoggedIn());
+        $this->assertNull($this->auth->user());
+    }
 }
