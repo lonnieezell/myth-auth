@@ -168,30 +168,34 @@ class AuthenticationBase
     {
         helper('cookie');
 
-        $user = $this->user();
-
         // Destroy the session data - but ensure a session is still
         // available for flash messages, etc.
         if (isset($_SESSION))
         {
-            foreach ( $_SESSION as $key => $value )
+            foreach ($_SESSION as $key => $value)
             {
-                $_SESSION[ $key ] = NULL;
-                unset( $_SESSION[ $key ] );
+                $_SESSION[$key] = NULL;
+                unset($_SESSION[$key]);
             }
         }
 
         // Regenerate the session ID for a touch of added safety.
         session()->regenerate(true);
 
-        // Take care of any remember me functionality
-        $this->loginModel->purgeRememberTokens($user->id);
-
         // Remove the cookie
         delete_cookie("remember");
 
-        // trigger logout event
-		Events::trigger('logout', $user);
+        // Handle user-specific tasks
+        if ($user = $this->user())
+        {
+            // Take care of any remember me functionality
+            $this->loginModel->purgeRememberTokens($user->id);
+
+            // Trigger logout event
+            Events::trigger('logout', $user);
+
+            $this->user = null;
+        }
     }
 
     /**
