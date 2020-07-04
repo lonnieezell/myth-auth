@@ -224,6 +224,7 @@ class Publish extends BaseCommand
 
         $content = file_get_contents($path);
         $content = str_replace('namespace Myth\Auth\Config', "namespace Config", $content);
+        $content = str_replace("use CodeIgniter\Config\BaseConfig;\n", '', $content);
         $content = str_replace('extends BaseConfig', "extends \Myth\Auth\Config\Auth", $content);
 
         $this->writeFile("Config/Auth.php", $content);
