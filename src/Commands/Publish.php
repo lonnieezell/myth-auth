@@ -56,6 +56,13 @@ class Publish extends BaseCommand
      */
     protected $sourcePath;
 
+    /**
+     * Whether the Views were published for local use.
+     *
+     * @var bool
+     */
+    protected $viewsPublished = false;
+
     //--------------------------------------------------------------------
 
     /**
@@ -95,6 +102,7 @@ class Publish extends BaseCommand
         if (CLI::prompt('Publish Views?', ['y', 'n']) == 'y')
         {
             $this->publishViews();
+            $this->viewsPublished = true;
         }
 
         // Filters
@@ -225,6 +233,13 @@ class Publish extends BaseCommand
         $content = file_get_contents($path);
         $content = str_replace('namespace Myth\Auth\Config', "namespace Config", $content);
         $content = str_replace('extends BaseConfig', "extends \Myth\Auth\Config\Auth", $content);
+
+        // are we also changing the views?
+        if ($this->viewsPublished)
+        {
+            $namespace = defined('APP_NAMESPACE') ? APP_NAMESPACE : 'App';
+            $content = str_replace('Myth\Auth\Views', $namespace . '\Views', $content);
+        }
 
         $this->writeFile("Config/Auth.php", $content);
     }
