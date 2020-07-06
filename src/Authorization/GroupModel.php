@@ -85,7 +85,7 @@ class GroupModel extends Model
      *
      * @param $userId
      *
-     * @return object
+     * @return array
      */
     public function getGroupsForUser(int $userId)
     {
@@ -103,6 +103,29 @@ class GroupModel extends Model
         return $found;
     }
 
+    /**
+     * Returns an array of all users that are members of a group.
+     *
+     * @param $groupId
+     *
+     * @return array
+     */
+    public function getUsersForGroup(int $groupId)
+    {
+        if (! $found = cache("{$groupId}_users"))
+        {
+            $found = $this->builder()
+                ->select('auth_groups_users.*, users.*')
+                ->join('auth_groups_users', 'auth_groups_users.group_id = auth_groups.id', 'left')
+                ->join('users', 'auth_groups_users.user_id = users.id', 'left')
+                ->where('auth_groups.id', $groupId)
+                ->get()->getResultArray();
+
+            cache()->save("{$groupId}_users", $found, 300);
+        }
+
+        return $found;
+    }
 
     //--------------------------------------------------------------------
     // Permissions
