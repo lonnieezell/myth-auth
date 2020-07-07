@@ -1,6 +1,7 @@
 <?php
 
 use Myth\Auth\Authorization\GroupModel;
+use Myth\Auth\Test\Fakers\UserFaker;
 use Tests\Support\AuthTestCase;
 
 class GroupModelTest extends AuthTestCase
@@ -118,6 +119,27 @@ class GroupModelTest extends AuthTestCase
             'name' => $group2->name,
             'description' => $group2->description
         ]);
+    }
+
+    public function testGetUsersForGroup()
+    {
+        $group = $this->createGroup();
+        $user1 = fake(UserFaker::class);
+        $user2 = fake(UserFaker::class);
+
+        $this->hasInDatabase('auth_groups_users', [
+            'user_id'  => $user1->id,
+            'group_id' => $group->id
+        ]);
+        $this->hasInDatabase('auth_groups_users', [
+            'user_id'  => $user2->id,
+            'group_id' => $group->id
+        ]);
+
+        $result = $this->model->getUsersForGroup($group->id);
+
+        $this->assertEquals($user1->id, $result[0]['id']);
+        $this->assertEquals($user2->id, $result[1]['id']);
     }
 
     public function testAddPermissionToGroup()
