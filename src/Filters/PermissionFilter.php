@@ -4,6 +4,7 @@ use Config\Services;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Filters\FilterInterface;
+use Myth\Auth\Exceptions\PermissionException;
 
 class PermissionFilter implements FilterInterface
 {
@@ -61,7 +62,7 @@ class PermissionFilter implements FilterInterface
 				return redirect()->to($redirectURL)->with('error', lang('Auth.notEnoughPrivilege'));
 			}
 			else {
-				throw new \RuntimeException(lang('Auth.notEnoughPrivilege'));
+				throw new PermissionException(lang('Auth.notEnoughPrivilege'));
 			}
 		}
 	}
