@@ -47,7 +47,9 @@ class Publish extends BaseCommand
      *
      * @var array
      */
-    protected $options = [];
+    protected $options = [
+        '-f'    => 'Force overwrite ALL existing files in destination',
+    ];
 
     /**
      * The path to Myth\Auth\src directory.
@@ -303,25 +305,32 @@ class Publish extends BaseCommand
         $config = new Autoload();
         $appPath = $config->psr4[APP_NAMESPACE];
 
-        $directory = dirname($appPath . $path);
+        $filename = $appPath . $path;
+        $directory = dirname($filename);
 
         if (! is_dir($directory))
         {
             mkdir($directory, 0777, true);
         }
 
-        try
+        if (file_exists($filename))
         {
-            write_file($appPath . $path, $content);
-        }
-        catch (\Exception $e)
-        {
-            $this->showError($e);
-            exit();
+            $overwrite = (bool) CLI::getOption('f');
+
+            if (! $overwrite && CLI::prompt("  File '{$path}' already exists in destination. Overwrite?", ['n', 'y']) === 'n')
+            {
+                CLI::error("  Skipped {$path}. If you wish to overwrite, please use the '-f' option or reply 'y' to the prompt.");
+                return;
+            }
         }
 
-        $path = str_replace($appPath, '', $path);
-
-        CLI::write(CLI::color('  created: ', 'green') . $path);
+        if (write_file($filename, $content))
+        {
+            CLI::write(CLI::color('  Created: ', 'green') . $path);
+        }
+        else
+        {
+            CLI::error("  Error creating {$path}.");
+        }
     }
 }
