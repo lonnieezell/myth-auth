@@ -18,10 +18,11 @@ class LoginFilter implements FilterInterface
 	 * redirects, etc.
 	 *
 	 * @param \CodeIgniter\HTTP\RequestInterface $request
+	 * @param array|null                         $params
 	 *
 	 * @return mixed
 	 */
-	public function before(RequestInterface $request)
+	public function before(RequestInterface $request, $params = null)
 	{
 		if (! function_exists('logged_in'))
 		{
@@ -58,10 +59,11 @@ class LoginFilter implements FilterInterface
 	 *
 	 * @param \CodeIgniter\HTTP\RequestInterface  $request
 	 * @param \CodeIgniter\HTTP\ResponseInterface $response
+	 * @param array|null                          $arguments
 	 *
-	 * @return mixed
+	 * @return void
 	 */
-	public function after(RequestInterface $request, ResponseInterface $response)
+	public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
 	{
 
 	}

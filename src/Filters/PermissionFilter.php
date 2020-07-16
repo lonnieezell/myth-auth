@@ -77,10 +77,11 @@ class PermissionFilter implements FilterInterface
 	 *
 	 * @param \CodeIgniter\HTTP\RequestInterface  $request
 	 * @param \CodeIgniter\HTTP\ResponseInterface $response
+	 * @param array|null                          $arguments
 	 *
-	 * @return mixed
+	 * @return void
 	 */
-	public function after(RequestInterface $request, ResponseInterface $response)
+	public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
 	{
 
 	}
