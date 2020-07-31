@@ -5,7 +5,7 @@ namespace Myth\Auth\Authentication;
 use CodeIgniter\Events\Events;
 use CodeIgniter\Model;
 use Config\App;
-use Config\Services
+use Config\Services;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Exceptions\AuthException;
 use Myth\Auth\Exceptions\UserNotFoundException;
