@@ -1,18 +1,18 @@
-<?php namespace Myth\Auth\Authentication;
+<?php
 
-use Myth\Auth\Entities\User;
+namespace Myth\Auth\Authentication;
 
 interface AuthenticatorInterface
 {
     /**
      * Attempts to validate the credentials and log a user in.
      *
-     * @param array $credentials
+     * @param array $credential
      * @param bool  $remember Should we remember the user (if enabled)
      *
      * @return bool
      */
-    public function attempt(array $credentials, bool $remember = null): bool;
+    public function attempt(array $credential, bool $remember = false): bool;
 
     /**
      * Checks to see if the user is logged in or not.
@@ -26,11 +26,10 @@ interface AuthenticatorInterface
      * Unlike `attempt()`, will not log the user into the system.
      *
      * @param array $credentials
-     * @param bool  $returnUser
      *
-     * @return bool|User
+     * @return boolean
      */
-    public function validate(array $credentials, bool $returnUser=false);
+    public function validate(array $credential);
 
     /**
      * Returns the User instance for the current logged in user.
