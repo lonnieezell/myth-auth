@@ -259,10 +259,8 @@ class BaseAuthentication
      *
      * @param int    $id
      * @param string $selector
-     *
-     * @return void
      */
-    public function refreshRemember(int $id, string $selector): void
+    public function refreshRemember(int $id, string $selector)
     {
         $existing = $this->loginModel->getRememberToken($selector);
 
