@@ -1,4 +1,6 @@
-<?php namespace Myth\Auth\Authentication;
+<?php
+
+namespace Myth\Auth\Authentication;
 
 use CodeIgniter\Events\Events;
 use CodeIgniter\Model;
@@ -68,7 +70,7 @@ class BaseAuthentication
      * NOTE: does not perform validation. All validation should
      * be done prior to using the login method.
      *
-     * @param bool $remember
+     * @param boolean $remember
      *
      * @return boolean
      * @throws \Exception
@@ -140,8 +142,8 @@ class BaseAuthentication
     /**
      * Logs a user into the system by their ID.
      *
-     * @param int  $id
-     * @param bool $remember
+     * @param int     $id
+     * @param boolean $remember
      */
     public function loginByID(int $id, bool $remember = false)
     {
@@ -194,14 +196,15 @@ class BaseAuthentication
     /**
      * Record a login attempt
      *
-     * @param bool $success
+     * @param string  $email
+     * @param boolean $success
      *
-     * @return bool|int|string
+     * @return mixed
      */
-    public function recordLoginAttempt(bool $success = true)
+    public function recordLoginAttempt(string $email = null, bool $success = true)
     {
         return $this->loginModel->insert([
-            'email' => $this->user->email,
+            'email' => $email ?? $this->user->email,
             'user_id' => $this->user->id,
             'ip_address' => $this->request->getIPAddress(),
             'date' => date('Y-m-d H:i:s'),
