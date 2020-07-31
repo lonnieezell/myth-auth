@@ -9,7 +9,7 @@ use Myth\Auth\Exceptions\AuthException;
 class LocalAuthenticator extends BaseAuthentication implements AuthenticatorInterface
 {
     /**
-     * Attempts to validate the credentials and log a user in.
+     * Attempts to validate the credential and log a user in.
      *
      * @param array   $credential
      * @param boolean $remember   Should we remember the user (if enabled)
@@ -31,7 +31,7 @@ class LocalAuthenticator extends BaseAuthentication implements AuthenticatorInte
         if ($this->user->isBanned())
         {
             // Always record a login attempt, whether success or not.
-            $this->recordLoginAttempt($credentials['email'] ?? $credentials['username'], false);
+            $this->recordLoginAttempt($credential['email'] ?? $credential['username'], false);
             
             // Set error
             $this->error = lang('Auth.userIsBanned');
