@@ -98,16 +98,18 @@ class Auth extends \CodeIgniter\Debug\Toolbar\Collectors\BaseCollector
 			$groupModel = new \Myth\Auth\Authorization\GroupModel();
 			$user->groups =  $groupModel->getGroupsForUser($user->id);
 
-			$groupsForUser = '';
+			$groups = [];
 
 			if (!empty($user->groups))
 			{
 				foreach($user->groups as $group)
 				{
-					$groupsForUser .= $group['name'].', ';
+					$groups[] = $group['name'];
 				}
 			}
 
+			$groupsForUser = implode(", ", $groups);
+			
 			$html = '<h3>Current User</h3>';
 			$html .= '<table><tbody>';
 			$html .= "<tr><td style='width:150px;'>User ID</td><td>#{$user->id}</td></tr>";
