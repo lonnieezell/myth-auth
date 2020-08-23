@@ -35,7 +35,7 @@ class LoginFilter implements FilterInterface
 			->stripQuery('token');
 
 		// Make sure this isn't already a login route
-		if (in_array((string)$current, [route_to('login'), route_to('forgot'), route_to('reset-password'), route_to('register')]))
+		if (in_array((string)$current, [route_to('login'), route_to('forgot'), route_to('reset-password'), route_to('register'), route_to('activate-account')]))
 		{
 			return;
 		}
