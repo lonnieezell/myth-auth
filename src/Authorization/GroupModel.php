@@ -36,6 +36,7 @@ class GroupModel extends Model
     public function addUserToGroup(int $userId, int $groupId)
     {
         cache()->delete("{$userId}_groups");
+        cache()->delete("{$userId}_permissions");
 
         $data = [
             'user_id'   => (int)$userId,
@@ -56,6 +57,7 @@ class GroupModel extends Model
     public function removeUserFromGroup(int $userId, $groupId)
     {
         cache()->delete("{$userId}_groups");
+        cache()->delete("{$userId}_permissions");
 
         return $this->db->table('auth_groups_users')
             ->where([
@@ -74,6 +76,7 @@ class GroupModel extends Model
     public function removeUserFromAllGroups(int $userId)
     {
         cache()->delete("{$userId}_groups");
+        cache()->delete("{$userId}_permissions");
 
         return $this->db->table('auth_groups_users')
             ->where('user_id', (int)$userId)
