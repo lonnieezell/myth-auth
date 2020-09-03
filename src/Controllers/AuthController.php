@@ -51,7 +51,7 @@ class AuthController extends Controller
         // Set a return URL if none is specified
         $_SESSION['redirect_url'] = session('redirect_url') ?? previous_url() ?? '/';
 
-		return view($this->config->views['login'], ['config' => $this->config]);
+		return $this->_render($this->config->views['login'], ['config' => $this->config]);
 	}
 
 	/**
@@ -133,7 +133,7 @@ class AuthController extends Controller
 			return redirect()->back()->withInput()->with('error', lang('Auth.registerDisabled'));
 		}
 
-		return view($this->config->views['register'], ['config' => $this->config]);
+		return $this->_render($this->config->views['register'], ['config' => $this->config]);
 	}
 
 	/**
@@ -211,7 +211,7 @@ class AuthController extends Controller
 			return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
 		}
 
-		return view($this->config->views['forgot'], ['config' => $this->config]);
+		return $this->_render($this->config->views['forgot'], ['config' => $this->config]);
 	}
 
 	/**
@@ -261,7 +261,7 @@ class AuthController extends Controller
 
 		$token = $this->request->getGet('token');
 
-		return view($this->config->views['reset'], [
+		return $this->_render($this->config->views['reset'], [
 			'config' => $this->config,
 			'token'  => $token,
 		]);
@@ -411,5 +411,10 @@ class AuthController extends Controller
 		// Success!
 		return redirect()->route('login')->with('message', lang('Auth.activationSuccess'));
 
+	}
+
+	protected function _render(string $view, array $data = [])
+	{
+		return view($view, $data);
 	}
 }
