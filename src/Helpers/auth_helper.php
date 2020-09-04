@@ -35,7 +35,7 @@ if (! function_exists('user_id'))
 	/**
 	 * Returns the User ID for the current logged in user.
 	 *
-	 * @return \Myth\Auth\Entities\User|null
+	 * @return int|null
 	 */
 	function user_id()
 	{
