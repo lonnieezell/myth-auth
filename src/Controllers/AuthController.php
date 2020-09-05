@@ -42,14 +42,14 @@ class AuthController extends Controller
 		// is already logged in.
 		if ($this->auth->check())
 		{
-			$redirectURL = session('redirect_url') ?? base_url('/');
+			$redirectURL = session('redirect_url') ?? site_url('/');
 			unset($_SESSION['redirect_url']);
 
 			return redirect()->to($redirectURL);
 		}
 
         // Set a return URL if none is specified
-        $_SESSION['redirect_url'] = session('redirect_url') ?? previous_url() ?? base_url('/');
+        $_SESSION['redirect_url'] = session('redirect_url') ?? previous_url() ?? site_url('/');
 
 		return view($this->config->views['login'], ['config' => $this->config]);
 	}
@@ -93,7 +93,7 @@ class AuthController extends Controller
 			return redirect()->to(route_to('reset-password') .'?token='. $this->auth->user()->reset_hash)->withCookies();
 		}
 
-		$redirectURL = session('redirect_url') ?? base_url('/');
+		$redirectURL = session('redirect_url') ?? site_url('/');
 		unset($_SESSION['redirect_url']);
 
 		return redirect()->to($redirectURL)->withCookies()->with('message', lang('Auth.loginSuccess'));
@@ -109,7 +109,7 @@ class AuthController extends Controller
 			$this->auth->logout();
 		}
 
-		return redirect()->to(base_url('/'));
+		return redirect()->to(site_url('/'));
 	}
 
 	//--------------------------------------------------------------------

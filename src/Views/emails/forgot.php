@@ -1,10 +1,10 @@
-<p>Someone requested a password reset at this email address for <?= base_url() ?>.</p>
+<p>Someone requested a password reset at this email address for <?= site_url() ?>.</p>
 
 <p>To reset the password use this code or URL and follow the instructions.</p>
 
 <p>Your Code: <?= $hash ?></p>
 
-<p>Visit the <a href="<?= base_url('reset-password') . '?token=' . $hash ?>">Reset Form</a>.</p>
+<p>Visit the <a href="<?= site_url('reset-password') . '?token=' . $hash ?>">Reset Form</a>.</p>
 
 <br>
 
