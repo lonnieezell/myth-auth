@@ -13,14 +13,18 @@ use Config\Services as BaseService;
 
 class Services extends BaseService
 {
-    public static function authentication(string $lib = 'local', Model $userModel=null, Model $loginModel=null, bool $getShared = true)
+    public static function authentication(string $lib = 'local', Model $userModel = null, Model $loginModel = null, bool $getShared = true)
     {
         if ($getShared)
         {
             return self::getSharedInstance('authentication', $lib, $userModel, $loginModel);
         }
 
-		// config() checks first in app/Config
+        /**
+         * config() checks first in app/Config
+         *
+         * @var \Myth\Auth\Config\Auth $config
+         */
 		$config = config('Auth');
 
         $class = $config->authenticationLibs[$lib];

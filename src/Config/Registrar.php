@@ -12,8 +12,6 @@ use Config\Services;
  *      protected $registrars = [
  *          \Myth\Template\Registrar::class
  *      ];
- *
- * @package Myth\Template
  */
 class Registrar
 {
@@ -21,8 +19,8 @@ class Registrar
     {
         return [
             'plugins' => [
-                'logged_in' => [ function($str, array $params=[]) { return Services::authentication()->check() ? $str : ''; } ],
-                'logged_out' => [ function($str, array $params=[]) { return ! Services::authentication()->check() ? $str : ''; } ],
+                'logged_in' => [ function ($str, array $params = []) { return Services::authentication()->check() ? $str : ''; } ],
+                'logged_out' => [ function ($str, array $params = []) { return ! Services::authentication()->check() ? $str : ''; } ],
             ]
         ];
     }
