@@ -11,8 +11,9 @@ class AuthenticationBaseLoginTest extends CIUnitTestCase
      * @var AuthenticationBase
      */
     protected $auth;
+
     /**
-     * @var LoginModel
+     * @var Mockery\MockInterface
      */
     protected $loginModel;
 
@@ -34,7 +35,7 @@ class AuthenticationBaseLoginTest extends CIUnitTestCase
             'email' => 'joe@example.com'
         ];
 
-        $this->loginModel->shouldReceive('insert')->once()->with(\Mockery::subset([
+        $this->loginModel->shouldReceive('insert')->once()->with(M::subset([
             'ip_address' => '0.0.0.0',
             'email' => 'joe@example.com',
             'user_id' => 12,

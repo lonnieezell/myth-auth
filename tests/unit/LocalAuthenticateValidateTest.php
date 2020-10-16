@@ -10,17 +10,20 @@ use Myth\Auth\Authentication\LocalAuthenticator;
 class LocalAuthenticateValidateTest extends CIUnitTestCase
 {
     /**
-     * @var UserModel
+     * @var Mockery\MockInterface
      */
     protected $userModel;
+
     /**
-     * @var LoginModel
+     * @var Mockery\MockInterface
      */
     protected $loginModel;
+
     /**
      * @var LocalAuthenticator
      */
     protected $auth;
+
     /**
      * @var \CodeIgniter\HTTP\IncomingRequest
      */
