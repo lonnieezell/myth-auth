@@ -6,139 +6,108 @@ use Myth\Auth\Models\UserModel;
 use Myth\Auth\Models\LoginModel;
 use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Authorization\PermissionModel;
-use Myth\Auth\Authentication\Passwords\PasswordValidator;
+use Myth\Auth\Authentication\Activators\ActivatorInterface;
 use Myth\Auth\Authentication\Activators\UserActivator;
-use Myth\Auth\Authentication\Resetters\UserResetter;
+use Myth\Auth\Authentication\Passwords\PasswordValidator;
+use Myth\Auth\Authentication\Resetters\EmailResetter;
+use Myth\Auth\Authentication\Resetters\ResetterInterface;
 use Config\Services as BaseService;
 
 class Services extends BaseService
 {
-    public static function authentication(string $lib = 'local', Model $userModel = null, Model $loginModel = null, bool $getShared = true)
-    {
-        if ($getShared)
-        {
-            return self::getSharedInstance('authentication', $lib, $userModel, $loginModel);
-        }
+	public static function authentication(string $lib = 'local', Model $userModel = null, Model $loginModel = null, bool $getShared = true)
+	{
+		if ($getShared)
+		{
+			return self::getSharedInstance('authentication', $lib, $userModel, $loginModel);
+		}
 
-        /**
-         * config() checks first in app/Config
-         *
-         * @var \Myth\Auth\Config\Auth $config
-         */
-		$config = config('Auth');
+		$userModel  = $userModel ?? model(UserModel::class);
+		$loginModel = $loginModel ?? model(LoginModel::class);
 
-        $class = $config->authenticationLibs[$lib];
+		/** @var \Myth\Auth\Config\Auth $config */
+		$config   = config('Auth');
+		$class	  = $config->authenticationLibs[$lib];
+		$instance = new $class($config);
 
-        $instance = new $class($config);
+		return $instance
+			->setUserModel($userModel)
+			->setLoginModel($loginModel);
+	}
 
-        if (empty($userModel))
-        {
-            $userModel = new UserModel();
-        }
+	public static function authorization(Model $groupModel = null, Model $permissionModel = null, Model $userModel = null, bool $getShared = true)
+	{
+		if ($getShared)
+		{
+			return self::getSharedInstance('authorization', $groupModel, $permissionModel, $userModel);
+		}
 
-        if (empty($loginModel))
-        {
-            $loginModel = new LoginModel();
-        }
+		$groupModel	     = $groupModel ?? model(GroupModel::class);
+		$permissionModel = $permissionModel ?? model(PermissionModel::class);
+		$userModel	     = $userModel ?? model(UserModel::class);
 
-        return $instance
-            ->setUserModel($userModel)
-            ->setLoginModel($loginModel);
-    }
+		$instance = new FlatAuthorization($groupModel, $permissionModel);
 
-    public static function authorization(Model $groupModel=null, Model $permissionModel=null, Model $userModel=null, bool $getShared = true)
-    {
-        if ($getShared)
-        {
-            return self::getSharedInstance('authorization', $groupModel, $permissionModel, $userModel);
-        }
+		return $instance->setUserModel($userModel);
+	}
 
-        if (is_null($groupModel))
-        {
-            $groupModel = new GroupModel();
-        }
+	/**
+	 * Returns an instance of the PasswordValidator.
+	 *
+	 * @param Auth|null $config
+	 * @param bool      $getShared
+	 *
+	 * @return ValidatorInterface
+	 */
+	public static function passwords(Auth $config = null, bool $getShared = true): PasswordValidator
+	{
+		if ($getShared)
+		{
+			return self::getSharedInstance('passwords', $config);
+		}
 
-        if (is_null($permissionModel))
-        {
-            $permissionModel = new PermissionModel();
-        }
+		return new PasswordValidator($config ?? config(Auth::class));
+	}
 
-        $instance = new FlatAuthorization($groupModel, $permissionModel);
+	/**
+	 * Returns an instance of the Activator.
+	 *
+	 * @param Auth|null $config
+	 * @param bool      $getShared
+	 *
+	 * @return ActivatorInterface
+	 */
+	public static function activator(Auth $config = null, bool $getShared = true): ActivatorInterface
+	{
+		if ($getShared)
+		{
+			return self::getSharedInstance('activator', $config);
+		}
 
-        if (is_null($userModel))
-        {
-            $userModel = new UserModel();
-        }
+		$config = $config ?? config(Auth::class);
+		$class	= $config->requireActivation ?: UserActivator::class;
 
-        return $instance->setUserModel($userModel);
-    }
+		return new $class($config);
+	}
 
-    /**
-     * Returns an instance of the password validator.
-     *
-     * @param null $config
-     * @param bool $getShared
-     *
-     * @return mixed|PasswordValidator
-     */
-    public static function passwords($config = null, bool $getShared = true)
-    {
-        if ($getShared)
-        {
-            return self::getSharedInstance('passwords', $config);
-        }
+	/**
+	 * Returns an instance of the Resetter.
+	 *
+	 * @param Auth|null $config
+	 * @param bool      $getShared
+	 *
+	 * @return ResetterInterface
+	 */
+	public static function resetter(Auth $config = null, bool $getShared = true): ResetterInterface
+	{
+		if ($getShared)
+		{
+			return self::getSharedInstance('resetter', $config);
+		}
 
-        if (empty($config))
-        {
-            $config = config(Auth::class);
-        }
+		$config = $config ?? config(Auth::class);
+		$class	= $config->activeResetter ?: EmailResetter::class;
 
-        return new PasswordValidator($config);
-    }
-
-    /**
-     * Returns an instance of the activator.
-     *
-     * @param null $config
-     * @param bool $getShared
-     *
-     * @return mixed|Activator
-     */
-    public static function activator($config = null, bool $getShared = true)
-    {
-        if ($getShared)
-        {
-            return self::getSharedInstance('activator', $config);
-        }
-
-        if (empty($config))
-        {
-            $config = config(Auth::class);
-        }
-
-        return new UserActivator($config);
-    }
-
-    /**
-     * Returns an instance of the resetter.
-     *
-     * @param null $config
-     * @param bool $getShared
-     *
-     * @return mixed|Activator
-     */
-    public static function resetter($config = null, bool $getShared = true)
-    {
-        if ($getShared)
-        {
-            return self::getSharedInstance('resetter', $config);
-        }
-
-        if (empty($config))
-        {
-            $config = config(Auth::class);
-        }
-
-        return new UserResetter($config);
-    }
+		return new $class($config);
+	}
 }

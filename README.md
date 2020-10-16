@@ -297,7 +297,12 @@ $routes->group('admin', ['filter' => 'role:admin,superadmin'], function($routes)
 
 ## Customization
 
+The entire library makes use of CodeIgniter's `Factories` to locate the best instances for models.
+You can supply your own models by duplicating the file names in your **app/Models/** folder
+and applying your customizations. Using `auth:publish` is a good starting point for providing these
+overriding models.
+
 This library is intentionally slim on user identifying information, having only the fields necessary for
 authentication and authorization. You will likely want to add fields like a user's name or phone number.
-You can create your own migration to add these fields (see: [an example migration](bin/20190603101528_alter_table_users.php).
-If you used `auth:publish` you can also add these fields to your `UserModel`'s `$allowedFields` property.
+You can create your own migration to add these fields (see: [an example migration](examples/20190603101528_alter_table_users.php),
+then add your own model `App\Models\UserModel` and update the `$allowedFields` property.

@@ -40,10 +40,10 @@ class CreateUser extends BaseCommand
 			$row['email'] = CLI::prompt('Email', null, 'required');
 		}
 
-		// Run the user through the entity and save it
+		// Run the user through the entity and insert it
 		$user = new User($row);
 
-		$users = new UserModel();
+		$users = model(UserModel::class);
 		if ($userId = $users->insert($user))
 		{
 			CLI::write(lang('Auth.registerCLI', [$row['username'], $userId]), 'green');

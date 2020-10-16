@@ -245,7 +245,7 @@ class User extends Entity
 
         if (empty($this->permissions))
         {
-            $this->permissions = (new PermissionModel())->getPermissionsForUser($this->id);
+            $this->permissions = model(PermissionModel::class)->getPermissionsForUser($this->id);
         }
 
         return $this->permissions;
@@ -270,7 +270,7 @@ class User extends Entity
 
         if (empty($this->roles))
         {
-            $groups = (new GroupModel())->getGroupsForUser($this->id);
+            $groups = model(GroupModel::class)->getGroupsForUser($this->id);
 
             foreach ($groups as $group)
             {
