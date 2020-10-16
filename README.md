@@ -1,6 +1,6 @@
 # Myth:Auth
 
-[![](https://github.com/lonnieezell/myth-auth/workflows/PHP%20Tests/badge.svg)](https://github.com/lonnieezell/myth-auth/actions?query=workflow%3A%22PHP+Tests%22)
+[![](https://github.com/lonnieezell/myth-auth/workflows/PHPUnit/badge.svg)](https://github.com/lonnieezell/myth-auth/actions?query=workflow%3A%22PHPUnit%22)
 
 Flexible, Powerful, Secure auth package for CodeIgniter 4.
 

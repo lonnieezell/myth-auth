@@ -1,0 +1,13 @@
+/.github           export-ignore
+/docs              export-ignore
+/examples          export-ignore
+/tests             export-ignore
+/.editorconfig     export-ignore
+/.gitattributes    export-ignore
+/.gitignore        export-ignore
+/phpunit.xml.dist  export-ignore
+/phpstan.neon.dist export-ignore
+
+# Configure diff output for .php and .phar files.
+*.php diff=php
+*.phar -diff
