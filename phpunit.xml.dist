@@ -54,7 +54,5 @@
 <!--	<env name="database.tests.password" value=""/>		     -->
 <!--	<env name="database.tests.DBDriver" value="MySQLi"/>	 -->
 <!--	<env name="database.tests.DBPrefix" value="tests_"/>	 -->
-		<env name="database.tests.database" value=":memory:"/>
-		<env name="database.tests.DBDriver" value="SQLite3"/>
 	</php>
 </phpunit>

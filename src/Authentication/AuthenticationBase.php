@@ -7,6 +7,7 @@ use Config\Services;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Exceptions\AuthException;
 use Myth\Auth\Exceptions\UserNotFoundException;
+use Myth\Auth\Models\LoginModel;
 
 class AuthenticationBase
 {
@@ -21,7 +22,7 @@ class AuthenticationBase
     protected $userModel;
 
     /**
-     * @var Model
+     * @var LoginModel
      */
     protected $loginModel;
 
