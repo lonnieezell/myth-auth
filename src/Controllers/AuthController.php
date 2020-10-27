@@ -3,6 +3,7 @@
 use Config\Email;
 use CodeIgniter\Controller;
 use Myth\Auth\Entities\User;
+use Myth\Auth\Models\UserModel;
 
 class AuthController extends Controller
 {
@@ -147,7 +148,7 @@ class AuthController extends Controller
 			return redirect()->back()->withInput()->with('error', lang('Auth.registerDisabled'));
 		}
 
-		$users = model('UserModel');
+		$users = model(UserModel::class);
 
 		// Validate here first, since some things,
 		// like the password, can only be validated properly here.
@@ -225,7 +226,7 @@ class AuthController extends Controller
 			return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
 		}
 
-		$users = model('UserModel');
+		$users = model(UserModel::class);
 
 		$user = $users->where('email', $this->request->getPost('email'))->first();
 
@@ -280,7 +281,7 @@ class AuthController extends Controller
 			return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
 		}
 
-		$users = model('UserModel');
+		$users = model(UserModel::class);
 
 		// First things first - log the reset attempt.
 		$users->logResetAttempt(
@@ -335,7 +336,7 @@ class AuthController extends Controller
 	 */
 	public function activateAccount()
 	{
-		$users = model('UserModel');
+		$users = model(UserModel::class);
 
 		// First things first - log the activation attempt.
 		$users->logActivationAttempt(
@@ -389,7 +390,7 @@ class AuthController extends Controller
 		$login = urldecode($this->request->getGet('login'));
 		$type = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
-		$users = model('UserModel');
+		$users = model(UserModel::class);
 
 		$user = $users->where($type, $login)
 					  ->where('active', 0)

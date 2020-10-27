@@ -297,7 +297,5 @@ $routes->group('admin', ['filter' => 'role:admin,superadmin'], function($routes)
 
 ## Customization
 
-This library is intentionally slim on user identifying information, having only the fields necessary for
-authentication and authorization. You will likely want to add fields like a user's name or phone number.
-You can create your own migration to add these fields (see: [an example migration](bin/20190603101528_alter_table_users.php).
-If you used `auth:publish` you can also add these fields to your `UserModel`'s `$allowedFields` property.
+See the [Extending](docs/extending.md) documentation.
+
