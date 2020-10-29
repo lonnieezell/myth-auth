@@ -34,4 +34,13 @@ class AuthTestTraitTest extends AuthTestCase
 
 		$this->assertNotInstanceOf(UserFaker::class, $model);
 	}
+
+	public function testCreateAuthUser()
+	{
+		$user = $this->createAuthUser();
+		$this->seeInDatabase('users', ['email' => $user->email]);
+
+		$authentication = service('authentication');
+		$this->assertTrue($authentication->isLoggedIn());
+	}
 }
