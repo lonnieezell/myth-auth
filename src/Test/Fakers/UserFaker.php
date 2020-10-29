@@ -11,14 +11,14 @@ class UserFaker extends UserModel
 	 *
 	 * @param Generator $faker
 	 *
-	 * @return Myth\Auth\Entities\User
+	 * @return User
 	 */
 	public function fake(Generator &$faker): User
 	{
 		return new User([
-			'email'         => $faker->email,
-			'username'      => implode('_', $faker->words),
-			'password'      =>  bin2hex(random_bytes(16)),
+			'email'    => $faker->email,
+			'username' => implode('_', $faker->words),
+			'password' => bin2hex(random_bytes(16)),
 		]);
 	}
 }
