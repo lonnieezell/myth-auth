@@ -4,6 +4,9 @@
  * Myth:Auth routes file.
  */
 $routes->group('', ['namespace' => 'Myth\Auth\Controllers'], function ($routes) {
+    // Management
+    $routes->get('users', 'AuthController::users');
+
     // Login/out
     $routes->get('login', 'AuthController::login', ['as' => 'login']);
     $routes->post('login', 'AuthController::attemptLogin');

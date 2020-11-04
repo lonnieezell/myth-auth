@@ -12,6 +12,12 @@ return [
     'notLoggedIn'               => 'You must be logged in to access that page.',
     'notEnoughPrivilege'        => 'You do not have sufficient permissions to access that page.',
 
+    // Management
+    'createdAt'                 => 'Created at',
+    'active'                    => 'Active',
+    'yes'                       => 'Yes',
+    'no'                        => 'No',
+
     // Registration
     'registerDisabled'          => 'Sorry, new user accounts are not allowed at this time.',
     'registerSuccess'           => 'Welcome aboard! Please login with your new credentials.',

@@ -29,6 +29,30 @@ class AuthController extends Controller
 	}
 
 	//--------------------------------------------------------------------
+	// Management
+	//--------------------------------------------------------------------
+
+	/**
+	 * Displays table list of users
+	 */
+	public function users()
+	{
+		if (!$this->auth->check())
+		{
+			return redirect()->to(site_url('/'));
+		}
+
+		$model = model('UserModel');
+
+		$users = $model->findAll();
+
+		echo view($this->config->views['users'], [
+			'config' => $this->config,
+			'users' => $users,
+		]);
+	}
+
+	//--------------------------------------------------------------------
 	// Login/out
 	//--------------------------------------------------------------------
 
