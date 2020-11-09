@@ -3,6 +3,7 @@
 use CodeIgniter\Test\Fabricator;
 use Config\Services;
 use Myth\Auth\Entities\User;
+use Myth\Auth\Models\UserModel;
 use Myth\Auth\Test\Fakers\UserFaker;
 
 /**
@@ -35,12 +36,15 @@ trait AuthTestTrait
 		$user = $fabricator->make();
 		$user->activate();
 
-		if (! model(UserFaker::class)->insert($user))
+		if (! $userId = model(UserFaker::class)->insert($user))
 		{
 			$error = implode(' ', model(UserFaker::class)->errors());
 
 			throw new \RuntimeException('Unable to create user: ' . $error);
 		}
+
+		// Look the user up using Model Factory in case it is overridden in App
+		$user = model(UserModel::class)->find($userId);
 
 		if ($login)
 		{
