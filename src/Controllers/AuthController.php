@@ -161,7 +161,7 @@ class AuthController extends Controller
 
 		if (! $this->validate($rules))
 		{
-			return redirect()->back()->withInput()->with('errors', service('validation')->getErrors());
+			return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
 		}
 
 		// Save the user
@@ -300,7 +300,7 @@ class AuthController extends Controller
 
 		if (! $this->validate($rules))
 		{
-			return redirect()->back()->withInput()->with('errors', $users->errors());
+			return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
 		}
 
 		$user = $users->where('email', $this->request->getPost('email'))
