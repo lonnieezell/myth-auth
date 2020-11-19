@@ -51,7 +51,7 @@ class SetPassword extends BaseCommand
 			}
 			else
 			{
-                CLI::write('Failed to set password for user with identity: ' . $identity , 'green');
+                CLI::write('Failed to set password for user with identity: ' . $identity , 'red');
 			}
 		}
 	}
