@@ -187,7 +187,7 @@ The second parameter is the description. Returns the ID of the new permission, o
 Deletes a single permission and removes it from all groups it is assigned to. The only parameter is the **permission id**. 
 Returns `true` or `false` on success or failure.
 
-	$authorize->->deletePermission(12);
+	$authorize->deletePermission(12);
 
 ### updatePermission()
 Updates the details of a single permission. The first parameter is the ID. The second parameter is the name. The third (optional) parameter is the description. Returns `true` or `false` on success or failure.
