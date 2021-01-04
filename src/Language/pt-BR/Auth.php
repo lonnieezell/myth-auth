@@ -30,12 +30,13 @@ return [
     'loginSuccess'              => 'Bem-vindo de volta!',
 
     // Forgotten Passwords
-    'forgotDisabled'            => 'Resseting password option has been disabled.', // translate
+    'forgotDisabled'            => 'Reseting password option has been disabled.', // translate
     'forgotNoUser'              => 'Não foi possível localizar um  usuário com esse e-mail.',
     'forgotSubject'             => 'Instruções de redefinição de senha',
     'resetSuccess'              => 'Sua senha foi alterada com sucesso. Por favor, entre com sua nova senha.',
     'forgotEmailSent'           => 'Um token de segurança foi enviado para o seu e-mail. Cole-o no campo abaixo para continuar.',
     'errorEmailSent'            => 'Unable to send email with password reset instructions to: {0}', // translate
+    'errorResetting'            => 'Unable to send reset instructions to {0}', // translate
 
     // Passwords
     'errorPasswordLength'       => 'A senha deve conter pelo menos {0, number} caracteres.',

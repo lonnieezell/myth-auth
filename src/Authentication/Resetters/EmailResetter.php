@@ -1,8 +1,8 @@
 <?php namespace Myth\Auth\Authentication\Resetters;
 
 use Config\Email;
-use CodeIgniter\Entity;
 use CodeIgniter\Config\Services;
+use Myth\Auth\Entities\User;
 
 /**
  * Class EmailResetter
@@ -14,18 +14,13 @@ use CodeIgniter\Config\Services;
 class EmailResetter extends BaseResetter implements ResetterInterface
 {
     /**
-     * @var string
-     */
-    protected $error;
-
-    /**
      * Sends a reset email
      *
      * @param User $user
      *
-     * @return mixed
+     * @return bool
      */
-    public function send(Entity $user = null): bool
+    public function send(User $user = null): bool
     {
         $email = Services::email();
         $config = new Email();
@@ -47,15 +42,4 @@ class EmailResetter extends BaseResetter implements ResetterInterface
 
         return true;
     }
-
-    /**
-     * Returns the error string that should be displayed to the user.
-     *
-     * @return string
-     */
-    public function error(): string
-    {
-        return $this->error ?? '';
-    }
-
 }

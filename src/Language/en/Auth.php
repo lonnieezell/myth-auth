@@ -31,12 +31,13 @@ return [
     'invalidPassword'           => 'Unable to log you in. Please check your password.',
 
     // Forgotten Passwords
-    'forgotDisabled'            => 'Resseting password option has been disabled.',
+    'forgotDisabled'            => 'Reseting password option has been disabled.',
     'forgotNoUser'              => 'Unable to locate a user with that email.',
     'forgotSubject'             => 'Password Reset Instructions',
     'resetSuccess'              => 'Your password has been successfully changed. Please login with the new password.',
     'forgotEmailSent'           => 'A security token has been emailed to you. Enter it in the box below to continue.',
     'errorEmailSent'            => 'Unable to send email with password reset instructions to: {0}',
+    'errorResetting'            => 'Unable to send reset instructions to {0}',
 
     // Passwords
     'errorPasswordLength'       => 'Passwords must be at least {0, number} characters long.',
