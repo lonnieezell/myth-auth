@@ -27,7 +27,7 @@ class UserResetter
      */
     public function send(User $user = null): bool
     {
-        if ($this->config->activeResetter === false)
+        if (! $this->config->activeResetter)
         {
             return true;
         }
