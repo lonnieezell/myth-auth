@@ -36,7 +36,8 @@ return [
     'forgotSubject'             => 'Instructions de réinitialisation de mot de passe',
     'resetSuccess'              => 'Votre mot de passe a été changé avec succès. Veuillez vous connecter avec le nouveau mot de passe.',
     'forgotEmailSent'           => 'Un jeton d’authentification vous a été envoyée par e-mail. Saisissez le dans le champ ci-dessous pour continuer.',
-    'errorEmailSent'            => 'Échec lors de l’envoi de l’e-mail d’instructions de réinitialisation de mot de passe à : {0}',
+    'errorEmailSent'            => 'Échec lors de l’envoi de l’e-mail d’instructions de réinitialisation de mot de passe à: {0}',
+    'errorResetting'            => 'Échec lors de l’envoi d’instructions de réinitialisation de mot de passe à: {0}',
 
     // Passwords
     'errorPasswordLength'       => 'Les mots de passe doivent contenir au moins {0, number} caractères.',

@@ -31,12 +31,13 @@ return [
     'invalidPassword'           => 'No se pudo ingresar al sistema. Por favor, chequee sus credenciales.',
 
     // Forgotten Passwords
-    'forgotDisabled'            => 'Resseting password option has been disabled.', // translate
+    'forgotDisabled'            => 'Reseting password option has been disabled.', // translate
     'forgotNoUser'              => 'No se pudo localizar un usuario con ese correo electrónico.',
     'forgotSubject'             => 'Instrucciones para resetear la contraseña',
     'resetSuccess'              => 'El cambio de contraseña fue correcto. Por favor ingrese con su nueva contraseña.',
     'forgotEmailSent'           => 'Se ha enviado un código de seguridad a su e-mail. Ingréselo en el cuadro siguiente para continuar.',
     'errorEmailSent'            => 'Unable to send email with password reset instructions to: {0}', // translate
+    'errorResetting'            => 'Unable to send reset instructions to {0}', // translate
 
     // Passwords
     'errorPasswordLength'       => 'La contraseña debe tener al menos {0, number} caracteres.',

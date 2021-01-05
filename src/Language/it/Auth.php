@@ -36,7 +36,8 @@ return [
     'forgotSubject'             => 'Istruzioni per il Ripristino della Password',
     'resetSuccess'              => 'La tua password è stata cambiata con successo. Effettua l\'accesso con le tue nuove credenziali.',
     'forgotEmailSent'           => 'Un token di sicurezza è stato inviato al tuo indirizzo email. Inseriscilo nella casella qui sotto per continuare.',
-    'errorEmailSent'            => 'Unable to send email with password reset instructions to: {0}', // translate
+    'errorEmailSent'            => 'Impossibile inviare l\'email con le istruzioni per resettare la password all\'indirizzo: {0}',
+    'errorResetting'            => 'Impossibile inviare le istruzioni per resettare la password a: {0}',
 
     // Passwords
     'errorPasswordLength'       => 'La password deve contenere almeno {0, number} caratteri.',
