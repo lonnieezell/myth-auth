@@ -1,8 +1,8 @@
 <?php namespace Myth\Auth\Authentication\Activators;
 
 use Config\Email;
-use CodeIgniter\Entity;
-use CodeIgniter\Config\Services;
+use Config\Services;
+use Myth\Auth\Entities\User;
 
 /**
  * Class EmailActivator
@@ -14,18 +14,13 @@ use CodeIgniter\Config\Services;
 class EmailActivator extends BaseActivator implements ActivatorInterface
 {
     /**
-     * @var string
-     */
-    protected $error;
-
-    /**
      * Sends an activation email
      *
      * @param User $user
      *
-     * @return mixed
+     * @return bool
      */
-    public function send(Entity $user = null): bool
+    public function send(User $user = null): bool
     {
         $email = Services::email();
         $config = new Email();
@@ -47,15 +42,4 @@ class EmailActivator extends BaseActivator implements ActivatorInterface
 
         return true;
     }
-
-    /**
-     * Returns the error string that should be displayed to the user.
-     *
-     * @return string
-     */
-    public function error(): string
-    {
-        return $this->error ?? '';
-    }
-
 }
