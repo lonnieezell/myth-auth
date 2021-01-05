@@ -207,7 +207,7 @@ class AuthController extends Controller
 	 */
 	public function forgotPassword()
 	{
-		if ($this->config->activeResetter === false)
+		if (! $this->config->activeResetter)
 		{
 			return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
 		}
@@ -221,7 +221,7 @@ class AuthController extends Controller
 	 */
 	public function attemptForgot()
 	{
-		if ($this->config->activeResetter === false)
+		if (! $this->config->activeResetter)
 		{
 			return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
 		}
@@ -255,7 +255,7 @@ class AuthController extends Controller
 	 */
 	public function resetPassword()
 	{
-		if ($this->config->activeResetter === false)
+		if (! $this->config->activeResetter)
 		{
 			return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
 		}
@@ -276,7 +276,7 @@ class AuthController extends Controller
 	 */
 	public function attemptReset()
 	{
-		if ($this->config->activeResetter === false)
+		if (! $this->config->activeResetter)
 		{
 			return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
 		}
