@@ -29,7 +29,7 @@
 	"prefer-stable": true,
 	"require-dev": {
 		"codeigniter4/codeigniter4": "dev-develop",
-		"phpunit/phpunit": "^8.5",
+		"phpunit/phpunit": "^9.5",
 		"phpstan/phpstan": "^0.12",
 		"fzaninotto/faker": "^1.9@dev",
 		"mockery/mockery": "^1.0",
