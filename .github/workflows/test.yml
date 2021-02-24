@@ -10,11 +10,11 @@ on:
 
 jobs:
   main:
-    name: Build and test
+    name: PHP ${{ matrix.php-versions }} Unit Tests
 
     strategy:
       matrix:
-        php-versions: ['7.2', '7.3', '7.4']
+        php-versions: ['7.3', '7.4', '8.0']
 
     runs-on: ubuntu-latest
 
@@ -44,9 +44,11 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install dependencies
-        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+        run: composer update --no-progress --no-interaction --prefer-dist --optimize-autoloader
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
       - name: Test with PHPUnit
         run: vendor/bin/phpunit --verbose --coverage-text
+        env:
+          TERM: xterm-256color

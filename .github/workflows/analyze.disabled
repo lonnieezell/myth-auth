@@ -9,6 +9,7 @@ on:
     paths:
       - 'src/**'
       - 'tests/**'
+      - 'composer.**'
       - 'phpstan*'
       - '.github/workflows/analyze.yml'
   push:
@@ -17,13 +18,18 @@ on:
     paths:
       - 'src/**'
       - 'tests/**'
+      - 'composer.**'
       - 'phpstan*'
       - '.github/workflows/analyze.yml'
 
 jobs:
   build:
-    name: Analyze code
+    name: PHP ${{ matrix.php-versions }} Static Analysis
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['7.3', '7.4', '8.0']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -31,7 +37,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: latest
+          php-version: ${{ matrix.php-versions }}
           tools: composer, pecl, phpunit
           extensions: intl, json, mbstring, mysqlnd, xdebug, xml, sqlite3
 
@@ -60,7 +66,7 @@ jobs:
           restore-keys: ${{ runner.os }}-phpstan-
 
       - name: Install dependencies
-        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+        run: composer update --no-progress --no-interaction --prefer-dist --optimize-autoloader
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
