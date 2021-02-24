@@ -46,6 +46,9 @@
 			"Tests\\Support\\": "tests/_support"
 		}
 	},
+	"provide": {
+		"codeigniter4/authentication-implementation": "1.0"
+	},
 	"scripts": {
 		"analyze": "phpstan analyze",
 		"style": "phpcbf --standard=./vendor/codeigniter4/codeigniter4-standard/CodeIgniter4 src/ tests/",
