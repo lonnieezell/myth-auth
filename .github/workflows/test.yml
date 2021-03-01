@@ -44,7 +44,7 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install dependencies
-        run: composer update --no-progress --no-interaction --prefer-dist --optimize-autoloader
+        run: rm ~/.composer/auth.json && composer update --no-progress --no-interaction --prefer-dist --optimize-autoloader
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
