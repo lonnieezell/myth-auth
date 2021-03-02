@@ -71,7 +71,7 @@ class GroupModel extends Model
      *
      * @param $userId
      *
-     * @return mixed
+     * @return bool
      */
     public function removeUserFromAllGroups(int $userId)
     {

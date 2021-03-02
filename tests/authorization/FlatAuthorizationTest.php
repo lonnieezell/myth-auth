@@ -14,14 +14,17 @@ class FlatAuthorizationTest extends AuthTestCase
      * @var UserModel
      */
     protected $users;
+
     /**
      * @var GroupModel
      */
     protected $groups;
+
     /**
      * @var PermissionModel
      */
     protected $permissions;
+
     /**
      * @var FlatAuthorization
      */

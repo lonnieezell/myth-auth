@@ -27,7 +27,7 @@ class GroupModelTest extends AuthTestCase
 
         $result = $this->model->addUserToGroup($user->id, $group->id);
 
-        $this->assertInstanceOf(\CodeIgniter\Database\ResultInterface::class, $result);
+        $this->assertTrue($result);
         $this->seeInDatabase('auth_groups_users', [
             'user_id' => $user->id,
             'group_id' => $group->id,
@@ -51,7 +51,7 @@ class GroupModelTest extends AuthTestCase
 
         $result = $this->model->removeUserFromGroup($user->id, $group->id);
 
-        $this->assertInstanceOf(\CodeIgniter\Database\ResultInterface::class, $result);
+        $this->assertTrue($result);
         $this->dontSeeInDatabase('auth_groups_users', [
             'user_id' => $user->id,
             'group_id' => $group->id
@@ -79,7 +79,7 @@ class GroupModelTest extends AuthTestCase
 
         $result = $this->model->removeUserFromAllGroups($user->id);
 
-        $this->assertInstanceOf(\CodeIgniter\Database\ResultInterface::class, $result);
+        $this->assertTrue($result);
         $this->dontSeeInDatabase('auth_groups_users', [
             'user_id' => $user->id,
             'group_id' => $group->id
