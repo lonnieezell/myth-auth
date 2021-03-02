@@ -11,12 +11,14 @@ use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Authorization\PermissionModel;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Models\UserModel;
+use Myth\Auth\Test\AuthTestTrait;
 use Myth\Auth\Test\Fakers\GroupFaker;
 use Myth\Auth\Test\Fakers\PermissionFaker;
 use Myth\Auth\Test\Fakers\UserFaker;
 
 class AuthTestCase extends CIUnitTestCase
 {
+	use AuthTestTrait;
 	use DatabaseTestTrait;
 
 	/**
@@ -75,6 +77,8 @@ class AuthTestCase extends CIUnitTestCase
 	public function setUp(): void
 	{
 		parent::setUp();
+		
+		$this->resetAuthServices();
 
 		$this->users       = model(UserModel::class, false);
 		$this->groups      = model(GroupModel::class, false);
@@ -93,9 +97,10 @@ class AuthTestCase extends CIUnitTestCase
 	protected function createUser(array $info = [])
 	{
 		$defaults = [
-			'email'    => 'fred@example.com',
-			'username' => 'Fred',
-			'password' => 'secret'
+			'email'            => 'fred@example.com',
+			'username'         => 'Fred',
+			'password'         => 'secret',
+			'force_pass_reset' => false,
 		];
 		$info = array_merge($defaults, $info);
 
