@@ -96,7 +96,8 @@ class LocalAuthTest extends AuthTestCase
         $_SESSION = [];
         $user = $this->createUser();
 
-        $this->assertFalse($this->auth->check());
+        $this->expectException('CodeIgniter\Router\Exceptions\RedirectException');
+        $this->auth->check();
     }
 
     public function testCheckWithForcedPasswordReset()
