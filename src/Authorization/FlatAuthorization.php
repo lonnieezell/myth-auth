@@ -600,7 +600,7 @@ class FlatAuthorization implements AuthorizeInterface
 			return $this->permissionModel->find((int)$permission);
 		}
 
-		return $this->permissionModel->where('name', $permission)->first();
+		return $this->permissionModel->like('name', $permission, 'none', null, true)->first();
 	}
 
 	/**

@@ -477,6 +477,17 @@ class FlatAuthorizationTest extends AuthTestCase
         $this->assertEquals($perm->description, $found['description']);
     }
 
+    public function testPermissionWithNameInsensitive()
+    {
+        $perm = $this->createPermission();
+
+        $found = $this->auth->permission(strtoupper($perm->name));
+
+        $this->assertEquals($perm->id, $found['id']);
+        $this->assertEquals($perm->name, $found['name']);
+        $this->assertEquals($perm->description, $found['description']);
+    }
+
     public function testCreatePermissionSuccess()
     {
         $perm = $this->auth->createPermission('Perm A', 'Description');
