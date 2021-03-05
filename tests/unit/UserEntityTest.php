@@ -23,15 +23,12 @@ class UserEntityTest extends AuthTestCase
         \CodeIgniter\Config\Config::injectMock('Auth', $config);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Users must be created before getting permissions.
-     */
     public function testGetPermissionsNotSaved()
     {
-        $user = new User();
+		$this->expectException('RuntimeException');
+		$this->expectExceptionMessage('Users must be created before getting permissions.');
 
-        $this->assertEmpty($user->getPermissions());
+        (new User)->getPermissions();
     }
 
 	public function testGetPermissionSuccess()

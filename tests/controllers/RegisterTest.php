@@ -1,6 +1,7 @@
 <?php
 
 use CodeIgniter\Test\ControllerTester;
+use Config\Services;
 use Myth\Auth\Controllers\AuthController;
 use Tests\Support\AuthTestCase;
 
@@ -12,7 +13,7 @@ class RegisterTest extends AuthTestCase
 
     public function setUp(): void
     {
-        \Config\Services::reset();
+        Services::reset();
 
         parent::setUp();
 
@@ -26,14 +27,10 @@ class RegisterTest extends AuthTestCase
         $routes = service('routes');
         $routes->add('login', 'AuthController::login', ['as' => 'login']);
         $routes->add('register', 'AuthController::register', ['as' => 'register']);
-        \Config\Services::injectMock('routes', $routes);
+        Services::injectMock('routes', $routes);
 
+		$this->request = null;
         $_SESSION = [];
-    }
-
-    public function tearDown(): void
-    {
-        parent::tearDown();
     }
 
     public function testRegisterDisplaysForm()
@@ -70,8 +67,8 @@ class RegisterTest extends AuthTestCase
             ->controller(AuthController::class)
             ->execute('attemptRegister');
 
-        $this->assertTrue($result->isRedirect());
-        $this->asserttrue(isset($_SESSION['_ci_validation_errors']));
+        $this->assertTrue($result->isRedirect(), print_r($result->getBody(), true));
+        $this->assertNotNull($_SESSION['_ci_validation_errors']);
     }
 
     public function testAttemptRegisterCreatesUser()
