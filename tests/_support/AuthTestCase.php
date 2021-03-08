@@ -1,20 +1,26 @@
 <?php namespace Tests\Support;
 
 use CodeIgniter\Session\Handlers\ArrayHandler;
-use CodeIgniter\Test\CIDatabaseTestCase;
+use CodeIgniter\Test\CIUnitTestCase;
+use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\Fabricator;
 use CodeIgniter\Test\Mock\MockSession;
 use Config\Services;
+use Faker\Factory;
 use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Authorization\PermissionModel;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Models\UserModel;
+use Myth\Auth\Test\AuthTestTrait;
 use Myth\Auth\Test\Fakers\GroupFaker;
 use Myth\Auth\Test\Fakers\PermissionFaker;
 use Myth\Auth\Test\Fakers\UserFaker;
 
-class AuthTestCase extends CIDatabaseTestCase
+class AuthTestCase extends CIUnitTestCase
 {
+	use AuthTestTrait;
+	use DatabaseTestTrait;
+
 	/**
 	 * Should the database be refreshed before each test?
 	 *
@@ -71,25 +77,14 @@ class AuthTestCase extends CIDatabaseTestCase
 	public function setUp(): void
 	{
 		parent::setUp();
+		
+		$this->resetAuthServices();
 
-		$this->users = model(UserModel::class, false);
-		$this->groups = model(GroupModel::class, false);
+		$this->users       = model(UserModel::class, false);
+		$this->groups      = model(GroupModel::class, false);
 		$this->permissions = model(PermissionModel::class, false);
-		$this->mockSession();
-
-		$this->faker = \Faker\Factory::create();
-	}
-
-	/**
-	 * Pre-loads the mock session driver into $this->session.
-	 *
-	 */
-	protected function mockSession()
-	{
-        $config  = config('App');
-        $session = new MockSession(new ArrayHandler($config, '0.0.0.0'), $config);
-        Services::injectMock('session', $session);
-		$_SESSION = [];
+	
+		$this->faker = Factory::create();
 	}
 
 	/**
@@ -102,9 +97,10 @@ class AuthTestCase extends CIDatabaseTestCase
 	protected function createUser(array $info = [])
 	{
 		$defaults = [
-			'email' => 'fred@example.com',
-			'username' => 'Fred',
-			'password' => 'secret'
+			'email'            => 'fred@example.com',
+			'username'         => 'Fred',
+			'password'         => 'secret',
+			'force_pass_reset' => false,
 		];
 		$info = array_merge($defaults, $info);
 

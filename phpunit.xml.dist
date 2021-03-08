@@ -1,41 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="vendor/codeigniter4/codeigniter4/system/Test/bootstrap.php"
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		bootstrap="vendor/codeigniter4/codeigniter4/system/Test/bootstrap.php"
 		backupGlobals="false"
 		colors="true"
 		convertErrorsToExceptions="true"
 		convertNoticesToExceptions="true"
 		convertWarningsToExceptions="true"
+		executionOrder="random"
 		stopOnError="false"
 		stopOnFailure="false"
 		stopOnIncomplete="false"
-		stopOnSkipped="false">
+		stopOnSkipped="false"
+		xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+
+	<coverage includeUncoveredFiles="true" processUncoveredFiles="true">
+		<include>
+			<directory suffix=".php">./src</directory>
+		</include>
+		<exclude>
+			<directory suffix=".php">./src/Views</directory>
+			<file>./src/Config/Routes.php</file>
+		</exclude>
+		<report>
+			<clover outputFile="build/phpunit/clover.xml"/>
+			<html outputDirectory="build/phpunit/html"/>
+			<php outputFile="build/phpunit/coverage.serialized"/>
+			<text outputFile="php://stdout" showUncoveredFiles="false"/>
+			<xml outputDirectory="build/phpunit/xml-coverage"/>
+		</report>
+	</coverage>
+
 	<testsuites>
 		<testsuite name="app">
 			<directory>./tests</directory>
 		</testsuite>
 	</testsuites>
 
-	<filter>
-		<whitelist addUncoveredFilesFromWhitelist="true" processUncoveredFilesFromWhitelist="true">
-			<directory suffix=".php">./src</directory>
-			<exclude>
-				<directory suffix=".php">./src/Views</directory>
-				<file>./src/Config/Routes.php</file>
-			</exclude>
-		</whitelist>
-	</filter>
-
 	<logging>
-		<log type="coverage-html" target="build/logs/html"/>
-		<log type="coverage-clover" target="build/logs/clover.xml"/>
-		<log type="coverage-php" target="build/logs/coverage.serialized"/>
-		<log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
-		<log type="testdox-html" target="build/logs/testdox.html"/>
-		<log type="testdox-text" target="build/logs/testdox.txt"/>
-		<log type="junit" target="build/logs/logfile.xml"/>
+		<testdoxHtml outputFile="build/phpunit/testdox.html"/>
+		<testdoxText outputFile="build/phpunit/testdox.txt"/>
+		<junit outputFile="build/phpunit/junit.xml"/>
 	</logging>
 
 	<php>
+		<env name="XDEBUG_MODE" value="coverage"/>
 		<server name="app.baseURL" value="http://example.com"/>
 
 		<!-- Directory containing phpunit.xml -->
@@ -47,12 +55,17 @@
 		<!-- Directory containing the front controller (index.php) -->
 		<const name="PUBLICPATH" value="./vendor/codeigniter4/codeigniter4/public/"/>
 
+		<!-- https://getcomposer.org/xdebug -->
+		<env name="COMPOSER_DISABLE_XDEBUG_WARN" value="1"/>
+
 		<!-- Database configuration -->
-<!--	<env name="database.tests.hostname" value="localhost"/>  -->
-<!--	<env name="database.tests.database" value="tests"/>	     -->
-<!--	<env name="database.tests.username" value="tests_user"/> -->
-<!--	<env name="database.tests.password" value=""/>		     -->
-<!--	<env name="database.tests.DBDriver" value="MySQLi"/>	 -->
-<!--	<env name="database.tests.DBPrefix" value="tests_"/>	 -->
+		<!-- Uncomment to use alternate testing database configuration
+		<env name="database.tests.hostname" value="localhost"/>
+		<env name="database.tests.database" value="tests"/>
+		<env name="database.tests.username" value="tests_user"/>
+		<env name="database.tests.password" value=""/>
+		<env name="database.tests.DBDriver" value="MySQLi"/>
+		<env name="database.tests.DBPrefix" value="tests_"/>
+		-->
 	</php>
 </phpunit>
