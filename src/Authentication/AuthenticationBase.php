@@ -254,7 +254,7 @@ class AuthenticationBase
             $appConfig->cookieDomain,
             $appConfig->cookiePath,
             $appConfig->cookiePrefix,
-            $appConfig->cookieHTTPOnly,                 // Only send over HTTPS?
+            $appConfig->cookieSecure,                   // Only send over HTTPS?
             true                    					// Hide from Javascript?
         );
     }
@@ -295,7 +295,7 @@ class AuthenticationBase
             $appConfig->cookieDomain,
             $appConfig->cookiePath,
             $appConfig->cookiePrefix,
-            $appConfig->cookieHTTPOnly,                 // Only send over HTTPS?
+            $appConfig->cookieSecure,                   // Only send over HTTPS?
             true                  						// Hide from Javascript?
         );
     }
