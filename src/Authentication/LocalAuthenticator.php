@@ -4,6 +4,7 @@ use CodeIgniter\Router\Exceptions\RedirectException;
 use \Config\Services;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Exceptions\AuthException;
+use Myth\Auth\Password;
 
 class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInterface
 {
@@ -36,7 +37,7 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
             $this->recordLoginAttempt($credentials['email'] ?? $credentials['username'], $ipAddress, $this->user->id ?? null, false);
 
             $this->error = lang('Auth.userIsBanned');
-            
+
             $this->user = null;
             return false;
         }
@@ -162,11 +163,7 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
         }
 
         // Now, try matching the passwords.
-        $result = password_verify(base64_encode(
-            hash('sha384', $password, true)
-        ), $user->password_hash);
-
-        if (! $result)
+        if (! Password::verify($password, $user->password_hash))
         {
             $this->error = lang('Auth.invalidPassword');
             return false;
@@ -176,7 +173,7 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
         // This would be due to the hash algorithm or hash
         // cost changing since the last time that a user
         // logged in.
-        if (password_needs_rehash($user->password_hash, $this->config->hashAlgorithm))
+        if (Password::needRehash($user->password_hash, $this->config->hashAlgorithm))
         {
             $user->password = $password;
             $this->userModel->save($user);
