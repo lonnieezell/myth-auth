@@ -1,13 +1,13 @@
 <?php
 
-use CodeIgniter\Test\ControllerTester;
+use CodeIgniter\Test\ControllerTestTrait;
 use Config\Services;
 use Myth\Auth\Controllers\AuthController;
 use Tests\Support\AuthTestCase;
 
 class RegisterTest extends AuthTestCase
 {
-    use ControllerTester;
+    use ControllerTestTrait;
 
     protected $refresh = true;
 
@@ -29,7 +29,6 @@ class RegisterTest extends AuthTestCase
         $routes->add('register', 'AuthController::register', ['as' => 'register']);
         Services::injectMock('routes', $routes);
 
-		$this->request = null;
         $_SESSION = [];
     }
 
