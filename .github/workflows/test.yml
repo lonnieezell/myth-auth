@@ -31,8 +31,6 @@ jobs:
           tools: composer, pecl, phpunit
           extensions: intl, json, mbstring, mysqlnd, xdebug, xml, sqlite3
           coverage: xdebug
-        env:
-          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
       - name: Get composer cache directory
         id: composer-cache
@@ -47,8 +45,6 @@ jobs:
 
       - name: Install dependencies
         run: composer update --no-progress --no-interaction --prefer-dist --optimize-autoloader
-        env:
-          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
       - name: Test with PHPUnit
         run: vendor/bin/phpunit --verbose --coverage-text
