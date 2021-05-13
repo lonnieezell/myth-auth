@@ -43,8 +43,15 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      - name: Install dependencies
+      - name: Install dependencies (limited)
+        if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name }}
         run: composer update --no-progress --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Install dependencies (authenticated)
+        if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name }}
+        run: composer update --no-progress --no-interaction --prefer-dist --optimize-autoloader
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
       - name: Test with PHPUnit
         run: vendor/bin/phpunit --verbose --coverage-text
