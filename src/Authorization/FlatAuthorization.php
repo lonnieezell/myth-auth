@@ -3,6 +3,9 @@
 use CodeIgniter\Model;
 use CodeIgniter\Events\Events;
 use Config\Services;
+use Myth\Auth\Authorization\GroupModel;
+use Myth\Auth\Authorization\PermissionModel;
+use Myth\Auth\Models\UserModel;
 
 class FlatAuthorization implements AuthorizeInterface
 {
@@ -16,7 +19,7 @@ class FlatAuthorization implements AuthorizeInterface
 	 * below (or an extension thereof) but can be any
 	 * compatible CodeIgniter Model.
 	 *
-	 * @var Myth\Auth\Authorization\GroupModel
+	 * @var GroupModel
 	 */
 	protected $groupModel;
 
@@ -25,7 +28,7 @@ class FlatAuthorization implements AuthorizeInterface
 	 * below (or an extension thereof) but can be any
 	 * compatible CodeIgniter Model.
 	 *
-	 * @var Myth\Auth\Authorization\PermissionModel
+	 * @var PermissionModel
 	 */
 	protected $permissionModel;
 
@@ -34,7 +37,7 @@ class FlatAuthorization implements AuthorizeInterface
 	 * below (or an extension thereof) but can be any
 	 * compatible CodeIgniter Model.
 	 *
-	 * @var Myth\Auth\Models\UserModel
+	 * @var UserModel
 	 */
 	protected $userModel = null;
 
