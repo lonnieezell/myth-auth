@@ -31,6 +31,8 @@ jobs:
           tools: composer, pecl, phpunit
           extensions: intl, json, mbstring, mysqlnd, xdebug, xml, sqlite3
           coverage: xdebug
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get composer cache directory
         id: composer-cache
