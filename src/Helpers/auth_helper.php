@@ -1,6 +1,5 @@
 <?php
 
-use Config\Services;
 
 if (! function_exists('logged_in'))
 {
@@ -11,7 +10,7 @@ if (! function_exists('logged_in'))
 	 */
 	function logged_in()
 	{
-		return Services::authentication()->check();
+		return service('authentication')->check();
 	}
 }
 
@@ -24,7 +23,7 @@ if (! function_exists('user'))
 	 */
 	function user()
 	{
-		$authenticate = Services::authentication();
+		$authenticate = service('authentication');
 		$authenticate->check();
 		return $authenticate->user();
 	}
@@ -39,7 +38,7 @@ if (! function_exists('user_id'))
 	 */
 	function user_id()
 	{
-		$authenticate = Services::authentication();
+		$authenticate = service('authentication');
 		$authenticate->check();
 		return $authenticate->id();
 	}
@@ -64,8 +63,8 @@ if (! function_exists('in_groups'))
 	 */
 	function in_groups($groups): bool
 	{
-		$authenticate = Services::authentication();
-        $authorize    = Services::authorization();
+		$authenticate = service('authentication');
+        $authorize    = service('authorization');
 
         if ($authenticate->check())
         {
@@ -88,8 +87,8 @@ if (! function_exists('has_permission'))
 	 */
 	function has_permission($permission): bool
 	{
-		$authenticate = Services::authentication();
-        $authorize    = Services::authorization();
+		$authenticate = service('authentication');
+        $authorize    = service('authorization');
 
         if ($authenticate->check())
         {

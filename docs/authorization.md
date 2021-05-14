@@ -12,7 +12,7 @@ with users for low-level security. While the class can easily be used on it's ow
 You can get an instance of the authorization library using the provided Services class, which will automatically be 
 detected by CodeIgniter. 
 
-    $authorize = $auth = Config\Services::authorization();
+    $authorize = $auth = service('authorization');
     
 Once you have this service, you have full access to all of the methods described below.
 

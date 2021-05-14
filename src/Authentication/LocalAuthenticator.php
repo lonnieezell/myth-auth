@@ -1,7 +1,6 @@
 <?php namespace Myth\Auth\Authentication;
 
 use CodeIgniter\Router\Exceptions\RedirectException;
-use \Config\Services;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Exceptions\AuthException;
 
@@ -22,7 +21,7 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
         if (empty($this->user))
         {
             // Always record a login attempt, whether success or not.
-            $ipAddress = Services::request()->getIPAddress();
+            $ipAddress = service('request')->getIPAddress();
             $this->recordLoginAttempt($credentials['email'] ?? $credentials['username'], $ipAddress, $this->user->id ?? null, false);
 
             $this->user = null;
@@ -32,7 +31,7 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
         if ($this->user->isBanned())
         {
             // Always record a login attempt, whether success or not.
-            $ipAddress = Services::request()->getIPAddress();
+            $ipAddress = service('request')->getIPAddress();
             $this->recordLoginAttempt($credentials['email'] ?? $credentials['username'], $ipAddress, $this->user->id ?? null, false);
 
             $this->error = lang('Auth.userIsBanned');
@@ -44,7 +43,7 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
         if (! $this->user->isActivated())
         {
             // Always record a login attempt, whether success or not.
-            $ipAddress = Services::request()->getIPAddress();
+            $ipAddress = service('request')->getIPAddress();
             $this->recordLoginAttempt($credentials['email'] ?? $credentials['username'], $ipAddress, $this->user->id ?? null, false);
 
             $param = http_build_query([

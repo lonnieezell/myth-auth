@@ -3,7 +3,6 @@
 use Config\App;
 use CodeIgniter\Events\Events;
 use CodeIgniter\Model;
-use Config\Services;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Exceptions\AuthException;
 use Myth\Auth\Exceptions\UserNotFoundException;
@@ -85,7 +84,7 @@ class AuthenticationBase
         $this->user = $user;
 
         // Always record a login attempt
-        $ipAddress = Services::request()->getIPAddress();
+        $ipAddress = service('request')->getIPAddress();
         $this->recordLoginAttempt($user->email, $ipAddress, $user->id ?? null, true);
 
         // Regenerate the session ID to help protect against session fixation
@@ -98,7 +97,7 @@ class AuthenticationBase
         session()->set('logged_in', $this->user->id);
 
         // When logged in, ensure cache control headers are in place
-        Services::response()->noCache();
+        service('response')->noCache();
 
         if ($remember && $this->config->allowRemembering)
         {
@@ -244,7 +243,7 @@ class AuthenticationBase
 
         // Save it to the user's browser in a cookie.
         $appConfig = config('App');
-        $response = \Config\Services::response();
+        $response = service('response');
 
         // Create the cookie
         $response->setCookie(

@@ -1,6 +1,5 @@
 <?php namespace Myth\Auth\Filters;
 
-use Config\Services;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Filters\FilterInterface;
@@ -48,7 +47,7 @@ class LoginFilter implements FilterInterface
 		}
 
 		// if no user is logged in then send to the login form
-		$authenticate = Services::authentication();
+		$authenticate = service('authentication');
 		if (! $authenticate->check())
 		{
 			session()->set('redirect_url', current_url());

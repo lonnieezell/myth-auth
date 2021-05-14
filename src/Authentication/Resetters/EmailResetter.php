@@ -1,7 +1,6 @@
 <?php namespace Myth\Auth\Authentication\Resetters;
 
 use Config\Email;
-use CodeIgniter\Config\Services;
 use Myth\Auth\Entities\User;
 
 /**
@@ -22,7 +21,7 @@ class EmailResetter extends BaseResetter implements ResetterInterface
      */
     public function send(User $user = null): bool
     {
-        $email = Services::email();
+        $email = service('email');
         $config = new Email();
 
         $settings = $this->getResetterSettings();

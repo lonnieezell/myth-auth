@@ -2,7 +2,6 @@
 
 use CodeIgniter\Model;
 use CodeIgniter\Events\Events;
-use Config\Services;
 use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Authorization\PermissionModel;
 use Myth\Auth\Models\UserModel;
@@ -485,7 +484,7 @@ class FlatAuthorization implements AuthorizeInterface
 			'description' => $description,
 		];
 
-		$validation = Services::validation(null, false);
+		$validation = service('validation', null, false);
 		$validation->setRules([
 			'name'		=> 'required|max_length[255]|is_unique[auth_groups.name]',
 			'description' => 'max_length[255]',
@@ -631,7 +630,7 @@ class FlatAuthorization implements AuthorizeInterface
 			'description' => $description,
 		];
 
-		$validation = Services::validation(null, false);
+		$validation = service('validation', null, false);
 		$validation->setRules([
 			'name'		=> 'required|max_length[255]|is_unique[auth_permissions.name]',
 			'description' => 'max_length[255]',

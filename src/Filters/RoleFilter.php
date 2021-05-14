@@ -1,6 +1,5 @@
 <?php namespace Myth\Auth\Filters;
 
-use Config\Services;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Filters\FilterInterface;
@@ -35,7 +34,7 @@ class RoleFilter implements FilterInterface
 			return;
 		}
 
-		$authenticate = Services::authentication();
+		$authenticate = service('authentication');
 
 		// if no user is logged in then send to the login form
 		if (! $authenticate->check())
@@ -44,7 +43,7 @@ class RoleFilter implements FilterInterface
 			return redirect('login');
 		}
 
-		$authorize = Services::authorization();
+		$authorize = service('authorization');
 
 		// Check each requested permission
 		foreach ($params as $group)

@@ -37,7 +37,7 @@ user against. The library does not enforce a specific set of credentials. You ar
 combination of fields that exist within the `users` table, but typical uses would be either `email` or `username`. 
 You must include a field name `password`, though as it will be verified against the hashed version in the database.
 
-	$auth = Services::authenticate();
+	$auth = service('authenticate');
 	
 	$credentials = [
 		'email' => $this->request->getPost('email', true),
@@ -158,7 +158,7 @@ This is done via `$requireActivation` config variable.
 Confirmation can be done in many ways. Traditionally, this is usually done by sending an email to the email address that was
 used during registration. We use the `Activator` service for this.
 
-	$activator = Services::activator();
+	$activator = service('activator');
 	$activator->send($user);
 
 By default, we provide one type of activator and this is `EmailActivator`. You can also prepare your own activator,
