@@ -204,7 +204,7 @@ account by accessing `AuthController->register()`. NOTE: This setting is not enf
 or edit controller and views you are responsible for checking this value.
 
 ### auth.requireActivation
-This can be either false or string with a namespaced class name. Using a class name will force `activator` service to use this
+This can be either null or string with a namespaced class name. Using a class name will force `activator` service to use this
 class to send an activation message.
 
 	public $requireActivation = 'Myth\Auth\Authentication\Activators\EmailActivator';
@@ -221,7 +221,7 @@ by `requireActivation` config variable.
     ];
 
 ### auth.activeResetter
-This can be either false or string with a namespaced class name. Using a class name will force `resetter` service to use this
+This can be either null or string with a namespaced class name. Using a class name will force `resetter` service to use this
  class to send a reset message.
 
 	public $activeResetter = 'Myth\Auth\Authentication\Resetters\EmailResetter';

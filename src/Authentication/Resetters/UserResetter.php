@@ -14,7 +14,7 @@ class UserResetter extends BaseResetter implements ResetterInterface
 	 */
 	public function send(User $user = null): bool
 	{
-		if (! $this->config->activeResetter)
+		if ($this->config->activeResetter === null)
 		{
 			return true;
 		}

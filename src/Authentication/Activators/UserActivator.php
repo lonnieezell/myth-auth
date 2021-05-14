@@ -19,7 +19,7 @@ class UserActivator extends BaseActivator implements ActivatorInterface
 			return true;
 		}
 
-		$className = $this->config->activeResetter;
+		$className = $this->config->requireActivation;
 
 		$class = new $className();
 		$class->setConfig($this->config);
