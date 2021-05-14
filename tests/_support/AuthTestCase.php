@@ -1,15 +1,11 @@
 <?php namespace Tests\Support;
 
-use CodeIgniter\Session\Handlers\ArrayHandler;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\Fabricator;
-use CodeIgniter\Test\Mock\MockSession;
-use Config\Services;
 use Faker\Factory;
 use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Authorization\PermissionModel;
-use Myth\Auth\Entities\User;
 use Myth\Auth\Models\UserModel;
 use Myth\Auth\Test\AuthTestTrait;
 use Myth\Auth\Test\Fakers\GroupFaker;

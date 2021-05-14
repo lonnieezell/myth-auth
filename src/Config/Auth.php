@@ -145,7 +145,7 @@ class Auth extends BaseConfig
 	 * When enabled, every registered user will receive an email message
 	 * with an activation link to confirm the account.
 	 *
-	 * @var string Name of the ActivatorInterface class
+	 * @var string|false Name of the ActivatorInterface class
 	 */
 	public $requireActivation = 'Myth\Auth\Authentication\Activators\EmailActivator';
 
@@ -157,7 +157,7 @@ class Auth extends BaseConfig
 	 * When enabled, users will have the option to reset their password
 	 * via the specified Resetter. Default setting is email.
 	 *
-	 * @var string Name of the ResetterInterface class
+	 * @var string|false Name of the ResetterInterface class
 	 */
 	public $activeResetter = 'Myth\Auth\Authentication\Resetters\EmailResetter';
 

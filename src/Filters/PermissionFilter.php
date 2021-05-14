@@ -17,7 +17,7 @@ class PermissionFilter implements FilterInterface
 	 * sent back to the client, allowing for error pages,
 	 * redirects, etc.
 	 *
-	 * @param \CodeIgniter\HTTP\RequestInterface $request
+	 * @param RequestInterface $request
 	 * @param array|null                         $params
 	 *
 	 * @return mixed
@@ -74,8 +74,8 @@ class PermissionFilter implements FilterInterface
 	 * to stop execution of other after filters, short of
 	 * throwing an Exception or Error.
 	 *
-	 * @param \CodeIgniter\HTTP\RequestInterface  $request
-	 * @param \CodeIgniter\HTTP\ResponseInterface $response
+	 * @param RequestInterface  $request
+	 * @param ResponseInterface $response
 	 * @param array|null                          $arguments
 	 *
 	 * @return void

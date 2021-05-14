@@ -1,20 +1,22 @@
 <?php namespace Myth\Auth\Controllers;
 
-use Config\Email;
 use CodeIgniter\Controller;
+use CodeIgniter\Session\Session;
+use Myth\Auth\Config\Auth as AuthConfig;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Models\UserModel;
 
 class AuthController extends Controller
 {
 	protected $auth;
+
 	/**
-	 * @var Auth
+	 * @var AuthConfig
 	 */
 	protected $config;
 
 	/**
-	 * @var \CodeIgniter\Session\Session
+	 * @var Session
 	 */
 	protected $session;
 

@@ -1,6 +1,5 @@
 <?php namespace Myth\Auth\Authentication\Resetters;
 
-use Myth\Auth\Config\Auth;
 use Myth\Auth\Entities\User;
 
 class UserResetter extends BaseResetter implements ResetterInterface

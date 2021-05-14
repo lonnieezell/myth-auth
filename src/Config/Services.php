@@ -1,6 +1,7 @@
 <?php namespace Myth\Auth\Config;
 
 use CodeIgniter\Model;
+use Config\Auth as AuthConfig;
 use Myth\Auth\Authorization\FlatAuthorization;
 use Myth\Auth\Models\UserModel;
 use Myth\Auth\Models\LoginModel;
@@ -25,7 +26,7 @@ class Services extends BaseService
 		$userModel  = $userModel ?? model(UserModel::class);
 		$loginModel = $loginModel ?? model(LoginModel::class);
 
-		/** @var \Myth\Auth\Config\Auth $config */
+		/** @var AuthConfig $config */
 		$config   = config('Auth');
 		$class	  = $config->authenticationLibs[$lib];
 		$instance = new $class($config);

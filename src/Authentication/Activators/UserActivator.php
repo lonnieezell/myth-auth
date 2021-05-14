@@ -1,6 +1,5 @@
 <?php namespace Myth\Auth\Authentication\Activators;
 
-use Myth\Auth\Config\Auth;
 use Myth\Auth\Entities\User;
 
 class UserActivator extends BaseActivator implements ActivatorInterface

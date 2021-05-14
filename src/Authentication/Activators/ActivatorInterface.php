@@ -1,6 +1,5 @@
 <?php namespace Myth\Auth\Authentication\Activators;
 
-use CodeIgniter\Entity;
 use Myth\Auth\Entities\User;
 
 /**

@@ -2,7 +2,6 @@
 
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
-use CodeIgniter\Config\Services;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Models\UserModel;
 
