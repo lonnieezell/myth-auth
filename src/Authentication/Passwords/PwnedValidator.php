@@ -3,7 +3,6 @@
 namespace Myth\Auth\Authentication\Passwords;
 
 use CodeIgniter\Entity;
-use CodeIgniter\Config\Services;
 use CodeIgniter\HTTP\Exceptions\HTTPException;
 use Myth\Auth\Exceptions\AuthException;
 
@@ -55,7 +54,7 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
 
         try
         {
-            $client = Services::curlrequest([
+            $client = service('curlrequest', [
                     'base_uri' => 'https://api.pwnedpasswords.com/',
             ]);
 
@@ -66,7 +65,7 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
         catch(HTTPException $e)
         {
             $exception = AuthException::forHIBPCurlFail($e);
-            Services::logger()->error('[ERROR] {exception}', ['exception' => $exception]);
+            service('logger')->error('[ERROR] {exception}', ['exception' => $exception]);
             throw $exception;
         }
 

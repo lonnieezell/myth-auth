@@ -1,7 +1,6 @@
 <?php namespace Myth\Auth\Authentication\Activators;
 
 use Config\Email;
-use Config\Services;
 use Myth\Auth\Entities\User;
 
 /**
@@ -22,7 +21,7 @@ class EmailActivator extends BaseActivator implements ActivatorInterface
      */
     public function send(User $user = null): bool
     {
-        $email = Services::email();
+        $email = service('email');
         $config = new Email();
 
         $settings = $this->getActivatorSettings();
