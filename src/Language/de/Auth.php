@@ -43,20 +43,20 @@ return [
     // Passwords
     'errorPasswordLength'       => 'Das Passwort muss mindestens {0, number} Zeichen lang sein.',
     'suggestPasswordLength'     => 'Passwörter mit bis zu 255 Zeichen sind sicherer und einfacher zu merken.',
-    'errorPasswordCommon'       => 'Das Passwort darf kein gehwöhnliches Passwort sein.',
+    'errorPasswordCommon'       => 'Das Passwort darf kein gewöhnliches Passwort sein.',
     'suggestPasswordCommon'     => 'Das Passwort wurde mit 65.000 Passwörtern, die häufig genutzt werden und mit Passwörtern aus Passwortleaks abgeglichen',
     'errorPasswordPersonal'     => 'Das Passwort darf keine gehashten Benutzerdaten enthalten.',
     'suggestPasswordPersonal'   => 'Variationen Ihres Benutzernamens oder Ihrer E-Mail-Adresse sollten nicht als Passwort verwendet werden.',
     'errorPasswordTooSimilar'    => 'Das Passwort ähnelt dem Benutzernamen zu sehr.',
     'suggestPasswordTooSimilar'  => 'Nutzen Sie keine Teile Ihres Benutzernamens in Ihrem Passwort.',
-    'errorPasswordPwned'        => 'Das Passwort {0} wurde duch einen Datenleak veröffentlicht und verbreitet. Es kommt {1, number} mal in {2} von gestohlenen Passwörtern vor.',
+    'errorPasswordPwned'        => 'Das Passwort {0} wurde durch einen Datenleak veröffentlicht und verbreitet. Es kommt {1, number} mal in {2} von gestohlenen Passwörtern vor.',
     'errorPasswordPwnedDatabase' => 'einer Datenbank',
     'errorPasswordPwnedDatabases' => 'Datenbanken',
     'suggestPasswordPwned'      => '{0} sollte niemals als Passwort verwendet werden. Wenn Sie es irgendwo als Passwort nutzen, sollten Sie es umgehen ändern!',
     'errorPasswordEmpty'        => 'Passwort erforderlich.',
     'passwordChangeSuccess'     => 'Passwort wurde erfolgreich geändert',
     'userDoesNotExist'          => 'Das Passwort wurde nicht geändert. Der Benutzer existiert nicht.',
-    'resetTokenExpired'         => 'Es tut uns Leid, aber der Code zum Zurücksetzen des Passworts ist abgelaufen',
+    'resetTokenExpired'         => 'Es tut uns leid, aber der Code zum Zurücksetzen des Passworts ist abgelaufen',
 
     // Groups
     'groupNotFound'             => 'Die Gruppe: {0} konnte nicht gefunden werden.',
