@@ -32,7 +32,7 @@ return [
 
     // Forgotten Passwords
     'forgotDisabled'            => 'Wachtwoord vergeten is uitgeschakeld.',
-    'forgotNoUser'              => 'Er kan geen gebruiker met dit e-mailadres gevondenw worden.',
+    'forgotNoUser'              => 'Er kan geen gebruiker met dit e-mailadres gevonden worden.',
     'forgotSubject'             => 'Instructies wachtwoord herstellen',
     'resetSuccess'              => 'Je wachtwoord is succesvol gewijzigd. Login met je nieuwe wachtwoord.',
     'forgotEmailSent'           => 'Een beveiligingscode is naar het e-mailadres gestuurd. Vul de code in onderstaand veld in om door te gaan.',
