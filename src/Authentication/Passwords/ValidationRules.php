@@ -69,7 +69,7 @@ class ValidationRules
     {
         $fields = $this->prepareValidFields();
 
-        $data = service('request')->getPost($fields);
+        $data = array_filter(service('request')->getPost($fields));
 
         return new User($data);
     }
