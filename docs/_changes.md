@@ -1,5 +1,33 @@
 # Highlighted Changes in Version 
 
+## 1.0 final
+
+Released June 9, 2021
+
+Breaking Changes:
+- Config\Auth::$requireActivation should now be `null` instead of `false` 
+- Config\Auth::$activeResetter should now be `null` instead of `false` 
+
+Enhancements:
+- All password-related features have been moved to a new class, `Myth\Auth\Password`, and can be accessed statically.
+- New Slovak translation
+- New German translation
+- New Indonesian translation
+- New Dutch translation
+- New CLI command: auth:activate_user
+- New CLI command: auth:hash_password
+- New CLI command: auth:set_password
+- new Fakers for Groups, Permissions, and Users for use during testing
+- AuthController now has a `_render` method you can override if you use a different view renderer, like Twig
+- new method: `GroupModel::getGroupsForUser`
+
+Bugs Fixed:
+
+- fixed improper redirect issue where it was using base_url instead of site_url
+- permissions cache is now deleted when the groups cached is deleted
+- Login filter now ignores the activate account link
+
+
 ## 1.0-beta 3  
 
 Released May 11, 2020
