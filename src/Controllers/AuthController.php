@@ -1,20 +1,22 @@
 <?php namespace Myth\Auth\Controllers;
 
-use Config\Email;
 use CodeIgniter\Controller;
+use CodeIgniter\Session\Session;
+use Myth\Auth\Config\Auth as AuthConfig;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Models\UserModel;
 
 class AuthController extends Controller
 {
 	protected $auth;
+
 	/**
-	 * @var Auth
+	 * @var AuthConfig
 	 */
 	protected $config;
 
 	/**
-	 * @var \CodeIgniter\Session\Session
+	 * @var Session
 	 */
 	protected $session;
 
@@ -168,7 +170,7 @@ class AuthController extends Controller
 		$allowedPostFields = array_merge(['password'], $this->config->validFields, $this->config->personalFields);
 		$user = new User($this->request->getPost($allowedPostFields));
 
-		$this->config->requireActivation !== false ? $user->generateActivateHash() : $user->activate();
+		$this->config->requireActivation === null ? $user->activate : $user->generateActivateHash();
 
 		// Ensure default group gets assigned if set
         if (! empty($this->config->defaultUserGroup)) {
@@ -180,7 +182,7 @@ class AuthController extends Controller
 			return redirect()->back()->withInput()->with('errors', $users->errors());
 		}
 
-		if ($this->config->requireActivation !== false)
+		if ($this->config->requireActivation !== null)
 		{
 			$activator = service('activator');
 			$sent = $activator->send($user);
@@ -207,7 +209,7 @@ class AuthController extends Controller
 	 */
 	public function forgotPassword()
 	{
-		if (! $this->config->activeResetter)
+		if ($this->config->activeResetter === null)
 		{
 			return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
 		}
@@ -221,7 +223,7 @@ class AuthController extends Controller
 	 */
 	public function attemptForgot()
 	{
-		if (! $this->config->activeResetter)
+		if ($this->config->activeResetter === null)
 		{
 			return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
 		}
@@ -255,7 +257,7 @@ class AuthController extends Controller
 	 */
 	public function resetPassword()
 	{
-		if (! $this->config->activeResetter)
+		if ($this->config->activeResetter === null)
 		{
 			return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
 		}
@@ -276,7 +278,7 @@ class AuthController extends Controller
 	 */
 	public function attemptReset()
 	{
-		if (! $this->config->activeResetter)
+		if ($this->config->activeResetter === null)
 		{
 			return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
 		}
@@ -375,7 +377,7 @@ class AuthController extends Controller
 	 */
 	public function resendActivateAccount()
 	{
-		if ($this->config->requireActivation === false)
+		if ($this->config->requireActivation === null)
 		{
 			return redirect()->route('login');
 		}

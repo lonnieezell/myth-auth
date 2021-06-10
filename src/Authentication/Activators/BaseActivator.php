@@ -1,12 +1,12 @@
 <?php namespace Myth\Auth\Authentication\Activators;
 
-use Myth\Auth\Config\Auth;
+use Myth\Auth\Config\Auth as AuthConfig;
 use Myth\Auth\Entities\User;
 
 abstract class BaseActivator
 {
 	/**
-	 * @var Auth
+	 * @var AuthConfig
 	 */
 	protected $config;
 
@@ -27,9 +27,9 @@ abstract class BaseActivator
 	/**
 	 * Sets the initial config file.
 	 *
-	 * @param Auth|null $config
+	 * @param AuthConfig|null $config
 	 */
-	public function __construct(Auth $config = null)
+	public function __construct(AuthConfig $config = null)
 	{
 		$this->config = $config ?? config('Auth');
 	}

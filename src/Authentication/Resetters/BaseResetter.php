@@ -1,12 +1,12 @@
 <?php namespace Myth\Auth\Authentication\Resetters;
 
-use Myth\Auth\Config\Auth;
+use Myth\Auth\Config\Auth as AuthConfig;
 use Myth\Auth\Entities\User;
 
 abstract class BaseResetter
 {
 	/**
-	 * @var Auth
+	 * @var AuthConfig
 	 */
 	protected $config;
 
@@ -27,9 +27,9 @@ abstract class BaseResetter
 	/**
 	 * Sets the initial config file.
 	 *
-	 * @param Auth|null $config
+	 * @param AuthConfig|null $config
 	 */
-	public function __construct(Auth $config = null)
+	public function __construct(AuthConfig $config = null)
 	{
 		$this->config = $config ?? config('Auth');
 	}
@@ -37,11 +37,11 @@ abstract class BaseResetter
 	/**
 	 * Allows for changing the config file on the Resetter.
 	 *
-	 * @param Auth $config
+	 * @param AuthConfig $config
 	 *
 	 * @return $this
 	 */
-	public function setConfig(Auth $config)
+	public function setConfig(AuthConfig $config)
 	{
 		$this->config = $config;
 

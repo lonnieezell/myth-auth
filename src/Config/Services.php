@@ -1,6 +1,7 @@
 <?php namespace Myth\Auth\Config;
 
 use CodeIgniter\Model;
+use Myth\Auth\Config\Auth as AuthConfig;
 use Myth\Auth\Authorization\FlatAuthorization;
 use Myth\Auth\Models\UserModel;
 use Myth\Auth\Models\LoginModel;
@@ -25,7 +26,7 @@ class Services extends BaseService
 		$userModel  = $userModel ?? model(UserModel::class);
 		$loginModel = $loginModel ?? model(LoginModel::class);
 
-		/** @var \Myth\Auth\Config\Auth $config */
+		/** @var AuthConfig $config */
 		$config   = config('Auth');
 		$class	  = $config->authenticationLibs[$lib];
 		$instance = new $class($config);
@@ -54,38 +55,38 @@ class Services extends BaseService
 	/**
 	 * Returns an instance of the PasswordValidator.
 	 *
-	 * @param Auth|null $config
+	 * @param AuthConfig|null $config
 	 * @param bool      $getShared
 	 *
 	 * @return ValidatorInterface
 	 */
-	public static function passwords(Auth $config = null, bool $getShared = true): PasswordValidator
+	public static function passwords(AuthConfig $config = null, bool $getShared = true): PasswordValidator
 	{
 		if ($getShared)
 		{
 			return self::getSharedInstance('passwords', $config);
 		}
 
-		return new PasswordValidator($config ?? config(Auth::class));
+		return new PasswordValidator($config ?? config(AuthConfig::class));
 	}
 
 	/**
 	 * Returns an instance of the Activator.
 	 *
-	 * @param Auth|null $config
+	 * @param AuthConfig|null $config
 	 * @param bool      $getShared
 	 *
 	 * @return ActivatorInterface
 	 */
-	public static function activator(Auth $config = null, bool $getShared = true): ActivatorInterface
+	public static function activator(AuthConfig $config = null, bool $getShared = true): ActivatorInterface
 	{
 		if ($getShared)
 		{
 			return self::getSharedInstance('activator', $config);
 		}
 
-		$config = $config ?? config(Auth::class);
-		$class	= $config->requireActivation ?: UserActivator::class;
+		$config = $config ?? config(AuthConfig::class);
+		$class	= $config->requireActivation ?? UserActivator::class;
 
 		return new $class($config);
 	}
@@ -93,20 +94,20 @@ class Services extends BaseService
 	/**
 	 * Returns an instance of the Resetter.
 	 *
-	 * @param Auth|null $config
+	 * @param AuthConfig|null $config
 	 * @param bool      $getShared
 	 *
 	 * @return ResetterInterface
 	 */
-	public static function resetter(Auth $config = null, bool $getShared = true): ResetterInterface
+	public static function resetter(AuthConfig $config = null, bool $getShared = true): ResetterInterface
 	{
 		if ($getShared)
 		{
 			return self::getSharedInstance('resetter', $config);
 		}
 
-		$config = $config ?? config(Auth::class);
-		$class	= $config->activeResetter ?: EmailResetter::class;
+		$config = $config ?? config(AuthConfig::class);
+		$class	= $config->activeResetter ?? EmailResetter::class;
 
 		return new $class($config);
 	}

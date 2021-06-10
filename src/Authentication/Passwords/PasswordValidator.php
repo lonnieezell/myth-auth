@@ -1,13 +1,13 @@
 <?php namespace Myth\Auth\Authentication\Passwords;
 
-use Myth\Auth\Config\Auth;
+use Myth\Auth\Config\Auth as AuthConfig;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Exceptions\AuthException;
 
 class PasswordValidator
 {
 	/**
-	 * @var Auth
+	 * @var AuthConfig
 	 */
 	protected $config;
 
@@ -15,7 +15,7 @@ class PasswordValidator
 
 	protected $suggestion;
 
-	public function __construct(Auth $config)
+	public function __construct(AuthConfig $config)
 	{
 		$this->config = $config;
 	}

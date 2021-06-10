@@ -89,7 +89,7 @@ class RegisterTest extends AuthTestCase
 
         // don't require activation for this...
         $config = config('Auth');
-        $config->requireActivation = false;
+        $config->requireActivation = null;
         \CodeIgniter\Config\Config::injectMock('Auth', $config);
 
         $result = $this->withUri(site_url('register'))
@@ -127,7 +127,7 @@ class RegisterTest extends AuthTestCase
 
         // don't require activation for this...
         $config = config('Auth');
-        $config->requireActivation = false;
+        $config->requireActivation = null;
         $config->defaultUserGroup = $group->name;
         \CodeIgniter\Config\Config::injectMock('Auth', $config);
 

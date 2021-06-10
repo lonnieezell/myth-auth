@@ -1,5 +1,6 @@
 <?php
 
+use Myth\Auth\Entities\User;
 
 if (! function_exists('logged_in'))
 {
@@ -19,7 +20,7 @@ if (! function_exists('user'))
 	/**
 	 * Returns the User instance for the current logged in user.
 	 *
-	 * @return \Myth\Auth\Entities\User|null
+	 * @return User|null
 	 */
 	function user()
 	{

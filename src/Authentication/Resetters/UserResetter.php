@@ -1,6 +1,5 @@
 <?php namespace Myth\Auth\Authentication\Resetters;
 
-use Myth\Auth\Config\Auth;
 use Myth\Auth\Entities\User;
 
 class UserResetter extends BaseResetter implements ResetterInterface
@@ -15,7 +14,7 @@ class UserResetter extends BaseResetter implements ResetterInterface
 	 */
 	public function send(User $user = null): bool
 	{
-		if (! $this->config->activeResetter)
+		if ($this->config->activeResetter === null)
 		{
 			return true;
 		}

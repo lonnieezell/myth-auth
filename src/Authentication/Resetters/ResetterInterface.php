@@ -1,6 +1,5 @@
 <?php namespace Myth\Auth\Authentication\Resetters;
 
-use CodeIgniter\Entity;
 use Myth\Auth\Entities\User;
 /**
  * Interface ResetterInterface

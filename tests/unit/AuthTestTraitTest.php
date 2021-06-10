@@ -1,6 +1,5 @@
 <?php
 
-use Myth\Auth\Test\Fakers\PermissionFaker;
 use Myth\Auth\Test\Fakers\UserFaker;
 use Tests\Support\AuthTestCase;
 

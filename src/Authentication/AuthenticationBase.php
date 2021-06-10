@@ -1,8 +1,8 @@
 <?php namespace Myth\Auth\Authentication;
 
-use Config\App;
 use CodeIgniter\Events\Events;
 use CodeIgniter\Model;
+use Myth\Auth\Config\Auth as AuthConfig;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Exceptions\AuthException;
 use Myth\Auth\Exceptions\UserNotFoundException;
@@ -31,7 +31,7 @@ class AuthenticationBase
     protected $error;
 
     /**
-     * @var \Config\Auth
+     * @var AuthConfig
      */
     protected $config;
 
@@ -67,7 +67,7 @@ class AuthenticationBase
      * NOTE: does not perform validation. All validation should
      * be done prior to using the login method.
      *
-     * @param \Myth\Auth\Entities\User $user
+     * @param User $user
      * @param bool                     $remember
      *
      * @return bool
@@ -314,7 +314,7 @@ class AuthenticationBase
     /**
      * Returns the User instance for the current logged in user.
      *
-     * @return \Myth\Auth\Entities\User|null
+     * @return User|null
      */
     public function user()
     {
@@ -351,7 +351,7 @@ class AuthenticationBase
      * Sets the model that should be used to work with
      * user accounts.
      *
-     * @param \CodeIgniter\Model $model
+     * @param Model $model
      *
      * @return $this
      */

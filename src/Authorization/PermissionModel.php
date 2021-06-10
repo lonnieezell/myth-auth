@@ -1,6 +1,8 @@
 <?php namespace Myth\Auth\Authorization;
 
 use CodeIgniter\Model;
+use BaseResult;
+use Query;
 
 class PermissionModel extends Model
 {
@@ -52,7 +54,7 @@ class PermissionModel extends Model
      * @param int $permissionId
      * @param int $userId
      *
-     * @return \CodeIgniter\Database\BaseResult|\CodeIgniter\Database\Query|false
+     * @return BaseResult|Query|false
      */
     public function addPermissionToUser(int $permissionId, int $userId)
     {

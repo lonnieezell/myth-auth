@@ -1,7 +1,6 @@
 <?php namespace Myth\Auth\Authentication\Passwords;
 
 use CodeIgniter\Entity;
-use Myth\Auth\Exceptions\AuthException;
 
 /**
  * Class NothingPersonalValidator
