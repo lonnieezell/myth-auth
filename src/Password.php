@@ -60,7 +60,7 @@ class Password
 	 *
 	 * @return boolean
 	 */
-	public static function needRehash(string $hash, $algo, array $options = []): bool
+	public static function needsRehash(string $hash, $algo, array $options = []): bool
 	{
 		return password_needs_rehash($hash, $algo, $options);
 	}
