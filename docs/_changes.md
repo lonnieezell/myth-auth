@@ -5,8 +5,9 @@
 Released June 9, 2021
 
 Breaking Changes:
-- Config\Auth::$requireActivation should now be `null` instead of `false` 
-- Config\Auth::$activeResetter should now be `null` instead of `false` 
+- Config\Auth::$requireActivation should now be `null` instead of `false`
+- Config\Auth::$activeResetter should now be `null` instead of `false`
+- `UserModel` now requires `username` to be 30 characters or less (to match the database restriction)
 
 Enhancements:
 - All password-related features have been moved to a new class, `Myth\Auth\Password`, and can be accessed statically.
