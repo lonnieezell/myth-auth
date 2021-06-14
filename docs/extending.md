@@ -50,7 +50,7 @@ You are developing a web app and need to track users' names and phone numbers in
 to the regular fields used for authentication. First step is to modify the database to
 add these fields, so you create **app/Database/Migrations/20190603101528_alter_table_users.php**
 and define `firstname`, `lastname`, and `phone`
-(see [an example migration](examples/20190603101528_alter_table_users.php)).
+(see [an example migration](../examples/20190603101528_alter_table_users.php)).
 
 Next you need to let the `UserModel` know about these additional fields. Myth:Auth uses
 `Factories` to load its `UserModel` so if it finds a corresponding file in **app/Models** it
