@@ -13,6 +13,7 @@ parameters:
 		- '#Cannot access property [\$a-z_]+ on (array|object)#'
 	universalObjectCratesClasses:
 		- CodeIgniter\Entity
+		- CodeIgniter\Entity\Entity
 		- Faker\Generator
 	scanDirectories:
 		- vendor/codeigniter4/codeigniter4/system/Helpers

@@ -1,0 +1,19 @@
+{
+	"source": {
+		"directories": [
+			"src"
+		],
+		"excludes": [
+			"Config",
+			"Database/Migrations",
+			"Views"
+		]
+	},
+	"logs": {
+		"text": "build/infection.log"
+	},
+	"mutators": {
+		"@default": true
+	},
+	"bootstrap": "vendor/codeigniter4/codeigniter4/system/Test/bootstrap.php"
+}
