@@ -67,7 +67,7 @@ class AuthTestCase extends CIUnitTestCase
 	 */
 	protected $faker;
 
-	public function setUp(): void
+	protected function setUp(): void
 	{
 		parent::setUp();
 		
