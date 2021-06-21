@@ -4,8 +4,10 @@ use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\Fabricator;
 use Faker\Factory;
+use Faker\Generator;
 use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Authorization\PermissionModel;
+use Myth\Auth\Entities\User;
 use Myth\Auth\Models\UserModel;
 use Myth\Auth\Test\AuthTestTrait;
 use Myth\Auth\Test\Fakers\GroupFaker;
@@ -46,7 +48,7 @@ class AuthTestCase extends CIUnitTestCase
 	protected $namespace = 'Myth\Auth';
 
 	/**
-	 * @var \Myth\Auth\Models\UserModel
+	 * @var UserModel
 	 */
 	protected $users;
 
@@ -61,14 +63,9 @@ class AuthTestCase extends CIUnitTestCase
 	protected $permissions;
 
 	/**
-	 * @var Faker\Generator
+	 * @var Generator
 	 */
 	protected $faker;
-
-	/**
-	 * @var SessionHandler
-	 */
-	protected $session;
 
 	public function setUp(): void
 	{
@@ -86,9 +83,9 @@ class AuthTestCase extends CIUnitTestCase
 	/**
 	 * Creates a user on-the-fly.
 	 *
-	 * @param string $reason
+	 * @param array $info
 	 *
-	 * @return $this
+	 * @return User
 	 */
 	protected function createUser(array $info = [])
 	{

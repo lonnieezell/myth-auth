@@ -1,5 +1,7 @@
 <?php
 
+use CodeIgniter\Config\Factories;
+use Myth\Auth\Config\Auth as AuthConfig;
 use Myth\Auth\Models\UserModel;
 use Tests\Support\AuthTestCase;
 
@@ -43,9 +45,9 @@ class UserModelTest extends AuthTestCase
             'password_hash' => 'cornedbeef',
         ];
 
-        $config = new \Myth\Auth\Config\Auth();
-        $config->defaultGroup = 'unknown';
-        \CodeIgniter\Config\Config::injectMock('Auth', $config);
+        $config = new AuthConfig();
+        $config->defaultUserGroup = 'unknown';
+        Factories::injectMock('config', 'Auth', $config);
 
         $userId = $this->users->insert($data);
 

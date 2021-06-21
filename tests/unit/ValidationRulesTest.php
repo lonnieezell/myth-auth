@@ -10,12 +10,10 @@ use Myth\Auth\Authentication\Passwords\ValidationRules;
 
 class ValidationRulesTest extends CIUnitTestCase
 {
+	/**
+	 * @var Validation
+	 */
     protected $validation;
-    protected $config = [
-        'ruleSets'      => [
-            ValidationRules::class,
-        ],
-    ];
 
     //--------------------------------------------------------------------
 
@@ -25,15 +23,16 @@ class ValidationRulesTest extends CIUnitTestCase
 
         Services::reset(true);
 
-        $config = config('App');
-        $this->session = new MockSession(new ArrayHandler($config, '0.0.0.0'), $config);
-        \Config\Services::injectMock('session', $this->session);
         $_SESSION = [];
-
-        $this->validation = new Validation((object) $this->config, \Config\Services::renderer());
-        $this->validation->reset();
-
         $_REQUEST = [];
+
+		$config = config('Validation');
+		$config->ruleSets = [
+            ValidationRules::class,
+        ];
+
+        $this->validation = new Validation($config, Services::renderer());
+        $this->validation->reset();
     }
 
     //--------------------------------------------------------------------

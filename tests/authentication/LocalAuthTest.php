@@ -11,11 +11,9 @@ class LocalAuthTest extends AuthTestCase
      */
     protected $auth;
 
-    /**
-     * @var \Tests\Support\Session\MockSession
-     */
-    protected $session;
-
+	/**
+	 * @var bool
+	 */
     protected $refresh = true;
 
     public function setUp(): void

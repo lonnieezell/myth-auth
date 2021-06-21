@@ -10,6 +10,7 @@ use Myth\Auth\Authorization\PermissionModel;
 use Myth\Auth\Authentication\Activators\ActivatorInterface;
 use Myth\Auth\Authentication\Activators\UserActivator;
 use Myth\Auth\Authentication\Passwords\PasswordValidator;
+use Myth\Auth\Authentication\Passwords\ValidatorInterface;
 use Myth\Auth\Authentication\Resetters\EmailResetter;
 use Myth\Auth\Authentication\Resetters\ResetterInterface;
 use Config\Services as BaseService;
@@ -58,7 +59,7 @@ class Services extends BaseService
 	 * @param AuthConfig|null $config
 	 * @param bool      $getShared
 	 *
-	 * @return ValidatorInterface
+	 * @return PasswordValidator
 	 */
 	public static function passwords(AuthConfig $config = null, bool $getShared = true): PasswordValidator
 	{

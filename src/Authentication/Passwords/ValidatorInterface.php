@@ -21,7 +21,7 @@ interface ValidatorInterface
      * @param string $password
      * @param Entity $user
      *
-     * @return mixed
+     * @return bool
      */
     public function check(string $password, Entity $user=null): bool;
 

@@ -20,7 +20,7 @@ interface AuthorizeInterface  {
      * with the ID of the group, or an array of strings/ids that the
      * user must belong to ONE of. (It's an OR check not an AND check)
      *
-     * @param     $groups
+     * @param mixed $groups
      * @param int $userId
      *
      * @return bool
@@ -40,8 +40,8 @@ interface AuthorizeInterface  {
     /**
      * Makes a member a part of a group.
      *
-     * @param $userid
-     * @param $group        // Either ID or name
+     * @param int $userid
+     * @param int|string $group  Either ID or name
      *
      * @return bool
      */
@@ -50,8 +50,8 @@ interface AuthorizeInterface  {
     /**
      * Removes a single user from a group.
      *
-     * @param $userId
-     * @param $group
+     * @param int $userId
+     * @param int|string $group
      *
      * @return mixed
      */
@@ -84,7 +84,7 @@ interface AuthorizeInterface  {
     /**
      * Grabs the details about a single group.
      *
-     * @param $group
+     * @param int|string $group
      *
      * @return object|null
      */
@@ -98,7 +98,7 @@ interface AuthorizeInterface  {
     public function groups();
 
     /**
-     * @param $name
+     * @param string $name
      * @param string $description
      *
      * @return mixed
@@ -117,8 +117,8 @@ interface AuthorizeInterface  {
     /**
      * Updates a single group's information.
      *
-     * @param $id
-     * @param $name
+     * @param int $id
+     * @param string $name
      * @param string $description
      *
      * @return mixed
@@ -148,7 +148,7 @@ interface AuthorizeInterface  {
     /**
      * Creates a single permission.
      *
-     * @param $name
+     * @param string $name
      * @param string $description
      *
      * @return mixed
@@ -158,7 +158,7 @@ interface AuthorizeInterface  {
     /**
      * Deletes a single permission and removes that permission from all groups.
      *
-     * @param $permissionId
+     * @param int $permissionId
      *
      * @return mixed
      */

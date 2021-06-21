@@ -5,7 +5,7 @@ use Myth\Auth\Authentication\Passwords\NothingPersonalValidator;
 class NothingPersonalValidatorTest extends CIUnitTestCase
 {
     /**
-     * @var CompositionValidator
+     * @var NothingPersonalValidator
      */
     protected $validator;
 
@@ -14,8 +14,6 @@ class NothingPersonalValidatorTest extends CIUnitTestCase
         parent::setUp();
 
         $config = new \Myth\Auth\Config\Auth();
-        //
-//        $config->personalFields = [];//['firstname', 'lastname'];
 
         $this->validator = new NothingPersonalValidator();
         $this->validator->setConfig($config);

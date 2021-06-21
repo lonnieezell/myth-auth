@@ -74,10 +74,9 @@ class User extends Entity
      * Force a user to reset their password on next page refresh
      * or login. Checked in the LocalAuthenticator's check() method.
      *
-     * @param User $user
-     *
-     * @return User
      * @throws \Exception
+     *
+     * @return $this
      */
     public function forcePasswordReset()
     {
