@@ -92,7 +92,7 @@ class GroupModel extends Model
      */
     public function getGroupsForUser(int $userId)
     {
-        if (! $found = cache("{$userId}_groups"))
+        if (null === $found = cache("{$userId}_groups"))
         {
             $found = $this->builder()
                 ->select('auth_groups_users.*, auth_groups.name, auth_groups.description')
@@ -115,7 +115,7 @@ class GroupModel extends Model
      */
     public function getUsersForGroup(int $groupId)
     {
-        if (! $found = cache("{$groupId}_users"))
+        if (null === $found = cache("{$groupId}_users"))
         {
             $found = $this->builder()
                 ->select('auth_groups_users.*, users.*')
