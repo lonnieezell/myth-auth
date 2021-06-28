@@ -80,8 +80,7 @@ be either the group ID or the group's name.
 	$authorize->removeUserFromGroup($userId, 'moderators');
 
 ### usersInGroup()
-Lists all users in a single group. The group must already exist. The only parameter is the group you want to list. Both
-parameters can be ID or name. The data return is an array.
+Lists all users in a single group. The group must already exist. The only parameter is the group you want to list, which can be its ID or name. The data return is an array of user array rows. 
 
 ### addPermissionToGroup()
 Adds a permission to a single group. The permission must already exist. The first parameter is the permission. 
