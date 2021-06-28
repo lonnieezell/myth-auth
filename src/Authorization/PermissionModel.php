@@ -99,7 +99,7 @@ class PermissionModel extends Model
      */
     public function getPermissionsForUser(int $userId): array
     {
-        if (! $found = cache("{$userId}_permissions"))
+        if (null === $found = cache("{$userId}_permissions"))
         {
             $fromUser = $this->db->table('auth_users_permissions')
                 ->select('id, auth_permissions.name')

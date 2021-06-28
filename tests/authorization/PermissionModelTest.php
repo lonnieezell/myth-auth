@@ -81,6 +81,41 @@ class PermissionModelTest extends AuthTestCase
         $this->assertEquals($expected, $this->model->getPermissionsForUser($user->id));
     }
 
+    public function testGetPermissionsForUserFromCache()
+    {
+        $user = $this->createUser();
+        $permission1 = $this->createPermission(['name' => 'first']);
+        $permission2 = $this->createPermission(['name' => 'second']);
+
+        $this->hasInDatabase('auth_users_permissions', [
+            'user_id' => $user->id,
+            'permission_id' => $permission1->id
+        ]);
+
+        $cachePermissions = [
+            $permission2->id => $permission2->name
+        ];
+        cache()->save("{$user->id}_permissions", $cachePermissions, 300);
+
+        $this->assertEquals($cachePermissions, $this->model->getPermissionsForUser($user->id));
+    }
+
+    public function testGetEmptyPermissionsForUserFromCache()
+    {
+        $user = $this->createUser();
+        $permission1 = $this->createPermission(['name' => 'first']);
+
+        $this->hasInDatabase('auth_users_permissions', [
+            'user_id' => $user->id,
+            'permission_id' => $permission1->id
+        ]);
+
+        $cachePermissions = [];
+        cache()->save("{$user->id}_permissions", $cachePermissions, 300);
+
+        $this->assertEquals($cachePermissions, $this->model->getPermissionsForUser($user->id));
+    }
+
     public function testDoesUserHavePermissionByGroupAssign()
     {
         $user = $this->createUser();
