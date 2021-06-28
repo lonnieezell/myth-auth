@@ -6,7 +6,7 @@ use Myth\Auth\Authentication\Passwords\DictionaryValidator;
 class DictionaryValidatorTest extends CIUnitTestCase
 {
     /**
-     * @var CompositionValidator
+     * @var DictionaryValidator
      */
     protected $validator;
 

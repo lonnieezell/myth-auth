@@ -1,18 +1,18 @@
 <?php
 
-use Myth\Auth\Config\Services;
 use Config\App;
 use CodeIgniter\HTTP\Response;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\HTTP\Exceptions\HTTPException;
-use Myth\Auth\Exceptions\AuthException;
+use Myth\Auth\Config\Services;
 use Myth\Auth\Authentication\Passwords\PwnedValidator;
+use Myth\Auth\Exceptions\AuthException;
 
 class PwnedValidatorTest extends CIUnitTestCase
 {
 
     /**
-     * @var CompositionValidator
+     * @var PwnedValidator
      */
     protected $validator;
 

@@ -11,7 +11,7 @@ use Myth\Auth\Models\LoginModel;
 class AuthenticationBase
 {
     /**
-     * @var User
+     * @var User|null
      */
     protected $user;
 
@@ -54,11 +54,11 @@ class AuthenticationBase
      * Whether to continue instead of throwing exceptions,
      * as defined in config.
      *
-     * @return string
+     * @return bool
      */
     public function silent()
     {
-        return $this->config->silent;
+        return (bool) $this->config->silent;
     }
 
 
@@ -288,14 +288,14 @@ class AuthenticationBase
 
         // Create the cookie
         set_cookie(
-            'remember',      							// Cookie Name
-            $selector.':'.$validator, 					// Value
-            $this->config->rememberLength,  			// # Seconds until it expires
+            'remember',      						// Cookie Name
+            $selector.':'.$validator, 				// Value
+            (string) $this->config->rememberLength, // # Seconds until it expires
             $appConfig->cookieDomain,
             $appConfig->cookiePath,
             $appConfig->cookiePrefix,
-            $appConfig->cookieSecure,                   // Only send over HTTPS?
-            true                  						// Hide from Javascript?
+            $appConfig->cookieSecure,               // Only send over HTTPS?
+            true                                    // Hide from Javascript?
         );
     }
 
@@ -366,7 +366,7 @@ class AuthenticationBase
      * Sets the model that should be used to record
      * login attempts (but failed and successful).
      *
-     * @param Model $model
+     * @param LoginModel $model
      *
      * @return $this
      */

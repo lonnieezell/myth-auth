@@ -32,7 +32,8 @@ class UserModel extends Model
     /**
      * The id of a group to assign.
      * Set internally by withGroup.
-     * @var int
+     *
+     * @var int|null
      */
     protected $assignGroup;
 
@@ -105,7 +106,7 @@ class UserModel extends Model
      * add this user to that group. Will do nothing
      * if the group cannot be found.
      *
-     * @param $data
+     * @param mixed $data
      *
      * @return mixed
      */

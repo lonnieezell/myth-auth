@@ -1,6 +1,9 @@
 <?php
 
+use CodeIgniter\Config\Factories;
+use Config\Services;
 use Myth\Auth\Authorization\PermissionModel;
+use Myth\Auth\Config\Auth as AuthConfig;
 use Myth\Auth\Entities\User;
 use Tests\Support\AuthTestCase;
 
@@ -11,16 +14,16 @@ class UserEntityTest extends AuthTestCase
      */
     protected $user;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
-        \Config\Services::reset();
+        Services::reset();
 
         parent::setUp();
 
         // Don't worry about default groups for this...
-        $config = new \Myth\Auth\Config\Auth();
-        $config->defaultGroup = 'Administrators';
-        \CodeIgniter\Config\Config::injectMock('Auth', $config);
+        $config = new AuthConfig();
+        $config->defaultUserGroup = 'Administrators';
+        Factories::injectMock('config', 'Auth', $config);
     }
 
     public function testGetPermissionsNotSaved()

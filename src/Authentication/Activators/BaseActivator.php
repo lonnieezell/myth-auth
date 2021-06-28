@@ -37,11 +37,11 @@ abstract class BaseActivator
 	/**
 	 * Allows for changing the config file on the Activator.
 	 *
-	 * @param Auth $config
+	 * @param AuthConfig $config
 	 *
 	 * @return $this
 	 */
-	public function setConfig(Auth $config)
+	public function setConfig(AuthConfig $config)
 	{
 		$this->config = $config;
 

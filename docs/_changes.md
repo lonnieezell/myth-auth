@@ -1,5 +1,14 @@
 # Highlighted Changes in Version 
 
+## Unreleased
+
+Enhancements:
+- Added Infection for mutation testing (test quality testing)
+- Added RoaveBC to detect breaking changes
+- Added Tachycardia for slow test detection and annotation
+- Added Coveralls to track and record test coverage
+- Switched code style enforcement to PHP CS Fixer to match the framework (awaiting configuration)
+
 ## 1.0 final
 
 Released June 9, 2021

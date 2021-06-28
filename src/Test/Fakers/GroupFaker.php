@@ -2,6 +2,7 @@
 
 use Faker\Generator;
 use Myth\Auth\Authorization\GroupModel;
+use stdClass;
 
 class GroupFaker extends GroupModel
 {
@@ -10,9 +11,9 @@ class GroupFaker extends GroupModel
 	 *
 	 * @param Generator $faker
 	 *
-	 * @return object
+	 * @return stdClass
 	 */
-	public function fake(Generator &$faker): \stdClass
+	public function fake(Generator &$faker): stdClass
 	{
 		return (object) [
             'name'        => $faker->word,
