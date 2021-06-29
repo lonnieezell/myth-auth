@@ -762,4 +762,25 @@ class FlatAuthorization implements AuthorizeInterface
 		}
 	}
 
+	/**
+	 * Returns an array of all users in a group
+	 * The group can be either the ID or the name of the group.
+	 *
+	 * @param int|string $group
+	 *
+	 * @return mixed
+	 */
+	public function usersInGroup($group)
+	{
+		if (is_numeric($group))
+		{
+			return $this->groupModel->getUsersForGroup($group);
+		}
+		else
+		{
+			$g = $this->groupModel->where('name', $group)->first();
+			return $this->groupModel->getUsersForGroup($g->id);
+		}
+	}
+
 }
