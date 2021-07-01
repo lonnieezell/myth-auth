@@ -34,7 +34,8 @@ class GroupModel extends Model
      * @return bool
      */
     public function addUserToGroup(int $userId, int $groupId)
-    {
+    {    
+        cache()->delete("{$groupId}_users");
         cache()->delete("{$userId}_groups");
         cache()->delete("{$userId}_permissions");
 
@@ -56,6 +57,7 @@ class GroupModel extends Model
      */
     public function removeUserFromGroup(int $userId, $groupId)
     {
+        cache()->delete("{$groupId}_users");
         cache()->delete("{$userId}_groups");
         cache()->delete("{$userId}_permissions");
 
