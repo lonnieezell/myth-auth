@@ -1,5 +1,39 @@
 # Changelog
 
+## [v1.0.1](https://github.com/lonnieezell/myth-auth/tree/v1.0.1) (2021-07-02)
+
+[Full Changelog](https://github.com/lonnieezell/myth-auth/compare/v1.0...v1.0.1)
+
+**Closed issues:**
+
+- Validation from \Config\Services::validation\(\) is no longer worked in frontend after implementing Myth/Auth [\#395](https://github.com/lonnieezell/myth-auth/issues/395)
+- Improve IPv6 support [\#392](https://github.com/lonnieezell/myth-auth/issues/392)
+- var $requireActivation on config not working for disable activation user when register [\#382](https://github.com/lonnieezell/myth-auth/issues/382)
+- Question : How to login programmatically from controller without password or use loginById Function from AuthenticationBase ?  [\#379](https://github.com/lonnieezell/myth-auth/issues/379)
+- Cache key contains reserved characters {}\(\)/\@ [\#378](https://github.com/lonnieezell/myth-auth/issues/378)
+- broken link in docs/extending.md [\#374](https://github.com/lonnieezell/myth-auth/issues/374)
+- BadMethodCallException when i add new fields [\#370](https://github.com/lonnieezell/myth-auth/issues/370)
+- localhost redirected you too many times. [\#365](https://github.com/lonnieezell/myth-auth/issues/365)
+- Delete a user [\#364](https://github.com/lonnieezell/myth-auth/issues/364)
+- Cache Reserved Characters [\#359](https://github.com/lonnieezell/myth-auth/issues/359)
+- Tests fail on composer auth [\#336](https://github.com/lonnieezell/myth-auth/issues/336)
+- Cache issues [\#334](https://github.com/lonnieezell/myth-auth/issues/334)
+
+**Merged pull requests:**
+
+- Remove Roave Workflow [\#399](https://github.com/lonnieezell/myth-auth/pull/399) ([MGatner](https://github.com/MGatner))
+- Remove cache of group after delete/add user to group [\#398](https://github.com/lonnieezell/myth-auth/pull/398) ([WebStarVenlo](https://github.com/WebStarVenlo))
+- Created the method "usersInGroup" in the src\Authorization\FlatAuthorization.php file [\#391](https://github.com/lonnieezell/myth-auth/pull/391) ([rafinhaa](https://github.com/rafinhaa))
+- Apply static analysis [\#387](https://github.com/lonnieezell/myth-auth/pull/387) ([MGatner](https://github.com/MGatner))
+- Fix cache\(\) return value checks. [\#386](https://github.com/lonnieezell/myth-auth/pull/386) ([sfadschm](https://github.com/sfadschm))
+- Update development toolkit [\#383](https://github.com/lonnieezell/myth-auth/pull/383) ([MGatner](https://github.com/MGatner))
+- Update AuthController.php [\#381](https://github.com/lonnieezell/myth-auth/pull/381) ([snelledre](https://github.com/snelledre))
+- fix small typo: Models -\> Entities [\#380](https://github.com/lonnieezell/myth-auth/pull/380) ([hatsat32](https://github.com/hatsat32))
+- Prevalidate user fields [\#377](https://github.com/lonnieezell/myth-auth/pull/377) ([MGatner](https://github.com/MGatner))
+- Update extending.md [\#376](https://github.com/lonnieezell/myth-auth/pull/376) ([mjamilasfihani](https://github.com/mjamilasfihani))
+- Fix typo activate user. It is a method, not variable. [\#375](https://github.com/lonnieezell/myth-auth/pull/375) ([adjiekrazz](https://github.com/adjiekrazz))
+- Update docs for release [\#369](https://github.com/lonnieezell/myth-auth/pull/369) ([MGatner](https://github.com/MGatner))
+
 ## [v1.0](https://github.com/lonnieezell/myth-auth/tree/v1.0) (2021-06-10)
 
 [Full Changelog](https://github.com/lonnieezell/myth-auth/compare/1.0-beta.3...v1.0)

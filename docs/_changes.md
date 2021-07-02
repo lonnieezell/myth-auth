@@ -2,12 +2,24 @@
 
 ## Unreleased
 
+## 1.0.1
+
+Released July 2, 2021
+
 Enhancements:
+
 - Added Infection for mutation testing (test quality testing)
 - Added RoaveBC to detect breaking changes
 - Added Tachycardia for slow test detection and annotation
 - Added Coveralls to track and record test coverage
 - Switched code style enforcement to PHP CS Fixer to match the framework (awaiting configuration)
+- Added `FlatAuthorization::usersInGroup()`
+
+Bugs Fixed:
+
+- Fixed a typo causing user activation to fail
+- Enforced user field validation to prevent false password validation failures
+- Fixed a bug preventing empty cache stores
 
 ## 1.0 final
 
@@ -19,6 +31,7 @@ Breaking Changes:
 - `UserModel` now requires `username` to be 30 characters or less (to match the database restriction)
 
 Enhancements:
+
 - All password-related features have been moved to a new class, `Myth\Auth\Password`, and can be accessed statically.
 - New Slovak translation
 - New German translation
