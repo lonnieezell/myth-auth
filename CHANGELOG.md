@@ -2,10 +2,27 @@
 
 ## [v1.0.1](https://github.com/lonnieezell/myth-auth/tree/v1.0.1) (2021-07-02)
 
-[Full Changelog](https://github.com/lonnieezell/myth-auth/compare/v1.0...v1.0.1)
+[Full Changelog](https://github.com/lonnieezell/myth-auth/compare/v1.0.1...v1.0.1)
 
 **Closed issues:**
 
+- VENDORPATH\myth\auth\src\Config\Services.php at line 92 [\#397](https://github.com/lonnieezell/myth-auth/issues/397)
+- InvalidArgumentException Cache key contains reserved characters {}\(\)/\@: [\#396](https://github.com/lonnieezell/myth-auth/issues/396)
+- auth page not working when I add login filter globally [\#393](https://github.com/lonnieezell/myth-auth/issues/393)
+- Migrate Laravel 6 Users to Myth [\#389](https://github.com/lonnieezell/myth-auth/issues/389)
+- Resend email activation not working [\#339](https://github.com/lonnieezell/myth-auth/issues/339)
+- Multiple Login System [\#332](https://github.com/lonnieezell/myth-auth/issues/332)
+- Get last inserted id when registering new user [\#318](https://github.com/lonnieezell/myth-auth/issues/318)
+- This user account is not yet activated [\#314](https://github.com/lonnieezell/myth-auth/issues/314)
+- Trying to install manually results in 404 errors. [\#312](https://github.com/lonnieezell/myth-auth/issues/312)
+- \_header and \_footer views seem to be unused [\#300](https://github.com/lonnieezell/myth-auth/issues/300)
+- Question about redirect\_url [\#288](https://github.com/lonnieezell/myth-auth/issues/288)
+- Extend Entity User to change date format to create\_at and updated\_at [\#273](https://github.com/lonnieezell/myth-auth/issues/273)
+- use only email / password ?  [\#265](https://github.com/lonnieezell/myth-auth/issues/265)
+- 500 error if use strong\_password rule [\#258](https://github.com/lonnieezell/myth-auth/issues/258)
+- `NothingPersonalValidator.php` Exception, if $email is empty [\#254](https://github.com/lonnieezell/myth-auth/issues/254)
+- Activate-Account as an exception in login filter [\#240](https://github.com/lonnieezell/myth-auth/issues/240)
+- Extend or change Language File [\#202](https://github.com/lonnieezell/myth-auth/issues/202)
 - Validation from \Config\Services::validation\(\) is no longer worked in frontend after implementing Myth/Auth [\#395](https://github.com/lonnieezell/myth-auth/issues/395)
 - Improve IPv6 support [\#392](https://github.com/lonnieezell/myth-auth/issues/392)
 - var $requireActivation on config not working for disable activation user when register [\#382](https://github.com/lonnieezell/myth-auth/issues/382)
