@@ -86,7 +86,7 @@ return [
     'username'                  => 'Nome utente',
     'register'                  => 'Registrati',
     'signIn'                    => 'Accedi',
-    'alreadyRegistered'         => 'Hai già un account?',
+    'alreadyRegistered'         => 'Sei già registrato?',
     'weNeverShare'              => 'Non condivideremo mai il tuo indirizzo email con chiunque altro.',
     'resetYourPassword'         => 'Reimposta la tua password',
     'enterCodeEmailPassword'    => 'Inserisci il codice ricevuto via email, il tuo indirizzo email e la tua nuova password.',
