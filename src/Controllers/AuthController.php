@@ -54,7 +54,7 @@ class AuthController extends Controller
 		// Set a return URL if none is specified
 		$redirectURL = session('redirect_url') ?? previous_url() ?? site_url('/');
 		// Prevent login / logout loop
-		if ($redirectURL == url_to('Myth\Auth\Controllers\AuthController::logout')) {
+		if ($redirectURL == url_to('AuthController::logout')) {
 			$redirectURL = site_url('/');
 		}
 		$_SESSION['redirect_url'] = $redirectURL;
