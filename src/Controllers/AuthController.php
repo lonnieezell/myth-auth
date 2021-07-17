@@ -51,8 +51,13 @@ class AuthController extends Controller
 			return redirect()->to($redirectURL);
 		}
 
-        // Set a return URL if none is specified
-        $_SESSION['redirect_url'] = session('redirect_url') ?? previous_url() ?? site_url('/');
+		// Set a return URL if none is specified
+		$redirectURL = session('redirect_url') ?? previous_url() ?? site_url('/');
+		// Prevent login / logout loop
+		if ($redirectURL == url_to('Myth\Auth\Controllers\AuthController::logout')) {
+			$redirectURL = site_url('/');
+		}
+		$_SESSION['redirect_url'] = $redirectURL;
 
 		return $this->_render($this->config->views['login'], ['config' => $this->config]);
 	}
