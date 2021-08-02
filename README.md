@@ -167,8 +167,8 @@ that includes the following helper functions to ease access to basic features. B
 load the helper before using these functions: `helper('auth');`
 
 **Hint**: Add `'auth'` to any controller's `$helper` property to have it loaded automatically,
-or the same in **app/Controllers/BaseController.php** to have it globally available. the
-auth filters all pre-load the helper so it is available on any filtered routes.
+or the same in **app/Controllers/BaseController.php** to have it globally available. The
+`'auth'` filters and/or pre-loads the helper so that it is available on any filtered routes.
 
 **logged_in()**
 
@@ -190,7 +190,7 @@ auth filters all pre-load the helper so it is available on any filtered routes.
 
 **in_groups()**
 
-* Function: Ensures that the current user is in at least one of the passed in groups.
+* Function: Ensures that the current user is at least in one of the passed in groups.
 * Parameters: Group IDs or names, as either a single item or an array of items.
 * Returns: `true` or `false`
 
