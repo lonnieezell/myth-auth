@@ -217,7 +217,7 @@ class Auth extends BaseConfig
 	 */
 	public $hashAlgorithm = PASSWORD_DEFAULT;
 
-	/*
+	/**
 	 * --------------------------------------------------------------------
 	 * ARGON2i/D Algorithm options
 	 * --------------------------------------------------------------------
