@@ -69,7 +69,14 @@ class ValidationRules
         $fields = $this->prepareValidFields();
 
         $data = array_filter(service('request')->getPost($fields));
-
+        
+        if (empty($data)) {
+            $data = array_intersect_key(
+                json_decode(service('request')->getBody(), true), 
+                array_fill_keys($fields, null)
+            );
+        }
+        
         return new User($data);
     }
 
