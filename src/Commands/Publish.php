@@ -1,4 +1,4 @@
-<?php namespace Myth\Auth\Commands;
+<?php namespace Myth\Auth\Commands
 
 use Config\Autoload;
 use CodeIgniter\CLI\CLI;
