@@ -213,7 +213,7 @@ class Publish extends BaseCommand
 		$namespace = defined('APP_NAMESPACE') ? APP_NAMESPACE : 'App';
 
         $content = file_get_contents($path);
-        $content = str_replace('Myth\Auth\Views', $namespace.'\Auth', $content);
+        $content = str_replace('Myth\Auth\Views', $namespace.'\Views\Auth', $content);
 
         $this->writeFile("Views/Auth/{$prefix}{$view}", $content);
     }
@@ -261,7 +261,7 @@ class Publish extends BaseCommand
         if ($this->viewsPublished)
         {
             $namespace = defined('APP_NAMESPACE') ? APP_NAMESPACE : 'App';
-            $content = str_replace('Myth\Auth\Views', $namespace . '\Views', $content);
+            $content = str_replace('Myth\Auth\Views', $namespace . '\Views\Auth', $content);
         }
 
         $this->writeFile("Config/Auth.php", $content);
