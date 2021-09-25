@@ -28,10 +28,10 @@ class LoginFilter implements FilterInterface
 			->stripQuery('token');
 
 		$config = config(App::class);
-		if($config->forceGlobalSecureRequests)
+		if($config->indexPage)
 		{
-			# Remove "https:/"
-			$current = substr($current, 7);
+			# Remove "index.php/"
+			$current = substr($current, 10);
 		}
 
 		// Make sure this isn't already a login route
