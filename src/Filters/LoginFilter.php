@@ -29,7 +29,7 @@ class LoginFilter implements FilterInterface
 		];
 
 		// Make sure this isn't already a Myth\Auth routes
-		if (!function_exists('url_is'))
+		if (function_exists('url_is'))
 		{
 			foreach ($segments as $segment)
 			{
