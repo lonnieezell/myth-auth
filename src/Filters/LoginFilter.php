@@ -28,11 +28,12 @@ class LoginFilter implements FilterInterface
 			'reset-password',
 		];
 
-		// for the latest CI4, there is a new url_is() function.
+		// Make sure this isn't already a Myth\Auth routes
 		if (function_exists('url_is'))
 		{
 			foreach ($segments as $segment)
 			{
+				// for the latest CI4, there is a new url_is() function.
 				if (url_is(route_to($segment)))
 				{
 					return;
@@ -41,7 +42,14 @@ class LoginFilter implements FilterInterface
 		}
 		else
 		{
-			// what if user doesn't have this function?
+			foreach ($segments as $segment)
+			{
+				// what if user doesn't have this function?
+				if (uri_string() == $segment)
+				{
+					return;
+				}
+			}
 		}
 
 		// if no user is logged in then send to the login form
