@@ -17,27 +17,31 @@ class LoginFilter implements FilterInterface
 	 */
 	public function before(RequestInterface $request, $params = null)
 	{
-		if (! function_exists('logged_in'))
+		// set the restricted url segments.
+		$segments = [
+			'login',
+			'logout',
+			'register',
+			'activate-account',
+			'resend-activate-account',
+			'forgot',
+			'reset-password',
+		];
+
+		// for the latest CI4, there is a new url_is() function.
+		if (function_exists('url_is'))
 		{
-			helper('auth');
+			foreach ($segments as $segment)
+			{
+				if (url_is(route_to($segment)))
+				{
+					return;
+				}
+			}
 		}
-
-		$current = (string)current_url(true)
-			->setHost('')
-			->setScheme('')
-			->stripQuery('token');
-
-		$config = config(App::class);
-		if($config->indexPage)
+		else
 		{
-			# Remove "index.php/"
-			$current = substr($current, 10);
-		}
-
-		// Make sure this isn't already a login route
-		if (in_array((string)$current, [route_to('login'), route_to('forgot'), route_to('reset-password'), route_to('register'), route_to('activate-account')]))
-		{
-			return;
+			// what if user doesn't have this function?
 		}
 
 		// if no user is logged in then send to the login form
