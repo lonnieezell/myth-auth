@@ -29,7 +29,7 @@ class LoginFilter implements FilterInterface
 		];
 
 		// Make sure this isn't already a Myth\Auth routes
-		if (function_exists('url_is'))
+		if (!function_exists('url_is'))
 		{
 			foreach ($segments as $segment)
 			{
@@ -42,14 +42,20 @@ class LoginFilter implements FilterInterface
 		}
 		else
 		{
+			// remove http or http(s) and the hostname
+			$uri = current_url(true)->setScheme('')->setHost('');
+
 			foreach ($segments as $segment)
 			{
 				// what if user doesn't have this function?
-				if (uri_string() == $segment)
+				if ((string) str_replace('/index.php', '', $uri->getPath()) == route_to($segment))
 				{
 					return;
 				}
 			}
+
+			// remove the uri
+			unset($uri);
 		}
 
 		// if no user is logged in then send to the login form
