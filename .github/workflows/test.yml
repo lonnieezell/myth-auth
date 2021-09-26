@@ -55,13 +55,11 @@ jobs:
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
-      - name: Enable Tachycardia
-        run: echo "TACHYCARDIA_MONITOR_GA=enabled" >> $GITHUB_ENV
-
       - name: Test with PHPUnit
         run: vendor/bin/phpunit --verbose --coverage-text
         env:
           TERM: xterm-256color
+          TACHYCARDIA_MONITOR_GA: enabled
 
       - if: matrix.php-versions == '8.0'
         name: Mutate with Infection
