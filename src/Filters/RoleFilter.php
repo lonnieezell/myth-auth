@@ -1,4 +1,6 @@
-<?php namespace Myth\Auth\Filters;
+<?php
+
+namespace Myth\Auth\Filters;
 
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -24,16 +26,8 @@ class RoleFilter implements FilterInterface
 	 */
 	public function before(RequestInterface $request, $params = null)
 	{
-		if (! function_exists('logged_in'))
-		{
-			helper('auth');
-		}
-
-		if (empty($params))
-		{
-			return;
-		}
-
+		// we should check the session at the begining, since
+		// this filters need a 'session' data.
 		$authenticate = service('authentication');
 
 		// if no user is logged in then send to the login form
@@ -41,6 +35,11 @@ class RoleFilter implements FilterInterface
 		{
 			session()->set('redirect_url', current_url());
 			return redirect('login');
+		}
+
+		if (empty($params))
+		{
+			return;
 		}
 
 		$authorize = service('authorization');
@@ -60,12 +59,11 @@ class RoleFilter implements FilterInterface
 			unset($_SESSION['redirect_url']);
 			return redirect()->to($redirectURL)->with('error', lang('Auth.notEnoughPrivilege'));
 		}
-		else {
+		else
+		{
 			throw new PermissionException(lang('Auth.notEnoughPrivilege'));
 		}
 	}
-
-	//--------------------------------------------------------------------
 
 	/**
 	 * Allows After filters to inspect and modify the response
@@ -81,8 +79,6 @@ class RoleFilter implements FilterInterface
 	 */
 	public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
 	{
-
+		// Do something here
 	}
-
-	//--------------------------------------------------------------------
 }
