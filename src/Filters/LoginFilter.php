@@ -1,4 +1,6 @@
-<?php namespace Myth\Auth\Filters;
+<?php
+
+namespace Myth\Auth\Filters;
 
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -17,8 +19,8 @@ class LoginFilter implements FilterInterface
 	 */
 	public function before(RequestInterface $request, $params = null)
 	{
-		// set the restricted url segments.
-		$segments = [
+		// List of the restricted Myth\Auth name routes.
+		$names = [
 			'login',
 			'logout',
 			'register',
@@ -28,38 +30,21 @@ class LoginFilter implements FilterInterface
 			'reset-password',
 		];
 
-		// Make sure this isn't already a Myth\Auth routes
-		if (function_exists('url_is'))
+		// Since url_is() function is available start from CI 4.0.5
+		// please update your application soon.
+		foreach ($names as $name)
 		{
-			foreach ($segments as $segment)
+			if (url_is(route_to($name)))
 			{
-				// for the latest CI4, there is a new url_is() function.
-				if (url_is(route_to($segment)))
-				{
-					return;
-				}
+				// Make sure this isn't already a Myth\Auth routes.
+				return;
 			}
 		}
-		else
-		{
-			// remove http or http(s) and the hostname
-			$uri = current_url(true)->setScheme('')->setHost('');
 
-			foreach ($segments as $segment)
-			{
-				// what if user doesn't have this function?
-				if ((string) str_replace('/index.php', '', $uri->getPath()) == route_to($segment))
-				{
-					return;
-				}
-			}
-
-			// remove the uri
-			unset($uri);
-		}
-
-		// if no user is logged in then send to the login form
+		// Load the service.
 		$authenticate = service('authentication');
+
+		// If no user is logged in then send them to the login form.
 		if (! $authenticate->check())
 		{
 			session()->set('redirect_url', current_url());
@@ -76,5 +61,6 @@ class LoginFilter implements FilterInterface
 	 */
 	public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
 	{
+		// Do something here
 	}
 }
