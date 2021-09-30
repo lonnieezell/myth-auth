@@ -36,6 +36,10 @@ class PermissionFilter implements FilterInterface
             return redirect('login');
         }
 
+        if (! function_exists('logged_in')) {
+            helper('auth');
+        }
+
         if (empty($params)) {
             return;
         }
