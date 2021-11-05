@@ -26,35 +26,25 @@ class RoleFilter implements FilterInterface
      */
     public function before(RequestInterface $request, $params = null)
     {
-        // we should check the session at the begining, since
-        // this filters need a 'session' data.
-        $authenticate = service('authentication');
-
-        // if no user is logged in then send to the login form
-        if (! $authenticate->check()) {
+        // If no user is logged in then send them to the login form.
+        if (! $this->authenticate->check()) {
             session()->set('redirect_url', current_url());
-            return redirect('login');
-        }
-
-        if (! function_exists('logged_in')) {
-            helper('auth');
+            return redirect($this->reservedRoutes['login']);
         }
 
         if (empty($params)) {
             return;
         }
 
-        $authorize = service('authorization');
-
         // Check each requested permission
         foreach ($params as $group) {
-            if ($authorize->inGroup($group, $authenticate->id())) {
+            if ($this->authorize->inGroup($group, $this->authenticate->id())) {
                 return;
             }
         }
 
-        if ($authenticate->silent()) {
-            $redirectURL = session('redirect_url') ?? '/';
+        if ($this->authenticate->silent()) {
+            $redirectURL = session('redirect_url') ?? route_to($this->defaultLandingRoute);
             unset($_SESSION['redirect_url']);
             return redirect()->to($redirectURL)->with('error', lang('Auth.notEnoughPrivilege'));
         } else {

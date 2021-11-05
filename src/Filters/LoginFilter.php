@@ -19,35 +19,17 @@ class LoginFilter implements FilterInterface
      */
     public function before(RequestInterface $request, $params = null)
     {
-        // List of the restricted Myth\Auth name routes.
-        $names = [
-            'login',
-            'logout',
-            'register',
-            'activate-account',
-            'resend-activate-account',
-            'forgot',
-            'reset-password',
-        ];
-
-        foreach ($names as $name) {
-            if (url_is(route_to($name))) {
-                // Make sure this isn't already a Myth\Auth routes.
+        // Make sure this isn't already a Myth\Auth routes.
+        foreach ($this->reservedRoutes as $key => $reservedRoute) {
+            if (url_is(route_to($reservedRoute))) {
                 return;
             }
         }
 
-        // Load the service.
-        $authenticate = service('authentication');
-
         // If no user is logged in then send them to the login form.
-        if (! $authenticate->check()) {
+        if (! $this->authenticate->check()) {
             session()->set('redirect_url', current_url());
-            return redirect('login');
-        }
-
-        if (! function_exists('logged_in')) {
-            helper('auth');
+            return redirect($this->reservedRoutes['login']);
         }
     }
 
