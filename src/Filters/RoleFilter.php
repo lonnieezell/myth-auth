@@ -7,7 +7,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Filters\FilterInterface;
 use Myth\Auth\Exceptions\PermissionException;
 
-class RoleFilter implements FilterInterface
+class RoleFilter extends BaseFilter implements FilterInterface
 {
     /**
      * Do whatever processing this filter needs to do.

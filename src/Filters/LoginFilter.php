@@ -5,9 +5,8 @@ namespace Myth\Auth\Filters;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Filters\FilterInterface;
-use Config\App;
 
-class LoginFilter implements FilterInterface
+class LoginFilter extends BaseFilter implements FilterInterface
 {
     /**
      * Verifies that a user is logged in, or redirects to login.
