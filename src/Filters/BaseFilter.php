@@ -32,7 +32,7 @@ abstract class BaseFilter
     public function __construct()
     {
         // Load the routes
-        $config = config(AuthConfig::class);
+        $config = config('Auth');
         $this->defaultLandingRoute = $config->defaultLandingRoute;
         $this->reservedRoutes = $config->reservedRoutes;
 
