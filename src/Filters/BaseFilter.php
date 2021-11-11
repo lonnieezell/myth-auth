@@ -7,9 +7,9 @@ use Myth\Auth\Config\Auth as AuthConfig;
 abstract class BaseFilter
 {
     /**
-     * Default Landing Route
+     * Landing Route
      */
-    protected $defaultLandingRoute;
+    protected $landingRoute;
 
     /**
      * Reserved Routes
@@ -33,7 +33,7 @@ abstract class BaseFilter
     {
         // Load the routes
         $config = config(AuthConfig::class);
-        $this->defaultLandingRoute = $config->defaultLandingRoute;
+        $this->landingRoute = $config->landingRoute;
         $this->reservedRoutes = $config->reservedRoutes;
 
         // Load the authenticate

@@ -20,18 +20,18 @@ class Auth extends BaseConfig
 
     /**
      * --------------------------------------------------------------------
-     * Default Landing Route
+     * Landing Route
      * --------------------------------------------------------------------
      *
      * This is your landing page (route name) after user success to login,
-     * i.e $defaultLandingRoute = 'dashboard'.
+     * i.e $landingRoute = 'dashboard'.
      *
      * If you set $silent = true the Permission and Role filters will
      * use this config too for the routing.
      *
      * @var string
      */
-    public $defaultLandingRoute = '/';
+    public $landingRoute = '/';
 
     /**
      * --------------------------------------------------------------------

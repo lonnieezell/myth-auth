@@ -45,7 +45,7 @@ class PermissionFilter extends BaseFilter implements FilterInterface
 
         if (! $result) {
             if ($this->authenticate->silent()) {
-                $redirectURL = session('redirect_url') ?? route_to($this->defaultLandingRoute);
+                $redirectURL = session('redirect_url') ?? route_to($this->landingRoute);
                 unset($_SESSION['redirect_url']);
                 return redirect()->to($redirectURL)->with('error', lang('Auth.notEnoughPrivilege'));
             } else {
