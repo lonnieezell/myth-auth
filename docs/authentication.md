@@ -37,7 +37,7 @@ user against. The library does not enforce a specific set of credentials. You ar
 combination of fields that exist within the `users` table, but typical uses would be either `email` or `username`. 
 You must include a field name `password`, though as it will be verified against the hashed version in the database.
 
-	$auth = service('authenticate');
+	$auth = service('authentication');
 	
 	$credentials = [
 		'email' => $this->request->getPost('email', true),
