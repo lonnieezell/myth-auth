@@ -31,15 +31,17 @@ abstract class BaseFilter
      */
     public function __construct()
     {
-        // Load the routes
+        // Load the Auth config, for constructor only!!!
         $config = config(AuthConfig::class);
+
+        // Load the routes
         $this->landingRoute = $config->landingRoute;
         $this->reservedRoutes = $config->reservedRoutes;
 
-        // Load the authenticate
+        // Load the authenticate service
         $this->authenticate = service('authentication');
 
-        // Load the authorize
+        // Load the authorize service
         $this->authorize = service('authorization');
 
         // Load the helper

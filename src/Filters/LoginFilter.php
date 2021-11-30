@@ -19,7 +19,7 @@ class LoginFilter extends BaseFilter implements FilterInterface
     public function before(RequestInterface $request, $params = null)
     {
         // Make sure this isn't already a Myth\Auth routes.
-        foreach ($this->reservedRoutes as $key => $reservedRoute) {
+        foreach ($this->reservedRoutes as $reservedRoutes => $reservedRoute) {
             if (url_is(route_to($reservedRoute))) {
                 return;
             }
