@@ -37,6 +37,7 @@ user against. The library does not enforce a specific set of credentials. You ar
 combination of fields that exist within the `users` table, but typical uses would be either `email` or `username`. 
 You must include a field name `password`, though as it will be verified against the hashed version in the database.
 
+```php
 	$auth = service('authentication');
 	
 	$credentials = [
@@ -45,22 +46,27 @@ You must include a field name `password`, though as it will be verified against 
 	];
 	
 	$auth->attempt($credentials);
+```
 
 The method returns either `true` or `false` depending on the success/failure of the login. Upon an error, you can 
 retrieve the error string by calling the `error()` method.
 
+```php
 	if (! $auth->attempt($credentials) )
 	{
 		$this->setMessage($auth->error(), 'danger');
 	}
+```
 
 The second parameter is a boolean value that tells whether we should remember the user. See the section on 
 [Remembering Users](#remembering_users) for more details. The system does allow for a user to be remembered on more than 
 one device and more than one browser at a time. Which allows them to maintain separate persistent logins at home and 
 work and even on their mobile device simultaneously. 
 
+```php
 	$auth->attempt($credentials, true);
-	
+```
+
 Once a user has been successfully logged in a `logged_in` value will be set in the session's userdata.
 
 ## Validating Credentials
@@ -69,50 +75,62 @@ If you need to validate a user's credentials without actually logging them in, y
 This is the same method  used by the `attempt()` method so the results will be identical. The first parameter is an 
 array of credentials as described above.
 
+```php
 	$credentials = [
 		'email' => $this->input->post('email', true),
 		'password' => $this->input->post('password', true)
 	];
 	
 	if ($auth->validate($credentials) ) {...}
-	
+```
+
 By default, the method will return either true or false. However, if you want to have the user object returned to you on successfuly validation, you can pass in true as the second parameter.
 
+```php
 	if (! $user = $auth->validate($credentials) )
 	{
 		...
 	}
+```
 
 ## Determining If Logged In
 
 You can use the `check()` to check if a user is logged in. As long as a user's session is valid -- it hasn't timed out, 
 and they haven't logged out -- this is the only check needed to do to ensure that a user is validly logged in.
 
+```php
 	if (! $auth->check() )
 	{
 		$this->session->set('redirect_url', current_url() );
 		return redirect()->route('login');
 	}
+```
 
 ## Current User
 
 Once logged in, the current user is stored in memory as a class variable. This can be accessed at any time with the 
 `user()` method. There are no parameters. The method will return an array of all of the user's information.
 
+```php
 	$current_user = $auth->user();
+```
 
 ## Logging Out
 You can log a user out by calling the `logout()` method. This will destroy their current session and invalidate the 
 current RememberMe Token. Note this only affects a logout on the current machine. If a user logs out at work, they can 
 remain logged in at home.
 
+```php
 	$auth->logout();
+```
 
 ### Current User Id
 Often, you will only need the ID of the current user. You can get this with the `id()` method. It will return either 
 an INT with the user's id, or NULL.
 
+```php
 	$userId = $auth->id();
+```
 
 ## Remembering Users
 You can have a user be remembered, through the user of cookies, by passing true in as the second parameter to the 
@@ -137,18 +155,24 @@ No further action is need on your part.
 To allow a user to remove all login attempts associated with their email address, across all devices they might be 
 logged in as, you can use the `purgeRememberTokens()` method. The only parameter is the email address of the user.
 
+```php
 	$auth->purgeRememberTokens($email);
+```
 
 ## Attaching the User Model
 Before the system can work, you must tell it which model to use when working with Users.
 
+```php
 	$auth->useModel( new \Myth\Auth\Models\UserModel() );
+```
 
 ## Removing All Login Attempts for A User
 If you need to remove all failed login attempts for a user you can use the `purgeLoginAttempts()` method. 
 The only parameter is the email of the user.
 
+```php
 	$auth->purgeLoginAttempts($email);
+```
 
 ## User account activation
 
@@ -158,8 +182,10 @@ This is done via `$requireActivation` config variable.
 Confirmation can be done in many ways. Traditionally, this is usually done by sending an email to the email address that was
 used during registration. We use the `Activator` service for this.
 
+```php
 	$activator = service('activator');
 	$activator->send($user);
+```
 
 By default, we provide one type of activator and this is `EmailActivator`. You can also prepare your own activator,
 which will e.g. use an SMS to confirm activation. There are many possibilities.
@@ -171,7 +197,7 @@ entity to generate the required information on the model. This will then be chec
 `check()` method, which is used by the AuthTrait and all Filters. At this point, the user will not be able to 
 proceed to any protected pages. You must save the changes through the UserModel before the changes will persist.
 
-```
+```php
 $user->forcePasswordReset();
 $userModel->save($user);
 ```
@@ -182,21 +208,27 @@ Many aspects of the system can be configured in the `Config/Auth.php` config fil
 ### auth.defaultUserGroup
 Specifies the name of the group to which the user will be added during registration. By default, this variable is not set, so users will not be added to any group.
 
+```php
     public $defaultUserGroup;
+```
 
 ### auth.authenticationLibs
 Specifies the Authorization library that will be used by the Auth Trait. This should include the fully namespaced class name. 
 
+```php
 	public $authenticationLibs = [
         'local' => LocalAuthenticator::class
     ];
+```
 
 ### auth.validFields
 The names of the fields in the user table that are allowed by used when testing credentials in the `validate()` method. 
 
+```php
 	public $validFields = [
         'email', 'username'
     ];
+```
 
 ### auth.allowRegistration
 This can be either true or false, and determines whether or not the system allows unregistered users to make a new
@@ -207,35 +239,43 @@ or edit controller and views you are responsible for checking this value.
 This can be either null or string with a namespaced class name. Using a class name will force `activator` service to use this
 class to send an activation message.
 
+```php
 	public $requireActivation = 'Myth\Auth\Authentication\Activators\EmailActivator';
+```
 
 ### auth.userActivators
 This is a list of available activators, along with their optional configuration variables. Class names listed here can be used
 by `requireActivation` config variable.
 
+```php
 	public $userActivators = [
         'Myth\Auth\Authentication\Activators\EmailActivator' => [
             'fromEmail' => null,
             'fromName' => null,
         ],
     ];
+```
 
 ### auth.activeResetter
 This can be either null or string with a namespaced class name. Using a class name will force `resetter` service to use this
  class to send a reset message.
 
+```php
 	public $activeResetter = 'Myth\Auth\Authentication\Resetters\EmailResetter';
+```
 
 ### auth.userResetters
 This is a list of available resetters, along with their optional configuration variables. Class names listed here can be used
 by `activeResetter` config variable.
 
+```php
 	public $userResetters = [
         'Myth\Auth\Authentication\Resetters\EmailResetter' => [
             'fromEmail' => null,
             'fromName' => null,
         ],
     ];
+```
 
 ### auth.allowRemembering
 This can be either true or false, and determines whether or not the system allows persistent logins (Remember Me). 
@@ -243,13 +283,17 @@ For most sites, you will likely want this turned on for your user's convenience.
 confidential information and you cannot have your site hacked for any reason, you should set this to false and not 
 allow persistent connections ever.
 
+```php
 	public $allowRemembering = false;
+```
 
 ### auth.rememberLength
 This is the number of SECONDS that a persistent login lasts. A quick reference of common values is provided in the config 
 file for your convenience. The default value is 30 days.
 
+```php
 	public $rememberLength = 30 * DAY;
+```
 
 ### auth.hashCost
 The BCRYPT method of encryption allows you to define the "cost", or number of iterations made, whenever a password hash 
@@ -259,18 +303,22 @@ takes longer.
 
 Valid range is between 4 - 31.
 
+```php
 	public $hashCost = 10;
+```
 
 ### auth.passwordValidators
 This list holds the validators that will be run when checking that a password is valid. 
 These are run one at a time in succession. 
 You can easily add your own should you need to customize the validation rules.  
 
+```php
     public $passwordValidators = [
         'Myth\Auth\Authentication\Passwords\CompositionValidator',
         'Myth\Auth\Authentication\Passwords\DictionaryValidator',
         //'Myth\Auth\Authentication\Passwords\PwnedValidator',
     ];
+```
 
 The default validators that come with Myth:Auth are:
 
