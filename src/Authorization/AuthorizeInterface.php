@@ -30,7 +30,7 @@ interface AuthorizeInterface  {
     /**
      * Checks a user's groups to see if they have the specified permission.
      *
-     * @param int|string $permission
+     * @param mixed $permission
      * @param int        $userId
      *
      * @return mixed

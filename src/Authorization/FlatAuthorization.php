@@ -142,17 +142,16 @@ class FlatAuthorization implements AuthorizeInterface
 	/**
 	 * Checks a user's groups to see if they have the specified permission.
 	 *
-	 * @param int|string $permission Permission ID or name
+	 * @param mixed $permissions Permission ID or name or list of permissions
 	 * @param int $userId
 	 *
 	 * @return mixed
 	 */
-	public function hasPermission($permission, int $userId)
+	public function hasPermission($permissions, int $userId)
 	{
-		// @phpstan-ignore-next-line
-		if (empty($permission) || (! is_string($permission) && ! is_numeric($permission)))
+		if (! is_array($permissions))
 		{
-			return null;
+			$permissions = [$permissions];
 		}
 
 		if (empty($userId) || ! is_numeric($userId))
@@ -160,22 +159,25 @@ class FlatAuthorization implements AuthorizeInterface
 			return null;
 		}
 
-		// Get the Permission ID
-		$permissionId = $this->getPermissionID($permission);
-
-		if (! is_numeric($permissionId))
+		foreach ($permissions as $permission)
 		{
-			return false;
-		}
+			// @phpstan-ignore-next-line
+			if (!empty($permission) && (is_string($permission) || is_numeric($permission)))
+			{
+				// Get the Permission ID
+				$permissionId = $this->getPermissionID($permission);
 
-		// First check the permission model. If that exists, then we're golden.
-		if ($this->permissionModel->doesUserHavePermission($userId, (int)$permissionId))
-		{
-			return true;
+				if (is_numeric($permissionId))
+				{
+					// First check the permission model. If that exists, then we're golden.
+					if ($this->permissionModel->doesUserHavePermission($userId, (int)$permissionId))
+					{
+						return true;
+					}
+				}
+			}
 		}
-
-		// Still here? Then we have one last check to make - any user private permissions.
-		return $this->doesUserHavePermission($userId, (int)$permissionId);
+		return false;
 	}
 
 	/**
