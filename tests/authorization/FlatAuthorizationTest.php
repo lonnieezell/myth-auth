@@ -127,6 +127,30 @@ class FlatAuthorizationTest extends AuthTestCase
         $this->assertTrue($this->auth->hasPermission($permission->name, $user->id));
     }
 
+    public function testHasPermissionsNameGroup()
+    {
+        $user = $this->createUser();
+        $group = $this->createGroup();
+        $permission1 = $this->createPermission();
+        $permission2 = $this->createPermission();
+        $this->groups->addUserToGroup($user->id, $group->id);
+
+        $this->assertFalse($this->auth->hasPermission([$permission1->name,$permission2->name], $user->id));
+
+        $this->groups->addPermissionToGroup($permission1->id, $group->id);
+
+        $this->assertTrue($this->auth->hasPermission([$permission1->name,$permission2->name], $user->id));
+
+        $this->groups->removePermissionToGroup($permission1->id, $group->id);
+        $this->groups->addPermissionToGroup($permission2->id, $group->id);
+
+        $this->assertTrue($this->auth->hasPermission([$permission1->name,$permission2->name], $user->id));
+
+        $this->groups->addPermissionToGroup($permission1->id, $group->id);
+        $this->groups->addPermissionToGroup($permission2->id, $group->id);
+
+        $this->assertTrue($this->auth->hasPermission([$permission1->name,$permission2->name], $user->id));
+    }
     public function testHasPermissionIdUser()
     {
         $user = $this->createUser();
