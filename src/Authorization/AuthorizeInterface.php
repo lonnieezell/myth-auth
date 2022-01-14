@@ -30,12 +30,12 @@ interface AuthorizeInterface  {
     /**
      * Checks a user's groups to see if they have the specified permission.
      *
-     * @param mixed $permission
+     * @param mixed $permissions
      * @param int        $userId
      *
      * @return mixed
      */
-    public function hasPermission($permission, int $userId);
+    public function hasPermission($permissions, int $userId);
 
     /**
      * Makes a member a part of a group.

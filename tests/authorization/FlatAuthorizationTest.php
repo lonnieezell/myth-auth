@@ -127,7 +127,7 @@ class FlatAuthorizationTest extends AuthTestCase
         $this->assertTrue($this->auth->hasPermission($permission->name, $user->id));
     }
 
-    public function testHasPermissionsNameGroup()
+    public function testHasPermissions()
     {
         $user = $this->createUser();
         $group = $this->createGroup();
@@ -135,21 +135,21 @@ class FlatAuthorizationTest extends AuthTestCase
         $permission2 = $this->createPermission();
         $this->groups->addUserToGroup($user->id, $group->id);
 
-        $this->assertFalse($this->auth->hasPermission([$permission1->name,$permission2->name], $user->id));
+        $this->assertFalse($this->auth->hasPermission([$permission1->name,$permission2->id], $user->id));
 
         $this->groups->addPermissionToGroup($permission1->id, $group->id);
 
-        $this->assertTrue($this->auth->hasPermission([$permission1->name,$permission2->name], $user->id));
+        $this->assertTrue($this->auth->hasPermission([$permission1->name,$permission2->id], $user->id));
 
         $this->groups->removePermissionFromGroup($permission1->id, $group->id);
         $this->groups->addPermissionToGroup($permission2->id, $group->id);
 
-        $this->assertTrue($this->auth->hasPermission([$permission1->name,$permission2->name], $user->id));
+        $this->assertTrue($this->auth->hasPermission([$permission1->name,$permission2->id], $user->id));
 
         $this->groups->addPermissionToGroup($permission1->id, $group->id);
         $this->groups->addPermissionToGroup($permission2->id, $group->id);
 
-        $this->assertTrue($this->auth->hasPermission([$permission1->name,$permission2->name], $user->id));
+        $this->assertTrue($this->auth->hasPermission([$permission1->name,$permission2->id], $user->id));
     }
     public function testHasPermissionIdUser()
     {

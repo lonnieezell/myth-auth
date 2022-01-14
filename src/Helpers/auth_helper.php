@@ -80,20 +80,20 @@ if (! function_exists('has_permission'))
 {
 	/**
 	 * Ensures that the current user has the passed in permission.
-	 * The permission can be passed in either as an ID or name.
+	 * The permission can be passed in either as an ID or name or list of permissions.
 	 *
-	 * @param int|string $permission
+	 * @param mixed $permissions Permission ID or name or list of permissions
 	 *
 	 * @return bool
 	 */
-	function has_permission($permission): bool
+	function has_permission($permissions): bool
 	{
 		$authenticate = service('authentication');
         $authorize    = service('authorization');
 
         if ($authenticate->check())
         {
-            return $authorize->hasPermission($permission, $authenticate->id()) ?? false;
+            return $authorize->hasPermission($permissions, $authenticate->id()) ?? false;
         }
 
         return false;
