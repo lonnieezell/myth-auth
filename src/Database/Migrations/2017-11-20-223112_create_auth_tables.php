@@ -128,7 +128,7 @@ class CreateAuthTables extends Migration
         ];
 
         $this->forge->addField($fields);
-        $this->forge->addKey(['group_id', 'permission_id']);
+        $this->forge->addKey(['group_id', 'permission_id'], true);
         $this->forge->addForeignKey('group_id', 'auth_groups', 'id', '', 'CASCADE');
         $this->forge->addForeignKey('permission_id', 'auth_permissions', 'id', '', 'CASCADE');
         $this->forge->createTable('auth_groups_permissions', true);
@@ -142,7 +142,7 @@ class CreateAuthTables extends Migration
         ];
 
         $this->forge->addField($fields);
-        $this->forge->addKey(['group_id', 'user_id']);
+        $this->forge->addKey(['group_id', 'user_id'], true);
         $this->forge->addForeignKey('group_id', 'auth_groups', 'id', '', 'CASCADE');
         $this->forge->addForeignKey('user_id', 'users', 'id', '', 'CASCADE');
         $this->forge->createTable('auth_groups_users', true);
@@ -156,7 +156,7 @@ class CreateAuthTables extends Migration
         ];
 
         $this->forge->addField($fields);
-        $this->forge->addKey(['user_id', 'permission_id']);
+        $this->forge->addKey(['user_id', 'permission_id'], true);
         $this->forge->addForeignKey('user_id', 'users', 'id', '', 'CASCADE');
         $this->forge->addForeignKey('permission_id', 'auth_permissions', 'id', '', 'CASCADE');
         $this->forge->createTable('auth_users_permissions', true);
