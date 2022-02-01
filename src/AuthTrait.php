@@ -127,8 +127,26 @@ trait AuthTrait
     {
         $this->setupAuthClasses();
 
-        if ($this->authenticate->check() && $this->authorize->hasPermission($permissions, $this->authenticate->id())) {
-            return true;
+        if ($this->authenticate->check())
+        {
+            if (is_array($permissions))
+            {
+                foreach ($permissions as $permission)
+                {
+                    if ($this->authorize->hasPermission($permission, $this->authenticate->id())
+                    {
+                        return true;
+                    }
+                }
+                
+            }
+            else
+            {
+                if ($this->authorize->hasPermission($permissions, $this->authenticate->id() ) )
+                {
+                    return true;
+                }
+            }
         }
 
         if (method_exists($this, 'setMessage')) {
