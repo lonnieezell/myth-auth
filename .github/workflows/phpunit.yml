@@ -22,6 +22,37 @@ jobs:
   main:
     name: PHP ${{ matrix.php-versions }} Unit Tests
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: false
+          MYSQL_ROOT_PASSWORD: mythauth
+          MYSQL_DATABASE: mythauth
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     strategy:
       matrix:
@@ -36,7 +67,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: composer, phive, phpunit
-          extensions: intl, json, mbstring, gd, xdebug, xml, sqlite3
+          extensions: intl, json, mbstring, gd, mysqlnd, pgsql, xdebug, xml, sqlite3
           coverage: xdebug
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -60,11 +91,37 @@ jobs:
             composer update --no-progress --no-interaction --prefer-dist --optimize-autoloader
           fi
 
-      - name: Test with PHPUnit
+      - name: Test with PHPUnit (SQLite)
         run: vendor/bin/phpunit --verbose --coverage-text
         env:
           TERM: xterm-256color
           TACHYCARDIA_MONITOR_GA: enabled
+
+      - name: Test with PHPUnit (MySQL/MariaDB)
+        run: vendor/bin/phpunit --verbose --coverage-text
+        env:
+          TERM: xterm-256color
+          TACHYCARDIA_MONITOR_GA: enabled
+          database_tests_DBDriver: MySQLi
+          database.tests.hostname: 127.0.0.1
+          database_tests_port: 3306
+          database_tests_database: mythauth
+          database_tests_username: root
+          database_tests_password: mythauth
+          database.tests.DBPrefix: tests_
+
+      - name: Test with PHPUnit (PostgreSQL)
+        run: vendor/bin/phpunit --verbose --coverage-text
+        env:
+          TERM: xterm-256color
+          TACHYCARDIA_MONITOR_GA: enabled
+          database_tests_DBDriver: Postgre
+          database.tests.hostname: localhost
+          database_tests_port: 5432
+          database_tests_database: postgres
+          database_tests_username: postgres
+          database_tests_password: postgres
+          database.tests.DBPrefix: tests_
 
       - if: matrix.php-versions == '8.0'
         name: Run Coveralls
