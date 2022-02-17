@@ -58,7 +58,7 @@ class LoginTest extends AuthTestCase
             'username' => 'Joe Cool',
             'email' => 'jc@example.com',
             'password' => 'xaH96AhjglK',
-            'active' => 1,
+            'active' => true,
         ];
         $this->createUser($user);
 
@@ -98,7 +98,7 @@ class LoginTest extends AuthTestCase
             'username' => 'Joe Cool',
             'email' => 'jc@example.com',
             'password' => 'xaH96AhjglK',
-            'active' => 1,
+            'active' => true,
         ];
         $this->createUser($user);
 

@@ -3,6 +3,7 @@
 use CodeIgniter\Entity;
 use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Authorization\PermissionModel;
+use Myth\Auth\Entities\Cast\BooleanCast;
 use Myth\Auth\Password;
 
 class User extends Entity
@@ -29,8 +30,15 @@ class User extends Entity
      * when they are accessed.
      */
     protected $casts = [
-        'active'           => 'boolean',
-        'force_pass_reset' => 'boolean',
+        'active'           => 'booleanAuthMyth',
+        'force_pass_reset' => 'booleanAuthMyth',
+    ];
+
+    /**
+     * Registering our custom casting handler
+     */
+    protected $castHandlers = [
+        'booleanAuthMyth' => BooleanCast::class,
     ];
 
     /**
@@ -81,7 +89,7 @@ class User extends Entity
     public function forcePasswordReset()
     {
         $this->generateResetHash();
-        $this->attributes['force_pass_reset'] = 1;
+        $this->attributes['force_pass_reset'] = true;
 
         return $this;
     }
@@ -121,7 +129,7 @@ class User extends Entity
      */
     public function activate()
     {
-        $this->attributes['active'] = 1;
+        $this->attributes['active'] = true;
         $this->attributes['activate_hash'] = null;
 
         return $this;
@@ -134,7 +142,7 @@ class User extends Entity
      */
     public function deactivate()
     {
-        $this->attributes['active'] = 0;
+        $this->attributes['active'] = false;
 
         return $this;
     }

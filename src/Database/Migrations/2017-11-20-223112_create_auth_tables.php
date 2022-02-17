@@ -20,8 +20,8 @@ class CreateAuthTables extends Migration
             'activate_hash'    => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
             'status'           => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
             'status_message'   => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
-            'active'           => ['type' => 'tinyint', 'constraint' => 1, 'null' => 0, 'default' => 0],
-            'force_pass_reset' => ['type' => 'tinyint', 'constraint' => 1, 'null' => 0, 'default' => 0],
+            'active'           => ['type' => 'boolean',  'null' => false, 'default' => false],
+            'force_pass_reset' => ['type' => 'boolean',  'null' => false, 'default' => false],
             'created_at'       => ['type' => 'datetime', 'null' => true],
             'updated_at'       => ['type' => 'datetime', 'null' => true],
             'deleted_at'       => ['type' => 'datetime', 'null' => true],
@@ -42,7 +42,7 @@ class CreateAuthTables extends Migration
             'email'      => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
             'user_id'    => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true], // Only for successful logins
             'date'       => ['type' => 'datetime'],
-            'success'    => ['type' => 'tinyint', 'constraint' => 1],
+            'success'    => ['type' => 'boolean'],
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addKey('email');

@@ -216,7 +216,7 @@ class AuthenticationBase
             'email' => $email,
             'user_id' => $userID,
             'date' => date('Y-m-d H:i:s'),
-            'success' => (int)$success
+            'success' => (bool)$success
         ]);
     }
 

@@ -56,7 +56,7 @@ class AuthenticationBaseTest extends AuthTestCase
         $this->seeInDatabase('auth_logins', [
             'email' => $user->email,
             'user_id' => $user->id,
-            'success' => 1
+            'success' => true,
         ]);
     }
 
@@ -70,7 +70,7 @@ class AuthenticationBaseTest extends AuthTestCase
         $this->seeInDatabase('auth_logins', [
             'email' => $user->email,
             'user_id' => $user->id,
-            'success' => 1
+            'success' => true,
         ]);
 
         $this->assertEquals(4, $_SESSION['logged_in']);
@@ -99,7 +99,7 @@ class AuthenticationBaseTest extends AuthTestCase
         $this->seeInDatabase('auth_logins', [
             'email' => $user->email,
             'user_id' => $user->id,
-            'success' => 1
+            'success' => true,
         ]);
 
         $this->assertEquals($user->id, $_SESSION['logged_in']);

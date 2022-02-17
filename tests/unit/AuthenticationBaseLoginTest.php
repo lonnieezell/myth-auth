@@ -40,7 +40,7 @@ class AuthenticationBaseLoginTest extends CIUnitTestCase
             'email' => 'joe@example.com',
             'user_id' => 12,
             'date' => date('Y-m-d H:i:s'),
-            'success' => 0
+            'success' => false,
         ]))->andReturn(true);
 
         $this->assertTrue($this->auth->recordLoginAttempt($credentials['email'], '0.0.0.0', 12, false));
