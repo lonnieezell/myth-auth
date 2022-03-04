@@ -42,7 +42,7 @@ in order to use **Myth\Auth** while it is in beta.
 Should you choose not to use Composer to install, you can clone or download this repo and
 then enable it by editing **app/Config/Autoload.php** and adding the **Myth\Auth**
 namespace to the **$psr4** array. For example, if you copied it into **app/ThirdParty**:
-```
+```php
     $psr4 = [
         'Config'      => APPPATH . 'Config',
         APP_NAMESPACE => APPPATH,
@@ -216,7 +216,7 @@ The UserModel can automatically assign a role during user creation. Pass the gro
 `withGroup()` method prior to calling `insert()` or `save()` to create a new user and the user 
 will be automatically added to that group.
 
-```
+```php
     $user = $userModel
                 ->withGroup('guests')
                 ->insert($data);
@@ -231,7 +231,7 @@ Myth:Auth includes a toolbar collector to make it easy for developers to work wi
 the authentication process. To enable the collector, edit **app/Config/Toolbar.php** and add it to
 the list of active collectors:
 
-```
+```php
 	public $collectors = [
 		\CodeIgniter\Debug\Toolbar\Collectors\Timers::class,
 		\CodeIgniter\Debug\Toolbar\Collectors\Database::class,
@@ -247,7 +247,7 @@ to users by group/role or permission with [Controller Filters](https://codeignit
 
 First, edit `application/Config/Filters.php` and add the following entries to the `aliases` property:
 
-```
+```php
     'login'      => \Myth\Auth\Filters\LoginFilter::class,
     'role'       => \Myth\Auth\Filters\RoleFilter::class,
     'permission' => \Myth\Auth\Filters\PermissionFilter::class,
@@ -262,14 +262,14 @@ then the filter will redirect users to the login form.
 Restrict routes based on their URI pattern by editing **app/Config/Filters.php** and adding them to the
 `$filters` array, e.g.:
 
-```
+```php
 public filters = [
     'login' => ['before' => ['account/*']],
 ];
 ```
 
 Or restrict your entire site by adding the `LoginFilter` to the `$globals` array:
-```
+```php
     public $globals = [
         'before' => [
             'honeypot',
@@ -282,7 +282,7 @@ Or restrict your entire site by adding the `LoginFilter` to the `$globals` array
 Any single route can be restricted by adding the `filter` option to the last parameter in any of the route definition
 methods:
 
-```
+```php
 $routes->get('admin/users', 'UserController::index', ['filter' => 'permission:manage-user'])
 $routes->get('admin/users', 'UserController::index', ['filter' => 'role:admin,superadmin'])
 ``` 
@@ -294,7 +294,7 @@ You must add a comma-separated list of groups or permissions to check the logged
 
 In the same way, entire groups of routes can be restricted within the `group()` method:
 
-```
+```php
 $routes->group('admin', ['filter' => 'role:admin,superadmin'], function($routes) {
     ...
 });

@@ -26,7 +26,7 @@ class UserActivator extends BaseActivator implements ActivatorInterface
 
 		if ($class->send($user) === false)
 		{
-            log_message('error', "Failed to send activation messaage to: {$user->email}");
+            log_message('error', "Failed to send activation message to: {$user->email}");
 			$this->error = $class->error();
 
 			return false;
