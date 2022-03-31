@@ -51,7 +51,7 @@ jobs:
         run: mkdir -p ${{ steps.composer-cache.outputs.dir }}
 
       - name: Cache composer dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3.0.1
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
@@ -61,7 +61,7 @@ jobs:
         run: mkdir -p build/phpstan
 
       - name: Cache PHPStan results
-        uses: actions/cache@v2
+        uses: actions/cache@v3.0.1
         with:
           path: build/phpstan
           key: ${{ runner.os }}-phpstan-${{ github.sha }}
