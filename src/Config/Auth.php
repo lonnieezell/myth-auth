@@ -276,7 +276,7 @@ class Auth extends BaseConfig
 	 * Password Check Helpers
 	 * --------------------------------------------------------------------
 	 *
-	 * The PasswordValidater class runs the password through all of these
+	 * The PasswordValidator class runs the password through all of these
 	 * classes, each getting the opportunity to pass/fail the password.
 	 *
 	 * You can add custom classes as long as they adhere to the
