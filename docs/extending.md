@@ -2,7 +2,7 @@
 
 ## Core classes
 
-`Authenticaion` and `Authorization` have their own interfaces and configurations. See the
+`Authentication` and `Authorization` have their own interfaces and configurations. See the
 appropriate docs for each component:
 * [Authentication](/docs/authentication.md)
 * [Authorization](/docs/authorization.md)
