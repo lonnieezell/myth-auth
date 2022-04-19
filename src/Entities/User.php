@@ -1,6 +1,6 @@
 <?php namespace Myth\Auth\Entities;
 
-use CodeIgniter\Entity;
+use CodeIgniter\Entity\Entity;
 use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Authorization\PermissionModel;
 use Myth\Auth\Password;
