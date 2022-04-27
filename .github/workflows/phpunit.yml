@@ -1,0 +1,90 @@
+name: PHPUnit
+
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - '**.php'
+      - 'composer.*'
+      - 'phpunit*'
+      - '.github/workflows/phpunit.yml'
+  push:
+    branches:
+      - develop
+    paths:
+      - '**.php'
+      - 'composer.*'
+      - 'phpunit*'
+      - '.github/workflows/phpunit.yml'
+
+jobs:
+  main:
+    name: PHP ${{ matrix.php-versions }} Unit Tests
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    strategy:
+      matrix:
+        php-versions: ['7.4', '8.0', '8.1']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          tools: composer, phive, phpunit
+          extensions: intl, json, mbstring, gd, xdebug, xml, sqlite3
+          coverage: xdebug
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: |
+          if [ -f composer.lock ]; then
+            composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+          else
+            composer update --no-progress --no-interaction --prefer-dist --optimize-autoloader
+          fi
+
+      - name: Test with PHPUnit
+        run: vendor/bin/phpunit --verbose --coverage-text
+        env:
+          TERM: xterm-256color
+          TACHYCARDIA_MONITOR_GA: enabled
+
+      - if: matrix.php-versions == '8.0'
+        name: Run Coveralls
+        continue-on-error: true
+        run: |
+          sudo phive --no-progress install --global --trust-gpg-keys E82B2FB314E9906E php-coveralls
+          php-coveralls --verbose --coverage_clover=build/phpunit/clover.xml --json_path build/phpunit/coveralls-upload.json
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_PARALLEL: true
+          COVERALLS_FLAG_NAME: PHP ${{ matrix.php-versions }}
+
+  coveralls:
+    needs: [main]
+    name: Coveralls Finished
+    runs-on: ubuntu-latest
+    steps:
+      - name: Upload Coveralls results
+        uses: coverallsapp/github-action@master
+        continue-on-error: true
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true
