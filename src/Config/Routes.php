@@ -1,5 +1,7 @@
 <?php
 
+namespace Myth\Auth\Config;
+
 // Myth:Auth routes file.
 $routes->group('', ['namespace' => 'Myth\Auth\Controllers'], static function ($routes) {
     // Login/out

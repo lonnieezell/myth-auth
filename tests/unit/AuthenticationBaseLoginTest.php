@@ -2,7 +2,9 @@
 
 use CodeIgniter\Test\CIUnitTestCase;
 use Mockery as m;
+use Mockery\MockInterface;
 use Myth\Auth\Authentication\AuthenticationBase;
+use Myth\Auth\Config\Auth;
 use Myth\Auth\Models\LoginModel;
 
 /**
@@ -10,15 +12,8 @@ use Myth\Auth\Models\LoginModel;
  */
 final class AuthenticationBaseLoginTest extends CIUnitTestCase
 {
-    /**
-     * @var AuthenticationBase
-     */
-    protected $auth;
-
-    /**
-     * @var Mockery\MockInterface
-     */
-    protected $loginModel;
+    protected AuthenticationBase $auth;
+    protected MockInterface $loginModel;
 
     protected function setUp(): void
     {
@@ -26,7 +21,7 @@ final class AuthenticationBaseLoginTest extends CIUnitTestCase
 
         $this->loginModel = m::mock(LoginModel::class);
 
-        $this->auth = new AuthenticationBase(new \Myth\Auth\Config\Auth());
+        $this->auth = new AuthenticationBase(new Auth());
         $this->auth->setLoginModel($this->loginModel);
     }
 

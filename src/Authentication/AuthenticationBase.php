@@ -105,7 +105,7 @@ class AuthenticationBase
         // We'll give a 20% chance to need to do a purge since we
         // don't need to purge THAT often, it's just a maintenance issue.
         // to keep the table from getting out of control.
-        if (mt_rand(1, 100) < 20) {
+        if (random_int(1, 100) < 20) {
             $this->loginModel->purgeOldRememberTokens();
         }
 
@@ -159,7 +159,7 @@ class AuthenticationBase
         // Destroy the session data - but ensure a session is still
         // available for flash messages, etc.
         if (isset($_SESSION)) {
-            foreach ($_SESSION as $key => $value) {
+            foreach (array_keys($_SESSION) as $key) {
                 $_SESSION[$key] = null;
                 unset($_SESSION[$key]);
             }

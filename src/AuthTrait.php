@@ -92,10 +92,8 @@ trait AuthTrait
     {
         $this->setupAuthClasses();
 
-        if ($this->authenticate->check()) {
-            if ($this->authorize->inGroup($groups, $this->authenticate->id())) {
-                return true;
-            }
+        if ($this->authenticate->check() && $this->authorize->inGroup($groups, $this->authenticate->id())) {
+            return true;
         }
 
         if (method_exists($this, 'setMessage')) {
@@ -129,10 +127,8 @@ trait AuthTrait
     {
         $this->setupAuthClasses();
 
-        if ($this->authenticate->check()) {
-            if ($this->authorize->hasPermission($permissions, $this->authenticate->id())) {
-                return true;
-            }
+        if ($this->authenticate->check() && $this->authorize->hasPermission($permissions, $this->authenticate->id())) {
+            return true;
         }
 
         if (method_exists($this, 'setMessage')) {

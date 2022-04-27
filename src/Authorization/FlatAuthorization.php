@@ -155,12 +155,12 @@ class FlatAuthorization implements AuthorizeInterface
         }
 
         // First check the permission model. If that exists, then we're golden.
-        if ($this->permissionModel->doesUserHavePermission($userId, (int) $permissionId)) {
+        if ($this->permissionModel->doesUserHavePermission($userId, $permissionId)) {
             return true;
         }
 
         // Still here? Then we have one last check to make - any user private permissions.
-        return $this->doesUserHavePermission($userId, (int) $permissionId);
+        return $this->doesUserHavePermission($userId, $permissionId);
     }
 
     /**
@@ -191,7 +191,7 @@ class FlatAuthorization implements AuthorizeInterface
             return null;
         }
 
-        if (! $this->groupModel->addUserToGroup($userid, (int) $groupId)) {
+        if (! $this->groupModel->addUserToGroup($userid, $groupId)) {
             $this->error = $this->groupModel->errors();
 
             return false;
@@ -629,7 +629,7 @@ class FlatAuthorization implements AuthorizeInterface
             $data['description'] = $description;
         }
 
-        if (! $this->permissionModel->update((int) $id, $data)) {
+        if (! $this->permissionModel->update($id, $data)) {
             $this->error = $this->permissionModel->errors();
 
             return false;

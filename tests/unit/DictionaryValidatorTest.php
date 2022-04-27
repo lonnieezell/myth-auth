@@ -2,22 +2,20 @@
 
 use CodeIgniter\Test\CIUnitTestCase;
 use Myth\Auth\Authentication\Passwords\DictionaryValidator;
+use Myth\Auth\Config\Auth;
 
 /**
  * @internal
  */
 final class DictionaryValidatorTest extends CIUnitTestCase
 {
-    /**
-     * @var DictionaryValidator
-     */
-    protected $validator;
+    protected DictionaryValidator $validator;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $config = new \Myth\Auth\Config\Auth();
+        $config = new Auth();
 
         $this->validator = new DictionaryValidator();
         $this->validator->setConfig($config);

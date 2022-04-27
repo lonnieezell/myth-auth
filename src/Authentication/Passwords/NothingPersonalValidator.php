@@ -84,11 +84,10 @@ class NothingPersonalValidator extends BaseValidator implements ValidatorInterfa
 
             // Get any other "personal" fields defined in config
             $personalFields = $this->config->personalFields;
-            if (! empty($personalFields)) {
-                foreach ($personalFields as $value) {
-                    if (! empty($user->{$value})) {
-                        $needles[] = \strtolower($user->{$value});
-                    }
+
+            foreach ($personalFields as $value) {
+                if (! empty($user->{$value})) {
+                    $needles[] = \strtolower($user->{$value});
                 }
             }
 

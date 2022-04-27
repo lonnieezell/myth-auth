@@ -74,6 +74,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // Are there files or rules you need to skip?
     $parameters->set(Option::SKIP, [
+        __DIR__ . '/src/Config/Auth.php',
+        __DIR__ . '/src/Language',
         __DIR__ . '/src/Views',
 
         JsonThrowOnErrorRector::class,
@@ -123,8 +125,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(MakeInheritedMethodVisibilitySameAsParentRector::class);
     $services->set(SimplifyEmptyArrayCheckRector::class);
     $services->set(NormalizeNamespaceByPSR4ComposerAutoloadRector::class);
-    $services->set(TypedPropertyRector::class)
-        ->configure([
-            TypedPropertyRector::INLINE_PUBLIC => true,
-        ]);
+    // $services->set(TypedPropertyRector::class)
+    //     ->configure([
+    //         TypedPropertyRector::INLINE_PUBLIC => true,
+    //     ]);
 };

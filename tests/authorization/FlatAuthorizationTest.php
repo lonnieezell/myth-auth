@@ -28,10 +28,7 @@ final class FlatAuthorizationTest extends AuthTestCase
      */
     protected $permissions;
 
-    /**
-     * @var FlatAuthorization
-     */
-    protected $auth;
+    protected FlatAuthorization $auth;
 
     protected function setUp(): void
     {
@@ -548,7 +545,7 @@ final class FlatAuthorizationTest extends AuthTestCase
 
         $found = $this->auth->groupPermissions($group->id);
 
-        $this->assertTrue(isset($found[$perm->id]));
+        $this->assertArrayHasKey($perm->id, $found);
         $this->assertSame((array) $perm, $found[$perm->id]);
     }
 }

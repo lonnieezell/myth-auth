@@ -12,10 +12,7 @@ use Tests\Support\AuthTestCase;
  */
 final class UserEntityTest extends AuthTestCase
 {
-    /**
-     * @var User
-     */
-    protected $user;
+    protected User $user;
 
     protected function setUp(): void
     {
@@ -47,6 +44,6 @@ final class UserEntityTest extends AuthTestCase
 
         $model->addPermissionToUser($perm->id, $user->id);
 
-        $this->assertTrue(in_array($perm->name, $user->getPermissions(), true));
+        $this->assertContains($perm->name, $user->getPermissions());
     }
 }

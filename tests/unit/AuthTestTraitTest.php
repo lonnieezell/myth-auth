@@ -1,5 +1,6 @@
 <?php
 
+use Myth\Auth\Test\AuthTestTrait;
 use Myth\Auth\Test\Fakers\UserFaker;
 use Tests\Support\AuthTestCase;
 
@@ -8,7 +9,7 @@ use Tests\Support\AuthTestCase;
  */
 final class AuthTestTraitTest extends AuthTestCase
 {
-    use \Myth\Auth\Test\AuthTestTrait;
+    use AuthTestTrait;
 
     public function testResetServicesResetsAuthentication()
     {

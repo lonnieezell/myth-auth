@@ -36,8 +36,8 @@ class GroupModel extends Model
         cache()->delete("{$userId}_permissions");
 
         $data = [
-            'user_id'  => (int) $userId,
-            'group_id' => (int) $groupId,
+            'user_id'  => $userId,
+            'group_id' => $groupId,
         ];
 
         return (bool) $this->db->table('auth_groups_users')->insert($data);
@@ -74,7 +74,7 @@ class GroupModel extends Model
         cache()->delete("{$userId}_permissions");
 
         return $this->db->table('auth_groups_users')
-            ->where('user_id', (int) $userId)
+            ->where('user_id', $userId)
             ->delete();
     }
 
@@ -158,8 +158,8 @@ class GroupModel extends Model
     public function addPermissionToGroup(int $permissionId, int $groupId)
     {
         $data = [
-            'permission_id' => (int) $permissionId,
-            'group_id'      => (int) $groupId,
+            'permission_id' => $permissionId,
+            'group_id'      => $groupId,
         ];
 
         return $this->db->table('auth_groups_permissions')->insert($data);

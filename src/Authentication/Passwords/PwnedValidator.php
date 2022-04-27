@@ -57,12 +57,7 @@ class PwnedValidator extends BaseValidator implements ValidatorInterface
 
         $startPos += 36; // right after the delimiter (:)
         $endPos = strpos($range, "\r\n", $startPos);
-        if ($endPos !== false) {
-            $hits = (int) substr($range, $startPos, $endPos - $startPos);
-        } else {
-            // match is the last item in the range which does not end with "\r\n"
-            $hits = (int) substr($range, $startPos);
-        }
+        $hits   = $endPos !== false ? (int) substr($range, $startPos, $endPos - $startPos) : (int) substr($range, $startPos);
 
         $wording          = $hits > 1 ? lang('Auth.errorPasswordPwnedDatabases') : lang('Auth.errorPasswordPwnedDatabase');
         $this->error      = lang('Auth.errorPasswordPwned', [$password, $hits, $wording]);

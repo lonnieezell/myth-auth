@@ -1,8 +1,13 @@
 <?php
 
+use CodeIgniter\Config\Factories;
 use CodeIgniter\Test\ControllerTestTrait;
 use Config\Services;
+use Config\Validation;
+use Myth\Auth\Authentication\Passwords\ValidationRules;
+use Myth\Auth\Config\Auth;
 use Myth\Auth\Controllers\AuthController;
+use Myth\Auth\Models\UserModel;
 use Tests\Support\AuthTestCase;
 
 /**
@@ -21,10 +26,10 @@ final class RegisterTest extends AuthTestCase
         parent::setUp();
 
         // Make sure our valiation rules include strong_password
-        $vConfig             = new \Config\Validation();
-        $vConfig->ruleSets[] = \Myth\Auth\Authentication\Passwords\ValidationRules::class;
+        $vConfig             = new Validation();
+        $vConfig->ruleSets[] = ValidationRules::class;
         $vConfig->ruleSets   = array_reverse($vConfig->ruleSets);
-        \CodeIgniter\Config\Factories::injectMock('Config', 'Validation', $vConfig);
+        Factories::injectMock('Config', 'Validation', $vConfig);
 
         // Make sure our routes are mapped
         $routes = service('routes');
@@ -47,9 +52,9 @@ final class RegisterTest extends AuthTestCase
 
     public function testAttemptRegisterDisabled()
     {
-        $config                    = new \Myth\Auth\Config\Auth();
+        $config                    = new Auth();
         $config->allowRegistration = false;
-        \CodeIgniter\Config\Factories::injectMock('Config', 'Auth', $config);
+        Factories::injectMock('Config', 'Auth', $config);
 
         $result = $this->withUri(site_url('register'))
             ->controller(AuthController::class)
@@ -61,9 +66,9 @@ final class RegisterTest extends AuthTestCase
 
     public function testAttemptRegisterValidationErrors()
     {
-        $config                    = new \Myth\Auth\Config\Auth();
+        $config                    = new Auth();
         $config->allowRegistration = true;
-        \CodeIgniter\Config\Factories::injectMock('Config', 'Auth', $config);
+        Factories::injectMock('Config', 'Auth', $config);
 
         $result = $this->withUri(site_url('register'))
             ->controller(AuthController::class)
@@ -93,7 +98,7 @@ final class RegisterTest extends AuthTestCase
         // don't require activation for this...
         $config                    = config('Auth');
         $config->requireActivation = null;
-        \CodeIgniter\Config\Factories::injectMock('Config', 'Auth', $config);
+        Factories::injectMock('Config', 'Auth', $config);
 
         $result = $this->withUri(site_url('register'))
             ->withRequest($request)
@@ -132,7 +137,7 @@ final class RegisterTest extends AuthTestCase
         $config                    = config('Auth');
         $config->requireActivation = null;
         $config->defaultUserGroup  = $group->name;
-        \CodeIgniter\Config\Factories::injectMock('Config', 'Auth', $config);
+        Factories::injectMock('Config', 'Auth', $config);
 
         $result = $this->withUri(site_url('register'))
             ->withRequest($request)
@@ -147,7 +152,7 @@ final class RegisterTest extends AuthTestCase
             'email'    => $data['email'],
         ]);
 
-        $users = new \Myth\Auth\Models\UserModel();
+        $users = new UserModel();
         $user  = $users->where('username', $data['username'])->first();
         $this->seeInDatabase('auth_groups_users', [
             'user_id'  => $user->id,
