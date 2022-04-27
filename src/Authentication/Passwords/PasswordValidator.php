@@ -6,16 +6,12 @@ use Myth\Auth\Config\Auth as AuthConfig;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Exceptions\AuthException;
 
-class PasswordValidator
+/**
+ * A "meta-validator" for the other password validation classes.
+ * Note that this is not itself a ValidatorInterface.
+ */
+class PasswordValidator extends BaseValidator
 {
-    /**
-     * @var AuthConfig
-     */
-    protected $config;
-
-    protected $error;
-    protected $suggestion;
-
     public function __construct(AuthConfig $config)
     {
         $this->config = $config;
@@ -59,27 +55,5 @@ class PasswordValidator
         }
 
         return $valid;
-    }
-
-    /**
-     * Returns the current error, as defined by validator
-     * it failed to pass.
-     *
-     * @return mixed
-     */
-    public function error()
-    {
-        return $this->error;
-    }
-
-    /**
-     * Returns a string with any suggested fix
-     * based on the validator it failed to pass.
-     *
-     * @return mixed
-     */
-    public function suggestion()
-    {
-        return $this->suggestion;
     }
 }

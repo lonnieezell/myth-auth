@@ -4,11 +4,6 @@ namespace Myth\Auth\Authentication\Passwords;
 
 use CodeIgniter\Entity;
 
-/**
- * Interface ValidatorInterface
- *
- * Forms the
- */
 interface ValidatorInterface
 {
     /**
@@ -17,8 +12,6 @@ interface ValidatorInterface
      * True means the password passes this test and
      * the password will be passed to any remaining validators.
      * False will immediately stop validation process
-     *
-     * @param Entity $user
      */
     public function check(string $password, ?Entity $user = null): bool;
 

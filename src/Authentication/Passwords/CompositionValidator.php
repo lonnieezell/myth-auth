@@ -19,16 +19,6 @@ use Myth\Auth\Exceptions\AuthException;
 class CompositionValidator extends BaseValidator implements ValidatorInterface
 {
     /**
-     * @var string
-     */
-    protected $error = '';
-
-    /**
-     * @var string
-     */
-    protected $suggestion = '';
-
-    /**
      * Returns true when the password passes this test.
      * The password will be passed to any remaining validators.
      * False will immediately stop validation process
@@ -51,24 +41,5 @@ class CompositionValidator extends BaseValidator implements ValidatorInterface
         }
 
         return true;
-    }
-
-    /**
-     * Returns the error string that should be displayed to the user.
-     */
-    public function error(): string
-    {
-        return $this->error;
-    }
-
-    /**
-     * Returns a suggestion that may be displayed to the user
-     * to help them choose a better password. The method is
-     * required, but a suggestion is optional. May return
-     * an empty string instead.
-     */
-    public function suggestion(): string
-    {
-        return $this->suggestion;
     }
 }
