@@ -3,43 +3,46 @@
 use Myth\Auth\Test\Fakers\UserFaker;
 use Tests\Support\AuthTestCase;
 
-class AuthTestTraitTest extends AuthTestCase
+/**
+ * @internal
+ */
+final class AuthTestTraitTest extends AuthTestCase
 {
-	use \Myth\Auth\Test\AuthTestTrait;
+    use \Myth\Auth\Test\AuthTestTrait;
 
-	public function testResetServicesResetsAuthentication()
-	{
-		$authentication = service('authentication');
+    public function testResetServicesResetsAuthentication()
+    {
+        $authentication = service('authentication');
 
-		$user = fake(UserFaker::class);
+        $user = fake(UserFaker::class);
 
-		$authentication->login($user);
-		$this->assertTrue($authentication->isLoggedIn());
+        $authentication->login($user);
+        $this->assertTrue($authentication->isLoggedIn());
 
-		$this->resetAuthServices();
+        $this->resetAuthServices();
 
-		$this->assertFalse(service('authentication')->check());
-	}
+        $this->assertFalse(service('authentication')->check());
+    }
 
-	public function testResetServicesResetsAuthorization()
-	{
-		$authorization = service('authorization');
-		$authorization->setUserModel(model(UserFaker::class));
+    public function testResetServicesResetsAuthorization()
+    {
+        $authorization = service('authorization');
+        $authorization->setUserModel(model(UserFaker::class));
 
-		$this->resetAuthServices();
+        $this->resetAuthServices();
 
-		$authorization = service('authorization');
-		$model         = $this->getPrivateProperty($authorization, 'userModel');
+        $authorization = service('authorization');
+        $model         = $this->getPrivateProperty($authorization, 'userModel');
 
-		$this->assertNotInstanceOf(UserFaker::class, $model);
-	}
+        $this->assertNotInstanceOf(UserFaker::class, $model);
+    }
 
-	public function testCreateAuthUser()
-	{
-		$user = $this->createAuthUser();
-		$this->seeInDatabase('users', ['email' => $user->email]);
+    public function testCreateAuthUser()
+    {
+        $user = $this->createAuthUser();
+        $this->seeInDatabase('users', ['email' => $user->email]);
 
-		$authentication = service('authentication');
-		$this->assertTrue($authentication->isLoggedIn());
-	}
+        $authentication = service('authentication');
+        $this->assertTrue($authentication->isLoggedIn());
+    }
 }

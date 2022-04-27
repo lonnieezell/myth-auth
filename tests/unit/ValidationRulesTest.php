@@ -1,23 +1,23 @@
 <?php
 
-use CodeIgniter\Session\Handlers\ArrayHandler;
 use CodeIgniter\Test\CIUnitTestCase;
-use CodeIgniter\Test\Mock\MockSession;
 use CodeIgniter\Validation\Validation;
 use Config\Services;
 use Myth\Auth\Authentication\Passwords\ValidationRules;
 
-
-class ValidationRulesTest extends CIUnitTestCase
+/**
+ * @internal
+ */
+final class ValidationRulesTest extends CIUnitTestCase
 {
-	/**
-	 * @var Validation
-	 */
+    /**
+     * @var Validation
+     */
     protected $validation;
 
     //--------------------------------------------------------------------
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -26,8 +26,8 @@ class ValidationRulesTest extends CIUnitTestCase
         $_SESSION = [];
         $_REQUEST = [];
 
-		$config = config('Validation');
-		$config->ruleSets = [
+        $config           = config('Validation');
+        $config->ruleSets = [
             ValidationRules::class,
         ];
 
@@ -131,8 +131,8 @@ class ValidationRulesTest extends CIUnitTestCase
 
         $result = $this->validation->withRequest($request)->run();
         $this->assertFalse($result);
-        $this->assertEquals([
-            'password' => 'Passwords cannot contain re-hashed personal information.'
+        $this->assertSame([
+            'password' => 'Passwords cannot contain re-hashed personal information.',
         ], $this->validation->getErrors());
     }
 
@@ -154,9 +154,8 @@ class ValidationRulesTest extends CIUnitTestCase
 
         $result = $this->validation->withRequest($request)->run();
         $this->assertFalse($result);
-        $this->assertEquals([
-            'password' => 'Passwords cannot contain re-hashed personal information.'
+        $this->assertSame([
+            'password' => 'Passwords cannot contain re-hashed personal information.',
         ], $this->validation->getErrors());
     }
-
 }

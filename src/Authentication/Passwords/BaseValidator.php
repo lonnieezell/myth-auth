@@ -1,12 +1,14 @@
-<?php namespace Myth\Auth\Authentication\Passwords;
+<?php
+
+namespace Myth\Auth\Authentication\Passwords;
 
 use Myth\Auth\Config\Auth as AuthConfig;
 
 class BaseValidator
 {
-	/**
-	 * @var AuthConfig
-	 */
+    /**
+     * @var AuthConfig
+     */
     protected $config;
 
     /**

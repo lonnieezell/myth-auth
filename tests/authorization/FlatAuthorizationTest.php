@@ -1,12 +1,15 @@
 <?php
 
+use Myth\Auth\Authorization\FlatAuthorization;
 use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Authorization\PermissionModel;
-use Myth\Auth\Authorization\FlatAuthorization;
 use Myth\Auth\Models\UserModel;
 use Tests\Support\AuthTestCase;
 
-class FlatAuthorizationTest extends AuthTestCase
+/**
+ * @internal
+ */
+final class FlatAuthorizationTest extends AuthTestCase
 {
     protected $refresh = true;
 
@@ -30,12 +33,12 @@ class FlatAuthorizationTest extends AuthTestCase
      */
     protected $auth;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->users = new UserModel();
-        $this->groups = new GroupModel();
+        $this->users       = new UserModel();
+        $this->groups      = new GroupModel();
         $this->permissions = new PermissionModel();
 
         $this->auth = new FlatAuthorization($this->groups, $this->permissions);
@@ -47,7 +50,7 @@ class FlatAuthorizationTest extends AuthTestCase
 
     public function testInGroupSingleId()
     {
-        $user = $this->createUser();
+        $user  = $this->createUser();
         $group = $this->createGroup();
 
         $this->assertFalse($this->auth->inGroup($group->id, $user->id));
@@ -59,7 +62,7 @@ class FlatAuthorizationTest extends AuthTestCase
 
     public function testInGroupSingleName()
     {
-        $user = $this->createUser();
+        $user  = $this->createUser();
         $group = $this->createGroup();
 
         $this->assertFalse($this->auth->inGroup($group->name, $user->id));
@@ -71,7 +74,7 @@ class FlatAuthorizationTest extends AuthTestCase
 
     public function testInGroupMultiId()
     {
-        $user = $this->createUser();
+        $user   = $this->createUser();
         $group1 = $this->createGroup();
         $group2 = $this->createGroup();
 
@@ -86,7 +89,7 @@ class FlatAuthorizationTest extends AuthTestCase
 
     public function testInGroupMultiName()
     {
-        $user = $this->createUser();
+        $user   = $this->createUser();
         $group1 = $this->createGroup();
         $group2 = $this->createGroup();
 
@@ -101,8 +104,8 @@ class FlatAuthorizationTest extends AuthTestCase
 
     public function testHasPermissionIdGroup()
     {
-        $user = $this->createUser();
-        $group = $this->createGroup();
+        $user       = $this->createUser();
+        $group      = $this->createGroup();
         $permission = $this->createPermission();
         $this->groups->addUserToGroup($user->id, $group->id);
 
@@ -115,8 +118,8 @@ class FlatAuthorizationTest extends AuthTestCase
 
     public function testHasPermissionNameGroup()
     {
-        $user = $this->createUser();
-        $group = $this->createGroup();
+        $user       = $this->createUser();
+        $group      = $this->createGroup();
         $permission = $this->createPermission();
         $this->groups->addUserToGroup($user->id, $group->id);
 
@@ -129,8 +132,8 @@ class FlatAuthorizationTest extends AuthTestCase
 
     public function testHasPermissionIdUser()
     {
-        $user = $this->createUser();
-        $group = $this->createGroup();
+        $user       = $this->createUser();
+        $group      = $this->createGroup();
         $permission = $this->createPermission();
         $this->groups->addUserToGroup($user->id, $group->id);
 
@@ -143,7 +146,7 @@ class FlatAuthorizationTest extends AuthTestCase
 
     public function testHasPermissionIdUserNoGroups()
     {
-        $user = $this->createUser();
+        $user       = $this->createUser();
         $permission = $this->createPermission();
 
         $this->assertFalse($this->auth->hasPermission($permission->id, $user->id));
@@ -155,192 +158,192 @@ class FlatAuthorizationTest extends AuthTestCase
 
     public function testAddUserToGroupId()
     {
-        $user = $this->createUser();
+        $user  = $this->createUser();
         $group = $this->createGroup();
 
         $this->dontSeeInDatabase('auth_groups_users', [
             'group_id' => $group->id,
-            'user_id' => $user->id
+            'user_id'  => $user->id,
         ]);
 
         $this->auth->addUserToGroup($user->id, $group->id);
 
         $this->seeInDatabase('auth_groups_users', [
             'group_id' => $group->id,
-            'user_id' => $user->id
+            'user_id'  => $user->id,
         ]);
     }
 
     public function testAddUserToGroupName()
     {
-        $user = $this->createUser();
+        $user  = $this->createUser();
         $group = $this->createGroup();
 
         $this->dontSeeInDatabase('auth_groups_users', [
             'group_id' => $group->id,
-            'user_id' => $user->id
+            'user_id'  => $user->id,
         ]);
 
         $this->auth->addUserToGroup($user->id, $group->name);
 
         $this->seeInDatabase('auth_groups_users', [
             'group_id' => $group->id,
-            'user_id' => $user->id
+            'user_id'  => $user->id,
         ]);
     }
 
     public function testRemoveUserFromGroupId()
     {
-        $user = $this->createUser();
+        $user  = $this->createUser();
         $group = $this->createGroup();
 
         $this->hasInDatabase('auth_groups_users', [
             'group_id' => $group->id,
-            'user_id' => $user->id
+            'user_id'  => $user->id,
         ]);
 
         $this->auth->removeUserFromGroup($user->id, $group->id);
 
         $this->dontSeeInDatabase('auth_groups_users', [
             'group_id' => $group->id,
-            'user_id' => $user->id
+            'user_id'  => $user->id,
         ]);
     }
 
     public function testRemoveUserFromGroupName()
     {
-        $user = $this->createUser();
+        $user  = $this->createUser();
         $group = $this->createGroup();
 
         $this->hasInDatabase('auth_groups_users', [
             'group_id' => $group->id,
-            'user_id' => $user->id
+            'user_id'  => $user->id,
         ]);
 
         $this->auth->removeUserFromGroup($user->id, $group->name);
 
         $this->dontSeeInDatabase('auth_groups_users', [
             'group_id' => $group->id,
-            'user_id' => $user->id
+            'user_id'  => $user->id,
         ]);
     }
 
     public function testAddPermissionToGroupId()
     {
-        $group = $this->createGroup();
+        $group      = $this->createGroup();
         $permission = $this->createPermission();
 
         $this->dontSeeInDatabase('auth_groups_permissions', [
-            'group_id' => $group->id,
-            'permission_id' => $permission->id
+            'group_id'      => $group->id,
+            'permission_id' => $permission->id,
         ]);
 
         $this->assertTrue($this->auth->addPermissionToGroup($permission->id, $group->id));
 
         $this->seeInDatabase('auth_groups_permissions', [
-            'group_id' => $group->id,
-            'permission_id' => $permission->id
+            'group_id'      => $group->id,
+            'permission_id' => $permission->id,
         ]);
     }
 
     public function testAddPermissionToGroupName()
     {
-        $group = $this->createGroup();
+        $group      = $this->createGroup();
         $permission = $this->createPermission();
 
         $this->dontSeeInDatabase('auth_groups_permissions', [
-            'group_id' => $group->id,
-            'permission_id' => $permission->id
+            'group_id'      => $group->id,
+            'permission_id' => $permission->id,
         ]);
 
         $this->assertTrue($this->auth->addPermissionToGroup($permission->name, $group->name));
 
         $this->seeInDatabase('auth_groups_permissions', [
-            'group_id' => $group->id,
-            'permission_id' => $permission->id
+            'group_id'      => $group->id,
+            'permission_id' => $permission->id,
         ]);
     }
 
     public function testRemovePermissionFromGroupId()
     {
-        $group = $this->createGroup();
+        $group      = $this->createGroup();
         $permission = $this->createPermission();
 
         $this->hasInDatabase('auth_groups_permissions', [
-            'group_id' => $group->id,
-            'permission_id' => $permission->id
+            'group_id'      => $group->id,
+            'permission_id' => $permission->id,
         ]);
 
         $this->assertTrue($this->auth->removePermissionFromGroup($permission->id, $group->id));
 
         $this->dontSeeInDatabase('auth_groups_permissions', [
-            'group_id' => $group->id,
-            'permission_id' => $permission->id
+            'group_id'      => $group->id,
+            'permission_id' => $permission->id,
         ]);
     }
 
     public function testRemovePermissionFromGroupName()
     {
-        $group = $this->createGroup();
+        $group      = $this->createGroup();
         $permission = $this->createPermission();
 
         $this->hasInDatabase('auth_groups_permissions', [
-            'group_id' => $group->id,
-            'permission_id' => $permission->id
+            'group_id'      => $group->id,
+            'permission_id' => $permission->id,
         ]);
 
         $this->assertTrue($this->auth->removePermissionFromGroup($permission->name, $group->name));
 
         $this->dontSeeInDatabase('auth_groups_permissions', [
-            'group_id' => $group->id,
-            'permission_id' => $permission->id
+            'group_id'      => $group->id,
+            'permission_id' => $permission->id,
         ]);
     }
 
     public function testAddPermissionToUser()
     {
-        $user = $this->createUser();
+        $user       = $this->createUser();
         $permission = $this->createPermission();
 
         $this->dontSeeInDatabase('auth_users_permissions', [
-            'user_id' => $user->id,
-            'permission_id' => $permission->id
+            'user_id'       => $user->id,
+            'permission_id' => $permission->id,
         ]);
 
         $this->assertTrue($this->auth->addPermissionToUser($permission->id, $user->id));
 
         $this->seeInDatabase('auth_users_permissions', [
-            'user_id' => $user->id,
-            'permission_id' => $permission->id
+            'user_id'       => $user->id,
+            'permission_id' => $permission->id,
         ]);
     }
 
     public function testRemovePermissionFromUser()
     {
-        $user = $this->createUser();
+        $user       = $this->createUser();
         $permission = $this->createPermission();
 
         $this->hasInDatabase('auth_users_permissions', [
-            'user_id' => $user->id,
-            'permission_id' => $permission->id
+            'user_id'       => $user->id,
+            'permission_id' => $permission->id,
         ]);
 
         $this->auth->removePermissionFromUser($permission->id, $user->id);
 
         $this->dontSeeInDatabase('auth_users_permissions', [
-            'user_id' => $user->id,
-            'permission_id' => $permission->id
+            'user_id'       => $user->id,
+            'permission_id' => $permission->id,
         ]);
     }
 
     public function testDoesUserHavePermission()
     {
-        $user = $this->createUser();
+        $user       = $this->createUser();
         $permission = $this->createPermission();
 
         $this->hasInDatabase('auth_users_permissions', [
-            'user_id' => $user->id,
-            'permission_id' => $permission->id
+            'user_id'       => $user->id,
+            'permission_id' => $permission->id,
         ]);
 
         $this->assertTrue($this->auth->doesUserHavePermission($user->id, $permission->id));
@@ -348,32 +351,32 @@ class FlatAuthorizationTest extends AuthTestCase
 
     public function testDoesUSerHavePermissionByGroupAssign()
     {
-        $user = $this->createUser();
-        $group1 = $this->createGroup();
-        $group2 = $this->createGroup();
+        $user        = $this->createUser();
+        $group1      = $this->createGroup();
+        $group2      = $this->createGroup();
         $permission1 = $this->createPermission();
         $permission2 = $this->createPermission();
 
         // group1 has both permissions
         $this->hasInDatabase('auth_groups_permissions', [
-            'group_id' => $group1->id,
-            'permission_id' => $permission1->id
+            'group_id'      => $group1->id,
+            'permission_id' => $permission1->id,
         ]);
         $this->hasInDatabase('auth_groups_permissions', [
-            'group_id' => $group1->id,
-            'permission_id' => $permission2->id
+            'group_id'      => $group1->id,
+            'permission_id' => $permission2->id,
         ]);
 
         // group2 has only one permission
         $this->hasInDatabase('auth_groups_permissions', [
-            'group_id' => $group2->id,
-            'permission_id' => $permission2->id
+            'group_id'      => $group2->id,
+            'permission_id' => $permission2->id,
         ]);
 
         // user is assigned to proup2
         $this->hasInDatabase('auth_groups_users', [
             'group_id' => $group2->id,
-            'user_id' => $user->id
+            'user_id'  => $user->id,
         ]);
 
         // no permission for permission1
@@ -393,9 +396,9 @@ class FlatAuthorizationTest extends AuthTestCase
 
         $found = $this->auth->group($group->id);
 
-        $this->assertEquals($group->id, $found->id);
-        $this->assertEquals($group->name, $found->name);
-        $this->assertEquals($group->description, $found->description);
+        $this->assertSame($group->id, $found->id);
+        $this->assertSame($group->name, $found->name);
+        $this->assertSame($group->description, $found->description);
     }
 
     public function testGroupWithName()
@@ -404,9 +407,9 @@ class FlatAuthorizationTest extends AuthTestCase
 
         $found = $this->auth->group($group->name);
 
-        $this->assertEquals($group->id, $found->id);
-        $this->assertEquals($group->name, $found->name);
-        $this->assertEquals($group->description, $found->description);
+        $this->assertSame($group->id, $found->id);
+        $this->assertSame($group->name, $found->name);
+        $this->assertSame($group->description, $found->description);
     }
 
     public function testCreateGroupSuccess()
@@ -416,9 +419,9 @@ class FlatAuthorizationTest extends AuthTestCase
         $this->assertIsInt($result);
 
         $this->seeInDatabase('auth_groups', [
-            'id' => $result,
-            'name' => 'Group A',
-            'description' => 'Description'
+            'id'          => $result,
+            'name'        => 'Group A',
+            'description' => 'Description',
         ]);
     }
 
@@ -427,13 +430,13 @@ class FlatAuthorizationTest extends AuthTestCase
         $group = $this->createGroup();
 
         $this->seeInDatabase('auth_groups', [
-            'id' => $group->id
+            'id' => $group->id,
         ]);
 
         $this->assertTrue($this->auth->deleteGroup($group->id));
 
         $this->dontSeeInDatabase('auth_groups', [
-            'id' => $group->id
+            'id' => $group->id,
         ]);
     }
 
@@ -444,9 +447,9 @@ class FlatAuthorizationTest extends AuthTestCase
         $this->assertTrue($this->auth->updateGroup($group->id, 'Group B', 'More Words'));
 
         $this->seeInDatabase('auth_groups', [
-            'id' => $group->id,
-            'name' => 'Group B',
-            'description' => 'More Words'
+            'id'          => $group->id,
+            'name'        => 'Group B',
+            'description' => 'More Words',
         ]);
     }
 
@@ -461,9 +464,9 @@ class FlatAuthorizationTest extends AuthTestCase
 
         $found = $this->auth->permission($perm->id);
 
-        $this->assertEquals($perm->id, $found['id']);
-        $this->assertEquals($perm->name, $found['name']);
-        $this->assertEquals($perm->description, $found['description']);
+        $this->assertSame($perm->id, $found['id']);
+        $this->assertSame($perm->name, $found['name']);
+        $this->assertSame($perm->description, $found['description']);
     }
 
     public function testPermissionWithName()
@@ -472,9 +475,9 @@ class FlatAuthorizationTest extends AuthTestCase
 
         $found = $this->auth->permission($perm->name);
 
-        $this->assertEquals($perm->id, $found['id']);
-        $this->assertEquals($perm->name, $found['name']);
-        $this->assertEquals($perm->description, $found['description']);
+        $this->assertSame($perm->id, $found['id']);
+        $this->assertSame($perm->name, $found['name']);
+        $this->assertSame($perm->description, $found['description']);
     }
 
     public function testPermissionWithNameInsensitive()
@@ -483,9 +486,9 @@ class FlatAuthorizationTest extends AuthTestCase
 
         $found = $this->auth->permission(strtoupper($perm->name));
 
-        $this->assertEquals($perm->id, $found['id']);
-        $this->assertEquals($perm->name, $found['name']);
-        $this->assertEquals($perm->description, $found['description']);
+        $this->assertSame($perm->id, $found['id']);
+        $this->assertSame($perm->name, $found['name']);
+        $this->assertSame($perm->description, $found['description']);
     }
 
     public function testCreatePermissionSuccess()
@@ -495,9 +498,9 @@ class FlatAuthorizationTest extends AuthTestCase
         $this->assertIsInt($perm);
 
         $this->seeInDatabase('auth_permissions', [
-            'id' => $perm,
-            'name' => 'Perm A',
-            'description' => 'Description'
+            'id'          => $perm,
+            'name'        => 'Perm A',
+            'description' => 'Description',
         ]);
     }
 
@@ -506,13 +509,13 @@ class FlatAuthorizationTest extends AuthTestCase
         $perm = $this->createPermission();
 
         $this->seeInDatabase('auth_permissions', [
-            'id' => $perm->id
+            'id' => $perm->id,
         ]);
 
         $this->auth->deletePermission($perm->id);
 
         $this->dontSeeInDatabase('auth_permissions', [
-            'id' => $perm->id
+            'id' => $perm->id,
         ]);
     }
 
@@ -523,9 +526,9 @@ class FlatAuthorizationTest extends AuthTestCase
         $this->assertTrue($this->auth->updatePermission($perm->id, 'Perm B', 'More Words'));
 
         $this->seeInDatabase('auth_permissions', [
-            'id' => $perm->id,
-            'name' => 'Perm B',
-            'description' => 'More Words'
+            'id'          => $perm->id,
+            'name'        => 'Perm B',
+            'description' => 'More Words',
         ]);
     }
 
@@ -533,19 +536,19 @@ class FlatAuthorizationTest extends AuthTestCase
     {
         $group = $this->createGroup();
 
-        $this->assertEquals([], $this->auth->groupPermissions($group->id));
+        $this->assertSame([], $this->auth->groupPermissions($group->id));
     }
 
     public function testGroupPermissions()
     {
         $group = $this->createGroup();
-        $perm = $this->createPermission();
+        $perm  = $this->createPermission();
 
         $this->auth->addPermissionToGroup($perm->id, $group->id);
 
         $found = $this->auth->groupPermissions($group->id);
 
         $this->assertTrue(isset($found[$perm->id]));
-        $this->assertEquals((array)$perm, $found[$perm->id]);
+        $this->assertSame((array) $perm, $found[$perm->id]);
     }
 }
