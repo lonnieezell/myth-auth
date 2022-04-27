@@ -1,6 +1,8 @@
-<?php namespace Myth\Auth\Authentication\Passwords;
+<?php
 
-use CodeIgniter\Entity;
+namespace Myth\Auth\Authentication\Passwords;
+
+use CodeIgniter\Entity\Entity;
 
 /**
  * Class NothingPersonalValidator
@@ -36,8 +38,7 @@ class NothingPersonalValidator extends BaseValidator implements ValidatorInterfa
     {
         $password = \strtolower($password);
 
-        if($valid = $this->isNotPersonal($password, $user) === true)
-        {
+        if ($valid = $this->isNotPersonal($password, $user) === true) {
             $valid = $this->isNotSimilar($password, $user);
         }
 
@@ -72,17 +73,17 @@ class NothingPersonalValidator extends BaseValidator implements ValidatorInterfa
         $valid = true;
 
         // The most obvious transgressions
-        if($password === $userName ||
+        if (
+            $password === $userName ||
             $password === $email ||
-            $password === strrev($userName))
-        {
+            $password === strrev($userName)
+        ) {
             $valid = false;
         }
 
         // Parse out as many pieces as possible from username, password and email.
         // Use the pieces as needles and haystacks and look every which way for matches.
-        if($valid)
-        {
+        if ($valid) {
             // Take username apart for use as search needles
             $needles = $this->strip_explode($userName);
 
@@ -90,20 +91,16 @@ class NothingPersonalValidator extends BaseValidator implements ValidatorInterfa
             [$localPart, $domain] = \explode('@', $email);
             // might be john.doe@example.com and we want all the needles we can get
             $emailParts = $this->strip_explode($localPart);
-            if( ! empty($domain))
-            {
+            if (!empty($domain)) {
                 $emailParts[] = $domain;
             }
             $needles = \array_merge($needles, $emailParts);
 
             // Get any other "personal" fields defined in config
             $personalFields = $this->config->personalFields;
-            if( ! empty($personalFields))
-            {
-                foreach($personalFields as $value)
-                {
-                    if( ! empty($user->$value))
-                    {
+            if (!empty($personalFields)) {
+                foreach ($personalFields as $value) {
+                    if (!empty($user->$value)) {
                         $needles[] = \strtolower($user->$value);
                     }
                 }
@@ -117,32 +114,28 @@ class NothingPersonalValidator extends BaseValidator implements ValidatorInterfa
             // Make password into haystacks
             $haystacks = $this->strip_explode($password);
 
-            foreach($haystacks as $haystack)
-            {
-                if(empty($haystack) || in_array($haystack, $trivial))
-                {
+            foreach ($haystacks as $haystack) {
+                if (empty($haystack) || in_array($haystack, $trivial)) {
                     continue;  //ignore trivial words
                 }
 
-                foreach($needles as $needle)
-                {
-                    if(empty($needle) || in_array($needle, $trivial))
-                    {
+                foreach ($needles as $needle) {
+                    if (empty($needle) || in_array($needle, $trivial)) {
                         continue;
                     }
 
                     // look both ways in case password is subset of needle
-                    if(strpos($haystack, $needle) !== false ||
-                        strpos($needle, $haystack) !== false)
-                    {
+                    if (
+                        strpos($haystack, $needle) !== false ||
+                        strpos($needle, $haystack) !== false
+                    ) {
                         $valid = false;
                         break 2;
                     }
                 }
             }
         }
-        if($valid)
-        {
+        if ($valid) {
             return true;
         }
 
@@ -168,22 +161,17 @@ class NothingPersonalValidator extends BaseValidator implements ValidatorInterfa
     {
         $maxSimilarity = (float) $this->config->maxSimilarity;
         // sanity checking - working range 1-100, 0 is off
-        if($maxSimilarity < 1)
-        {
+        if ($maxSimilarity < 1) {
             $maxSimilarity = 0;
-        }
-        elseif($maxSimilarity > 100)
-        {
+        } elseif ($maxSimilarity > 100) {
             $maxSimilarity = 100;
         }
 
-        if( ! empty($maxSimilarity))
-        {
+        if (!empty($maxSimilarity)) {
             $userName = \strtolower($user->username);
 
             similar_text($password, $userName, $similarity);
-            if($similarity >= $maxSimilarity)
-            {
+            if ($similarity >= $maxSimilarity) {
                 $this->error = lang('Auth.errorPasswordTooSimilar');
                 $this->suggestion = lang('Auth.suggestPasswordTooSimilar');
                 return false;
@@ -207,8 +195,7 @@ class NothingPersonalValidator extends BaseValidator implements ValidatorInterfa
         $parts = \explode(' ', \trim($stripped));
 
         // If it's not already there put the untouched input at the top of the array
-        if( ! in_array($str, $parts))
-        {
+        if (!in_array($str, $parts)) {
             array_unshift($parts, $str);
         }
 
@@ -237,5 +224,4 @@ class NothingPersonalValidator extends BaseValidator implements ValidatorInterfa
     {
         return $this->suggestion ?? '';
     }
-
 }

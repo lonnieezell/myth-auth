@@ -1,6 +1,6 @@
 <?php namespace Myth\Auth\Authentication\Passwords;
 
-use CodeIgniter\Entity;
+use CodeIgniter\Entity\Entity;
 use Myth\Auth\Exceptions\AuthException;
 
 /**
