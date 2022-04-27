@@ -77,6 +77,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         __DIR__ . '/src/Config/Auth.php',
         __DIR__ . '/src/Language',
         __DIR__ . '/src/Views',
+        __DIR__ . '/tests/controllers/LoginTest.php', // not sure why this crashes Rector
 
         JsonThrowOnErrorRector::class,
         StringifyStrNeedlesRector::class,

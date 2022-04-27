@@ -2,6 +2,7 @@
 
 namespace Tests\Support;
 
+use CodeIgniter\Config\Services;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\Fabricator;
@@ -83,6 +84,13 @@ abstract class AuthTestCase extends CIUnitTestCase
         $this->permissions = model(PermissionModel::class, false); // @phpstan-ignore-line
 
         $this->faker = Factory::create();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        Services::reset(true);
     }
 
     /**

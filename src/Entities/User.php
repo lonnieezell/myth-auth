@@ -33,6 +33,8 @@ class User extends Entity
      * when they are accessed.
      */
     protected $casts = [
+        'username'         => 'string',
+        'email'            => 'string',
         'active'           => 'boolean',
         'force_pass_reset' => 'boolean',
     ];
@@ -150,7 +152,7 @@ class User extends Entity
      */
     public function isActivated(): bool
     {
-        return isset($this->attributes['active']) && $this->attributes['active'] === true;
+        return $this->active;
     }
 
     /**
