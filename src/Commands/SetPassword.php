@@ -19,6 +19,10 @@ class SetPassword extends BaseCommand
 
     public function run(array $params = [])
     {
+        /**
+         * @var array<int, string> $params
+         */
+
         // Consume or prompt for password
         $identity = $params[0] ?? null;
         $password = $params[1] ?? null;

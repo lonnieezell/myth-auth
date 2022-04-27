@@ -24,7 +24,7 @@ final class RegisterTest extends AuthTestCase
         $vConfig             = new \Config\Validation();
         $vConfig->ruleSets[] = \Myth\Auth\Authentication\Passwords\ValidationRules::class;
         $vConfig->ruleSets   = array_reverse($vConfig->ruleSets);
-        \CodeIgniter\Config\Config::injectMock('Validation', $vConfig);
+        \CodeIgniter\Config\Factories::injectMock('Config', 'Validation', $vConfig);
 
         // Make sure our routes are mapped
         $routes = service('routes');
@@ -49,7 +49,7 @@ final class RegisterTest extends AuthTestCase
     {
         $config                    = new \Myth\Auth\Config\Auth();
         $config->allowRegistration = false;
-        \CodeIgniter\Config\Config::injectMock('Auth', $config);
+        \CodeIgniter\Config\Factories::injectMock('Config', 'Auth', $config);
 
         $result = $this->withUri(site_url('register'))
             ->controller(AuthController::class)
@@ -63,7 +63,7 @@ final class RegisterTest extends AuthTestCase
     {
         $config                    = new \Myth\Auth\Config\Auth();
         $config->allowRegistration = true;
-        \CodeIgniter\Config\Config::injectMock('Auth', $config);
+        \CodeIgniter\Config\Factories::injectMock('Config', 'Auth', $config);
 
         $result = $this->withUri(site_url('register'))
             ->controller(AuthController::class)
@@ -93,7 +93,7 @@ final class RegisterTest extends AuthTestCase
         // don't require activation for this...
         $config                    = config('Auth');
         $config->requireActivation = null;
-        \CodeIgniter\Config\Config::injectMock('Auth', $config);
+        \CodeIgniter\Config\Factories::injectMock('Config', 'Auth', $config);
 
         $result = $this->withUri(site_url('register'))
             ->withRequest($request)
@@ -132,7 +132,7 @@ final class RegisterTest extends AuthTestCase
         $config                    = config('Auth');
         $config->requireActivation = null;
         $config->defaultUserGroup  = $group->name;
-        \CodeIgniter\Config\Config::injectMock('Auth', $config);
+        \CodeIgniter\Config\Factories::injectMock('Config', 'Auth', $config);
 
         $result = $this->withUri(site_url('register'))
             ->withRequest($request)

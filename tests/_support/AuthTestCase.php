@@ -78,9 +78,9 @@ abstract class AuthTestCase extends CIUnitTestCase
 
         $this->resetAuthServices();
 
-        $this->users       = model(UserModel::class, false);
-        $this->groups      = model(GroupModel::class, false);
-        $this->permissions = model(PermissionModel::class, false);
+        $this->users       = model(UserModel::class, false); // @phpstan-ignore-line
+        $this->groups      = model(GroupModel::class, false); // @phpstan-ignore-line
+        $this->permissions = model(PermissionModel::class, false); // @phpstan-ignore-line
 
         $this->faker = Factory::create();
     }

@@ -37,6 +37,7 @@ class Services extends BaseService
             ->setLoginModel($loginModel);
     }
 
+    // Note that these input models *must be* of types GroupModel, PermissionModel, and UserModel respectively
     public static function authorization(?Model $groupModel = null, ?Model $permissionModel = null, ?Model $userModel = null, bool $getShared = true)
     {
         if ($getShared) {
@@ -47,9 +48,9 @@ class Services extends BaseService
         $permissionModel ??= model(PermissionModel::class);
         $userModel ??= model(UserModel::class);
 
-        $instance = new FlatAuthorization($groupModel, $permissionModel);
+        $instance = new FlatAuthorization($groupModel, $permissionModel); // @phpstan-ignore-line
 
-        return $instance->setUserModel($userModel);
+        return $instance->setUserModel($userModel); // @phpstan-ignore-line
     }
 
     /**

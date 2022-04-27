@@ -114,17 +114,11 @@ final class NothingPersonalValidatorTest extends CIUnitTestCase
         $config->maxSimilarity = 50;
         $this->validator->setConfig($config);
 
-        $isNotPersonal = $this->getPrivateMethodInvoker(
-            $this->validator,
-            'isNotPersonal',
-            [$password, $user]
-        );
+        $method        = $this->getPrivateMethodInvoker($this->validator, 'isNotPersonal');
+        $isNotPersonal = $method($password, $user);
 
-        $isNotSimilar = $this->getPrivateMethodInvoker(
-            $this->validator,
-            'isNotSimilar',
-            [$password, $user]
-        );
+        $method       = $this->getPrivateMethodInvoker($this->validator, 'isNotSimilar');
+        $isNotSimilar = $method($password, $user);
 
         $this->assertNotSame($isNotPersonal, $isNotSimilar);
     }
@@ -194,8 +188,7 @@ final class NothingPersonalValidatorTest extends CIUnitTestCase
     public function testMaxSimilarityZeroTurnsOffSimilarityCalculation(
         $maxSimilarity,
         $expected
-    )
-    {
+    ) {
         $config                = new \Myth\Auth\Config\Auth();
         $config->maxSimilarity = $maxSimilarity;
         $this->validator->setConfig($config);

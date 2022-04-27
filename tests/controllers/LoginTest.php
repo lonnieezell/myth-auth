@@ -1,6 +1,6 @@
 <?php
 
-use CodeIgniter\Test\ControllerTester;
+use CodeIgniter\Test\ControllerTestTrait;
 use Myth\Auth\Controllers\AuthController;
 use Tests\Support\AuthTestCase;
 
@@ -9,7 +9,7 @@ use Tests\Support\AuthTestCase;
  */
 final class LoginTest extends AuthTestCase
 {
-    use ControllerTester;
+    use ControllerTestTrait;
 
     protected $refresh = true;
 
@@ -23,7 +23,7 @@ final class LoginTest extends AuthTestCase
         $vConfig             = new \Config\Validation();
         $vConfig->ruleSets[] = \Myth\Auth\Authentication\Passwords\ValidationRules::class;
         $vConfig->ruleSets   = array_reverse($vConfig->ruleSets);
-        \CodeIgniter\Config\Config::injectMock('Validation', $vConfig);
+        \CodeIgniter\Config\Factories::injectMock('Config', 'Validation', $vConfig);
 
         // Make sure our routes are mapped
         $routes = service('routes');
@@ -82,7 +82,7 @@ final class LoginTest extends AuthTestCase
         // Just make sure since it's a default
         $config                   = config('Auth');
         $config->allowRemembering = false;
-        \CodeIgniter\Config\Config::injectMock('Auth', $config);
+        \CodeIgniter\Config\Factories::injectMock('Config', 'Auth', $config);
 
         $result = $this->withUri(site_url('login'))
             ->withRequest($request)
@@ -122,7 +122,7 @@ final class LoginTest extends AuthTestCase
         // Just make sure since it's a default
         $config                   = config('Auth');
         $config->allowRemembering = true;
-        \CodeIgniter\Config\Config::injectMock('Auth', $config);
+        \CodeIgniter\Config\Factories::injectMock('Config', 'Auth', $config);
 
         $result = $this->withUri(site_url('login'))
             ->withRequest($request)
