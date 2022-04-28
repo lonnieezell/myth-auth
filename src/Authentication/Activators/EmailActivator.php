@@ -1,4 +1,6 @@
-<?php namespace Myth\Auth\Authentication\Activators;
+<?php
+
+namespace Myth\Auth\Authentication\Activators;
 
 use Config\Email;
 use Myth\Auth\Entities\User;
@@ -7,8 +9,6 @@ use Myth\Auth\Entities\User;
  * Class EmailActivator
  *
  * Sends an activation email to user.
- *
- * @package Myth\Auth\Authentication\Activators
  */
 class EmailActivator extends BaseActivator implements ActivatorInterface
 {
@@ -16,26 +16,24 @@ class EmailActivator extends BaseActivator implements ActivatorInterface
      * Sends an activation email
      *
      * @param User $user
-     *
-     * @return bool
      */
-    public function send(User $user = null): bool
+    public function send(?User $user = null): bool
     {
-        $email = service('email');
+        $email  = service('email');
         $config = new Email();
 
         $settings = $this->getActivatorSettings();
 
         $sent = $email->setFrom($settings->fromEmail ?? $config->fromEmail, $settings->fromName ?? $config->fromName)
-              ->setTo($user->email)
-              ->setSubject(lang('Auth.activationSubject'))
-              ->setMessage(view($this->config->views['emailActivation'], ['hash' => $user->activate_hash]))
-              ->setMailType('html')
-              ->send();
+            ->setTo($user->email)
+            ->setSubject(lang('Auth.activationSubject'))
+            ->setMessage(view($this->config->views['emailActivation'], ['hash' => $user->activate_hash]))
+            ->setMailType('html')
+            ->send();
 
-        if (! $sent)
-        {
+        if (! $sent) {
             $this->error = lang('Auth.errorSendingActivation', [$user->email]);
+
             return false;
         }
 

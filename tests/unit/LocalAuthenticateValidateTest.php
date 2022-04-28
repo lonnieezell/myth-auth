@@ -1,13 +1,16 @@
 <?php
 
-use Mockery as m;
-use Myth\Auth\Config\Services;
-use Myth\Auth\Models\UserModel;
-use Myth\Auth\Models\LoginModel;
 use CodeIgniter\Test\CIUnitTestCase;
+use Mockery as m;
 use Myth\Auth\Authentication\LocalAuthenticator;
+use Myth\Auth\Config\Services;
+use Myth\Auth\Models\LoginModel;
+use Myth\Auth\Models\UserModel;
 
-class LocalAuthenticateValidateTest extends CIUnitTestCase
+/**
+ * @internal
+ */
+final class LocalAuthenticateValidateTest extends CIUnitTestCase
 {
     /**
      * @var Mockery\MockInterface
@@ -29,18 +32,18 @@ class LocalAuthenticateValidateTest extends CIUnitTestCase
      */
     protected $request;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->userModel = m::mock(UserModel::class);
+        $this->userModel  = m::mock(UserModel::class);
         $this->loginModel = m::mock(LoginModel::class);
-        $this->auth = Services::authentication('local', $this->userModel, $this->loginModel,false);
+        $this->auth       = Services::authentication('local', $this->userModel, $this->loginModel, false);
 
         $this->request = m::mock('CodeIgniter\HTTP\IncomingRequest');
         Services::injectMock('CodeIgniter\HTTP\IncomingRequest', $this->request);
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         m::close();
         parent::tearDown();
@@ -58,8 +61,8 @@ class LocalAuthenticateValidateTest extends CIUnitTestCase
 
         $this->auth->validate([
             'password' => 'secret',
-            'email' => 'joe@example.com',
-            'username' => 'fred'
+            'email'    => 'joe@example.com',
+            'username' => 'fred',
         ]);
     }
 
@@ -70,7 +73,7 @@ class LocalAuthenticateValidateTest extends CIUnitTestCase
 
         $this->auth->validate([
             'password' => 'secret',
-            'foo' => 'bar'
+            'foo'      => 'bar',
         ]);
     }
 
@@ -81,11 +84,11 @@ class LocalAuthenticateValidateTest extends CIUnitTestCase
 
         $result = $this->auth->validate([
             'password' => 'secret',
-            'email' => 'joe@example.com'
+            'email'    => 'joe@example.com',
         ]);
 
         $this->assertFalse($result);
-        $this->assertEquals(lang('Auth.badAttempt'), $this->auth->error());
+        $this->assertSame(lang('Auth.badAttempt'), $this->auth->error());
     }
 
     public function testFailsPasswordValidation()
@@ -97,11 +100,11 @@ class LocalAuthenticateValidateTest extends CIUnitTestCase
 
         $result = $this->auth->validate([
             'password' => 'secret',
-            'email' => 'joe@example.com'
+            'email'    => 'joe@example.com',
         ]);
 
         $this->assertFalse($result);
-        $this->assertEquals(lang('Auth.invalidPassword'), $this->auth->error());
+        $this->assertSame(lang('Auth.invalidPassword'), $this->auth->error());
     }
 
     public function testValidateSuccess()
@@ -113,7 +116,7 @@ class LocalAuthenticateValidateTest extends CIUnitTestCase
 
         $result = $this->auth->validate([
             'password' => 'secret',
-            'email' => 'joe@example.com'
+            'email'    => 'joe@example.com',
         ]);
 
         $this->assertTrue($result);
@@ -128,10 +131,10 @@ class LocalAuthenticateValidateTest extends CIUnitTestCase
 
         $result = $this->auth->validate([
             'password' => 'secret',
-            'email' => 'joe@example.com'
+            'email'    => 'joe@example.com',
         ], true);
 
-        $this->assertTrue($result instanceof \Myth\Auth\Entities\User);
+        $this->assertInstanceOf(\Myth\Auth\Entities\User::class, $result);
     }
 
     public function testValidateSuccessReHashPassword()
@@ -143,9 +146,9 @@ class LocalAuthenticateValidateTest extends CIUnitTestCase
 
         $result = $this->auth->validate([
             'password' => 'secret',
-            'email' => 'joe@example.com'
+            'email'    => 'joe@example.com',
         ], true);
 
-        $this->assertTrue($result instanceof \Myth\Auth\Entities\User);
+        $this->assertInstanceOf(\Myth\Auth\Entities\User::class, $result);
     }
 }

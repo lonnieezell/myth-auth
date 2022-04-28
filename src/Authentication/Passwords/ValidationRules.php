@@ -1,4 +1,6 @@
-<?php namespace Myth\Auth\Authentication\Passwords;
+<?php
+
+namespace Myth\Auth\Authentication\Passwords;
 
 use Myth\Auth\Entities\User;
 
@@ -9,8 +11,6 @@ use Myth\Auth\Entities\User;
  *
  * To use, add this class to Config/Validation.php, in the
  * $rulesets array.
- *
- * @package Myth\Auth\Authentication\Passwords
  */
 class ValidationRules
 {
@@ -29,29 +29,22 @@ class ValidationRules
      *
      * @return bool
      */
-    public function strong_password(string $value, string &$error1 = null, array $data = [], string &$error2 = null)
+    public function strong_password(string $value, ?string &$error1 = null, array $data = [], ?string &$error2 = null)
     {
         $checker = service('passwords');
 
-        if (function_exists('user') && user())
-        {
+        if (function_exists('user') && user()) {
             $user = user();
-        }
-        else
-        {
+        } else {
             $user = empty($data) ? $this->buildUserFromRequest() : $this->buildUserFromData($data);
         }
 
         $result = $checker->check($value, $user);
 
-        if ($result === false)
-        {
-            if (empty($data))
-            {
+        if ($result === false) {
+            if (empty($data)) {
                 $error1 = $checker->error();
-            }
-            else
-            {
+            } else {
                 $error2 = $checker->error();
             }
         }
@@ -91,16 +84,13 @@ class ValidationRules
 
     /**
      * Prepare valid user fields
-     *
-     * @return array
      */
     protected function prepareValidFields(): array
     {
-        $config = config('Auth');
-        $fields = array_merge($config->validFields, $config->personalFields);
+        $config   = config('Auth');
+        $fields   = array_merge($config->validFields, $config->personalFields);
         $fields[] = 'password';
 
         return $fields;
     }
-
 }

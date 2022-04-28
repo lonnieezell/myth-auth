@@ -1,0 +1,59 @@
+name: Unused
+
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - '**.php'
+      - 'composer.*'
+      - '.github/workflows/unused.yml'
+  push:
+    branches:
+      - develop
+    paths:
+      - '**.php'
+      - 'composer.*'
+      - '.github/workflows/unused.yml'
+
+jobs:
+  build:
+    name: Unused Package Detection
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          tools: composer, composer-unused
+          extensions: intl, json, mbstring, xml
+          coverage: none
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: |
+          if [ -f composer.lock ]; then
+            composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+          else
+            composer update --no-progress --no-interaction --prefer-dist --optimize-autoloader
+          fi
+
+      - name: Detect unused packages
+        run: composer-unused -vvv --output-format=github --ansi --no-interaction --no-progress

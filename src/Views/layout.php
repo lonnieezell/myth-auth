@@ -16,7 +16,7 @@
             padding-top: 5rem;
         }
     </style>
-    
+
     <?= $this->renderSection('pageStyles') ?>
 </head>
 

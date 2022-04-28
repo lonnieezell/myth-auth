@@ -1,4 +1,6 @@
-<?php namespace Myth\Auth\Database\Migrations;
+<?php
+
+namespace Myth\Auth\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
@@ -6,9 +8,7 @@ class CreateAuthTables extends Migration
 {
     public function up()
     {
-        /*
-         * Users
-         */
+        // Users
         $this->forge->addField([
             'id'               => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'email'            => ['type' => 'varchar', 'constraint' => 255],
@@ -33,9 +33,7 @@ class CreateAuthTables extends Migration
 
         $this->forge->createTable('users', true);
 
-        /*
-         * Auth Login Attempts
-         */
+        // Auth Login Attempts
         $this->forge->addField([
             'id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'ip_address' => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
@@ -66,9 +64,7 @@ class CreateAuthTables extends Migration
         $this->forge->addForeignKey('user_id', 'users', 'id', '', 'CASCADE');
         $this->forge->createTable('auth_tokens', true);
 
-        /*
-         * Password Reset Table
-         */
+        // Password Reset Table
         $this->forge->addField([
             'id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'email'      => ['type' => 'varchar', 'constraint' => 255],
@@ -80,9 +76,7 @@ class CreateAuthTables extends Migration
         $this->forge->addKey('id', true);
         $this->forge->createTable('auth_reset_attempts', true);
 
-        /*
-         * Activation Attempts Table
-         */
+        // Activation Attempts Table
         $this->forge->addField([
             'id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'ip_address' => ['type' => 'varchar', 'constraint' => 255],
@@ -93,9 +87,7 @@ class CreateAuthTables extends Migration
         $this->forge->addKey('id', true);
         $this->forge->createTable('auth_activation_attempts', true);
 
-        /*
-         * Groups Table
-         */
+        // Groups Table
         $fields = [
             'id'          => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'name'        => ['type' => 'varchar', 'constraint' => 255],
@@ -106,9 +98,7 @@ class CreateAuthTables extends Migration
         $this->forge->addKey('id', true);
         $this->forge->createTable('auth_groups', true);
 
-        /*
-         * Permissions Table
-         */
+        // Permissions Table
         $fields = [
             'id'          => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'name'        => ['type' => 'varchar', 'constraint' => 255],
@@ -119,9 +109,7 @@ class CreateAuthTables extends Migration
         $this->forge->addKey('id', true);
         $this->forge->createTable('auth_permissions', true);
 
-        /*
-         * Groups/Permissions Table
-         */
+        // Groups/Permissions Table
         $fields = [
             'group_id'      => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'default' => 0],
             'permission_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'default' => 0],
@@ -133,9 +121,7 @@ class CreateAuthTables extends Migration
         $this->forge->addForeignKey('permission_id', 'auth_permissions', 'id', '', 'CASCADE');
         $this->forge->createTable('auth_groups_permissions', true);
 
-        /*
-         * Users/Groups Table
-         */
+        // Users/Groups Table
         $fields = [
             'group_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'default' => 0],
             'user_id'  => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'default' => 0],
@@ -147,9 +133,7 @@ class CreateAuthTables extends Migration
         $this->forge->addForeignKey('user_id', 'users', 'id', '', 'CASCADE');
         $this->forge->createTable('auth_groups_users', true);
 
-        /*
-         * Users/Permissions Table
-         */
+        // Users/Permissions Table
         $fields = [
             'user_id'       => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'default' => 0],
             'permission_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'default' => 0],
@@ -166,9 +150,8 @@ class CreateAuthTables extends Migration
 
     public function down()
     {
-		// drop constraints first to prevent errors
-        if ($this->db->DBDriver != 'SQLite3') // @phpstan-ignore-line
-        {
+        // drop constraints first to prevent errors
+        if ($this->db->DBDriver !== 'SQLite3') { // @phpstan-ignore-line
             $this->forge->dropForeignKey('auth_tokens', 'auth_tokens_user_id_foreign');
             $this->forge->dropForeignKey('auth_groups_permissions', 'auth_groups_permissions_group_id_foreign');
             $this->forge->dropForeignKey('auth_groups_permissions', 'auth_groups_permissions_permission_id_foreign');
@@ -178,15 +161,15 @@ class CreateAuthTables extends Migration
             $this->forge->dropForeignKey('auth_users_permissions', 'auth_users_permissions_permission_id_foreign');
         }
 
-		$this->forge->dropTable('users', true);
-		$this->forge->dropTable('auth_logins', true);
-		$this->forge->dropTable('auth_tokens', true);
-		$this->forge->dropTable('auth_reset_attempts', true);
+        $this->forge->dropTable('users', true);
+        $this->forge->dropTable('auth_logins', true);
+        $this->forge->dropTable('auth_tokens', true);
+        $this->forge->dropTable('auth_reset_attempts', true);
         $this->forge->dropTable('auth_activation_attempts', true);
-		$this->forge->dropTable('auth_groups', true);
-		$this->forge->dropTable('auth_permissions', true);
-		$this->forge->dropTable('auth_groups_permissions', true);
-		$this->forge->dropTable('auth_groups_users', true);
-		$this->forge->dropTable('auth_users_permissions', true);
+        $this->forge->dropTable('auth_groups', true);
+        $this->forge->dropTable('auth_permissions', true);
+        $this->forge->dropTable('auth_groups_permissions', true);
+        $this->forge->dropTable('auth_groups_users', true);
+        $this->forge->dropTable('auth_users_permissions', true);
     }
 }
