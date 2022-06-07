@@ -24,14 +24,7 @@ class PermissionModel extends Model
      */
     public function doesUserHavePermission(int $userId, int $permissionId): bool
     {
-        // Check user permissions and take advantage of caching
-        $userPerms = $this->getPermissionsForUser($userId);
-
-        if (count($userPerms) && array_key_exists($permissionId, $userPerms)) {
-            return true;
-        }
-
-        return false;
+        return array_key_exists($permissionId, $this->getPermissionsForUser($userId));
     }
 
     /**
