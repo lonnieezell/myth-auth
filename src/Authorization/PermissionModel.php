@@ -31,14 +31,7 @@ class PermissionModel extends Model
             return true;
         }
 
-        // Check group permissions
-        $count = $this->db->table('auth_groups_permissions')
-            ->join('auth_groups_users', 'auth_groups_users.group_id = auth_groups_permissions.group_id', 'inner')
-            ->where('auth_groups_permissions.permission_id', $permissionId)
-            ->where('auth_groups_users.user_id', $userId)
-            ->countAllResults();
-
-        return $count > 0;
+        return false;
     }
 
     /**
