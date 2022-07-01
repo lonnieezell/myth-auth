@@ -3,7 +3,10 @@
 use Myth\Auth\Authentication\LocalAuthenticator;
 use Tests\Support\AuthTestCase;
 
-class AuthenticationBaseTest extends AuthTestCase
+/**
+ * @internal
+ */
+final class AuthenticationBaseTest extends AuthTestCase
 {
     /**
      * @var LocalAuthenticator
@@ -12,7 +15,7 @@ class AuthenticationBaseTest extends AuthTestCase
 
     protected $refresh = true;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -54,9 +57,9 @@ class AuthenticationBaseTest extends AuthTestCase
 
         // Should have logged login attempt
         $this->seeInDatabase('auth_logins', [
-            'email' => $user->email,
+            'email'   => $user->email,
             'user_id' => $user->id,
-            'success' => 1
+            'success' => 1,
         ]);
     }
 
@@ -68,28 +71,28 @@ class AuthenticationBaseTest extends AuthTestCase
 
         // Should have logged login attempt
         $this->seeInDatabase('auth_logins', [
-            'email' => $user->email,
+            'email'   => $user->email,
             'user_id' => $user->id,
-            'success' => 1
+            'success' => 1,
         ]);
 
-        $this->assertEquals(4, $_SESSION['logged_in']);
+        $this->assertSame(4, $_SESSION['logged_in']);
 
         $this->dontSeeInDatabase('auth_tokens', [
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->assertTrue($this->auth->isLoggedIn());
 
         $this->assertSame($user, $this->auth->user());
-        $this->assertEquals($user->id, $this->auth->id());
+        $this->assertSame($user->id, $this->auth->id());
     }
 
     public function testLoginSuccessAndRemember()
     {
         $user = $this->createUser();
 
-        $config = config('Auth');
+        $config                   = config('Auth');
         $config->allowRemembering = true;
         $this->setPrivateProperty($this->auth, 'config', $config);
 
@@ -97,15 +100,15 @@ class AuthenticationBaseTest extends AuthTestCase
 
         // Should have logged login attempt
         $this->seeInDatabase('auth_logins', [
-            'email' => $user->email,
+            'email'   => $user->email,
             'user_id' => $user->id,
-            'success' => 1
+            'success' => 1,
         ]);
 
-        $this->assertEquals($user->id, $_SESSION['logged_in']);
+        $this->assertSame($user->id, $_SESSION['logged_in']);
 
         $this->seeInDatabase('auth_tokens', [
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
     }
 
@@ -115,7 +118,7 @@ class AuthenticationBaseTest extends AuthTestCase
 
         $this->assertTrue($this->auth->login($user));
 
-		$this->auth->logout();
+        $this->auth->logout();
 
         $this->assertFalse($this->auth->isLoggedIn());
         $this->assertNull($this->auth->user());

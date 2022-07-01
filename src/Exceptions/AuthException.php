@@ -1,8 +1,11 @@
-<?php namespace Myth\Auth\Exceptions;
+<?php
+
+namespace Myth\Auth\Exceptions;
 
 use CodeIgniter\HTTP\Exceptions\HTTPException;
+use DomainException;
 
-class AuthException extends \DomainException implements ExceptionInterface
+class AuthException extends DomainException implements ExceptionInterface
 {
     public static function forInvalidModel(string $model)
     {
@@ -24,8 +27,6 @@ class AuthException extends \DomainException implements ExceptionInterface
      * For when the developer passed invalid field along
      * with 'password' when attempting to validate a user.
      *
-     * @param string $key
-     *
      * @return AuthException
      */
     public static function forInvalidFields(string $key)
@@ -45,7 +46,7 @@ class AuthException extends \DomainException implements ExceptionInterface
     }
 
     /**
-     * When the cURL request (to Have I Been Pwned) in PwnedValidator 
+     * When the cURL request (to Have I Been Pwned) in PwnedValidator
      * throws a HTTPException it is re-thrown as this one
      *
      * @return AuthException
@@ -64,5 +65,4 @@ class AuthException extends \DomainException implements ExceptionInterface
     {
         return new self(lang('Auth.noUserEntity'), 500);
     }
-
 }

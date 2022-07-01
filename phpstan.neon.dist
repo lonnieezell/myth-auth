@@ -2,25 +2,26 @@ parameters:
 	tmpDir: build/phpstan
 	level: 5
 	paths:
-		- src
-		- tests
+		- src/
+		- tests/
 	bootstrapFiles:
-		- vendor/codeigniter4/codeigniter4/system/Test/bootstrap.php
-	excludes_analyse:
+		- vendor/codeigniter4/framework/system/Test/bootstrap.php
+	excludePaths:
 		- src/Config/Routes.php
 		- src/Views/*
 	ignoreErrors:
 		- '#.+Mockery.+#'
 		- '#Call to an undefined method .+::shouldReceive\(\)#'
 		- '#Call to an undefined method CodeIgniter\\Database\\BaseBuilder::[A-Za-z]+\(\)#'
+		- '#Call to an undefined method CodeIgniter\\Model::[A-Za-z]+\(\)#'
 		- '#Call to an undefined static method Config\\Services::[A-Za-z]+\(\)#'
 		- '#Cannot access property [\$a-z_]+ on (array|object)#'
+		- '#Parameter \$user of method Myth\\Auth\\Authentication\\Passwords\\ValidatorInterface::check\(\) has typehint with deprecated class CodeIgniter\\Entity#'
 	universalObjectCratesClasses:
-		- CodeIgniter\Entity
 		- CodeIgniter\Entity\Entity
 		- Faker\Generator
 	scanDirectories:
-		- vendor/codeigniter4/codeigniter4/system/Helpers
+		- vendor/codeigniter4/framework/system/Helpers
 	dynamicConstantNames:
 		- APP_NAMESPACE
 		- CI_DEBUG

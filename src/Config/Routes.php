@@ -1,9 +1,9 @@
 <?php
 
-/*
- * Myth:Auth routes file.
- */
-$routes->group('', ['namespace' => 'Myth\Auth\Controllers'], function ($routes) {
+namespace Myth\Auth\Config;
+
+// Myth:Auth routes file.
+$routes->group('', ['namespace' => 'Myth\Auth\Controllers'], static function ($routes) {
     // Login/out
     $routes->get('login', 'AuthController::login', ['as' => 'login']);
     $routes->post('login', 'AuthController::attemptLogin');

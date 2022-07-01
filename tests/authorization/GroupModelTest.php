@@ -4,16 +4,15 @@ use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Test\Fakers\UserFaker;
 use Tests\Support\AuthTestCase;
 
-class GroupModelTest extends AuthTestCase
+/**
+ * @internal
+ */
+final class GroupModelTest extends AuthTestCase
 {
-    /**
-     * @var GroupModel
-     */
-    protected $model;
-
+    protected GroupModel $model;
     protected $refresh = true;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -22,102 +21,102 @@ class GroupModelTest extends AuthTestCase
 
     public function testAddUserToGroup()
     {
-        $user = $this->createUser();
+        $user  = $this->createUser();
         $group = $this->createGroup();
 
         $result = $this->model->addUserToGroup($user->id, $group->id);
 
         $this->assertTrue($result);
         $this->seeInDatabase('auth_groups_users', [
-            'user_id' => $user->id,
+            'user_id'  => $user->id,
             'group_id' => $group->id,
         ]);
     }
 
     public function testRemoveUserFromGroup()
     {
-        $user = $this->createUser();
-        $group = $this->createGroup();
+        $user   = $this->createUser();
+        $group  = $this->createGroup();
         $group2 = $this->createGroup();
 
         $this->hasInDatabase('auth_groups_users', [
-            'user_id' => $user->id,
-            'group_id' => $group->id
+            'user_id'  => $user->id,
+            'group_id' => $group->id,
         ]);
         $this->hasInDatabase('auth_groups_users', [
-            'user_id' => $user->id,
-            'group_id' => $group2->id
+            'user_id'  => $user->id,
+            'group_id' => $group2->id,
         ]);
 
         $result = $this->model->removeUserFromGroup($user->id, $group->id);
 
         $this->assertTrue($result);
         $this->dontSeeInDatabase('auth_groups_users', [
-            'user_id' => $user->id,
-            'group_id' => $group->id
+            'user_id'  => $user->id,
+            'group_id' => $group->id,
         ]);
         $this->seeInDatabase('auth_groups_users', [
-            'user_id' => $user->id,
-            'group_id' => $group2->id
+            'user_id'  => $user->id,
+            'group_id' => $group2->id,
         ]);
     }
 
     public function testRemoveUserFromAllGroups()
     {
-        $user = $this->createUser();
-        $group = $this->createGroup();
+        $user   = $this->createUser();
+        $group  = $this->createGroup();
         $group2 = $this->createGroup();
 
         $this->hasInDatabase('auth_groups_users', [
-            'user_id' => $user->id,
-            'group_id' => $group->id
+            'user_id'  => $user->id,
+            'group_id' => $group->id,
         ]);
         $this->hasInDatabase('auth_groups_users', [
-            'user_id' => $user->id,
-            'group_id' => $group2->id
+            'user_id'  => $user->id,
+            'group_id' => $group2->id,
         ]);
 
         $result = $this->model->removeUserFromAllGroups($user->id);
 
         $this->assertTrue($result);
         $this->dontSeeInDatabase('auth_groups_users', [
-            'user_id' => $user->id,
-            'group_id' => $group->id
+            'user_id'  => $user->id,
+            'group_id' => $group->id,
         ]);
         $this->dontSeeInDatabase('auth_groups_users', [
-            'user_id' => $user->id,
-            'group_id' => $group2->id
+            'user_id'  => $user->id,
+            'group_id' => $group2->id,
         ]);
     }
 
     public function testGetGroupsForUser()
     {
-        $user = $this->createUser();
-        $group = $this->createGroup();
+        $user   = $this->createUser();
+        $group  = $this->createGroup();
         $group2 = $this->createGroup();
 
         $this->hasInDatabase('auth_groups_users', [
-            'user_id' => $user->id,
-            'group_id' => $group->id
+            'user_id'  => $user->id,
+            'group_id' => $group->id,
         ]);
         $this->hasInDatabase('auth_groups_users', [
-            'user_id' => $user->id,
-            'group_id' => $group2->id
+            'user_id'  => $user->id,
+            'group_id' => $group2->id,
         ]);
 
         $result = $this->model->getGroupsForUser($user->id);
 
-        $this->assertEquals($result[0], [
-            'group_id' => $group->id,
-            'user_id' => $user->id,
-            'name' => $group->name,
-            'description' => $group->description
+        $this->assertSame($result[0], [
+            'group_id'    => $group->id,
+            'user_id'     => $user->id,
+            'name'        => $group->name,
+            'description' => $group->description,
         ]);
-        $this->assertEquals($result[1], [
-            'group_id' => $group2->id,
-            'user_id'  => $user->id,
-            'name' => $group2->name,
-            'description' => $group2->description
+        $this->assertSame($result[1], [
+            'group_id'    => $group2->id,
+            'user_id'     => $user->id,
+            'name'        => $group2->name,
+            'description' => $group2->description,
         ]);
     }
 
@@ -129,16 +128,16 @@ class GroupModelTest extends AuthTestCase
 
         $this->hasInDatabase('auth_groups_users', [
             'user_id'  => $user->id,
-            'group_id' => $group1->id
+            'group_id' => $group1->id,
         ]);
 
         $cacheGroups = [
             [
-                'group_id' => $group2->id,
-                'user_id' => $user->id,
-                'name' => 'notemptygroup',
-                'description' => 'This group can only be loaded from cache.'
-            ]
+                'group_id'    => $group2->id,
+                'user_id'     => $user->id,
+                'name'        => 'notemptygroup',
+                'description' => 'This group can only be loaded from cache.',
+            ],
         ];
         cache()->save("{$user->id}_groups", $cacheGroups, 300);
 
@@ -154,7 +153,7 @@ class GroupModelTest extends AuthTestCase
 
         $this->hasInDatabase('auth_groups_users', [
             'user_id'  => $user->id,
-            'group_id' => $group1->id
+            'group_id' => $group1->id,
         ]);
 
         $cacheGroups = [];
@@ -173,17 +172,17 @@ class GroupModelTest extends AuthTestCase
 
         $this->hasInDatabase('auth_groups_users', [
             'user_id'  => $user1->id,
-            'group_id' => $group->id
+            'group_id' => $group->id,
         ]);
         $this->hasInDatabase('auth_groups_users', [
             'user_id'  => $user2->id,
-            'group_id' => $group->id
+            'group_id' => $group->id,
         ]);
 
         $result = $this->model->getUsersForGroup($group->id);
 
-        $this->assertEquals($user1->id, $result[0]['id']);
-        $this->assertEquals($user2->id, $result[1]['id']);
+        $this->assertSame($user1->id, $result[0]['id']);
+        $this->assertSame($user2->id, $result[1]['id']);
     }
 
     public function testGetUsersForGroupFromCache()
@@ -194,13 +193,13 @@ class GroupModelTest extends AuthTestCase
 
         $this->hasInDatabase('auth_groups_users', [
             'user_id'  => $user1->id,
-            'group_id' => $group->id
+            'group_id' => $group->id,
         ]);
 
         $cacheUsers = [
             'group_id' => $group->id,
             'user_id'  => $user2->id,
-            'email'    => 'gonnaSkip@theOtherProperties.lazy'
+            'email'    => 'gonnaSkip@theOtherProperties.lazy',
         ];
         cache()->save("{$group->id}_users", $cacheUsers, 300);
 
@@ -212,11 +211,11 @@ class GroupModelTest extends AuthTestCase
     public function testGetEmptyUsersForGroupFromCache()
     {
         $group = $this->createGroup();
-        $user = fake(UserFaker::class);
+        $user  = fake(UserFaker::class);
 
         $this->hasInDatabase('auth_groups_users', [
             'user_id'  => $user->id,
-            'group_id' => $group->id
+            'group_id' => $group->id,
         ]);
 
         $cacheUsers = [];
@@ -229,68 +228,68 @@ class GroupModelTest extends AuthTestCase
 
     public function testAddPermissionToGroup()
     {
-        $group = $this->createGroup();
+        $group      = $this->createGroup();
         $permission = $this->createPermission();
 
         $this->model->addPermissionToGroup($permission->id, $group->id);
 
         $this->seeInDatabase('auth_groups_permissions', [
-            'group_id' => $group->id,
-            'permission_id' => $permission->id
+            'group_id'      => $group->id,
+            'permission_id' => $permission->id,
         ]);
     }
 
     public function testRemovePermissionFromGroup()
     {
-        $group = $this->createGroup();
-        $group2 = $this->createGroup();
+        $group      = $this->createGroup();
+        $group2     = $this->createGroup();
         $permission = $this->createPermission();
 
         $this->hasInDatabase('auth_groups_permissions', [
-            'group_id' => $group->id,
-            'permission_id' => $permission->id
+            'group_id'      => $group->id,
+            'permission_id' => $permission->id,
         ]);
         $this->hasInDatabase('auth_groups_permissions', [
-            'group_id' => $group2->id,
-            'permission_id' => $permission->id
+            'group_id'      => $group2->id,
+            'permission_id' => $permission->id,
         ]);
 
         $this->model->removePermissionFromGroup($permission->id, $group->id);
 
         $this->dontSeeInDatabase('auth_groups_permissions', [
-            'group_id' => $group->id,
-            'permission_id' => $permission->id
+            'group_id'      => $group->id,
+            'permission_id' => $permission->id,
         ]);
         $this->seeInDatabase('auth_groups_permissions', [
-            'group_id' => $group2->id,
-            'permission_id' => $permission->id
+            'group_id'      => $group2->id,
+            'permission_id' => $permission->id,
         ]);
     }
 
     public function testRemovePermissionFromAllGroups()
     {
-        $group = $this->createGroup();
-        $group2 = $this->createGroup();
+        $group      = $this->createGroup();
+        $group2     = $this->createGroup();
         $permission = $this->createPermission();
 
         $this->hasInDatabase('auth_groups_permissions', [
-            'group_id' => $group->id,
-            'permission_id' => $permission->id
+            'group_id'      => $group->id,
+            'permission_id' => $permission->id,
         ]);
         $this->hasInDatabase('auth_groups_permissions', [
-            'group_id' => $group2->id,
-            'permission_id' => $permission->id
+            'group_id'      => $group2->id,
+            'permission_id' => $permission->id,
         ]);
 
         $this->model->removePermissionFromAllGroups($permission->id);
 
         $this->dontSeeInDatabase('auth_groups_permissions', [
-            'group_id' => $group->id,
-            'permission_id' => $permission->id
+            'group_id'      => $group->id,
+            'permission_id' => $permission->id,
         ]);
         $this->dontSeeInDatabase('auth_groups_permissions', [
-            'group_id' => $group2->id,
-            'permission_id' => $permission->id
+            'group_id'      => $group2->id,
+            'permission_id' => $permission->id,
         ]);
     }
 }

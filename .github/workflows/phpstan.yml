@@ -1,0 +1,75 @@
+name: PHPStan
+
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - '**.php'
+      - 'composer.*'
+      - 'phpstan*'
+      - '.github/workflows/phpstan.yml'
+  push:
+    branches:
+      - develop
+    paths:
+      - '**.php'
+      - 'composer.*'
+      - 'phpstan*'
+      - '.github/workflows/phpstan.yml'
+
+jobs:
+  build:
+    name: PHP ${{ matrix.php-versions }} Static Analysis
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['7.4', '8.0', '8.1']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          tools: phpstan, phpunit
+          extensions: intl, json, mbstring, xml
+          coverage: none
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Create PHPStan cache directory
+        run: mkdir -p build/phpstan
+
+      - name: Cache PHPStan results
+        uses: actions/cache@v3
+        with:
+          path: build/phpstan
+          key: ${{ runner.os }}-phpstan-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-phpstan-
+
+      - name: Install dependencies
+        run: |
+          if [ -f composer.lock ]; then
+            composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+          else
+            composer update --no-progress --no-interaction --prefer-dist --optimize-autoloader
+          fi
+
+      - name: Run static analysis
+        run: vendor/bin/phpstan analyze

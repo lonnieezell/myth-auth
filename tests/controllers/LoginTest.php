@@ -1,26 +1,29 @@
 <?php
 
-use CodeIgniter\Test\ControllerTester;
+use CodeIgniter\Test\ControllerTestTrait;
 use Myth\Auth\Controllers\AuthController;
 use Tests\Support\AuthTestCase;
 
-class LoginTest extends AuthTestCase
+/**
+ * @internal
+ */
+final class LoginTest extends AuthTestCase
 {
-    use ControllerTester;
+    use ControllerTestTrait;
 
     protected $refresh = true;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         \Config\Services::reset();
 
         parent::setUp();
 
         // Make sure our valiation rules include strong_password
-        $vConfig = new \Config\Validation();
+        $vConfig             = new \Config\Validation();
         $vConfig->ruleSets[] = \Myth\Auth\Authentication\Passwords\ValidationRules::class;
-        $vConfig->ruleSets = array_reverse($vConfig->ruleSets);
-        \CodeIgniter\Config\Config::injectMock('Validation', $vConfig);
+        $vConfig->ruleSets   = array_reverse($vConfig->ruleSets);
+        \CodeIgniter\Config\Factories::injectMock('Config', 'Validation', $vConfig);
 
         // Make sure our routes are mapped
         $routes = service('routes');
@@ -34,8 +37,8 @@ class LoginTest extends AuthTestCase
     public function testLoginDisplaysForm()
     {
         $result = $this->withUri(site_url('login'))
-                    ->controller(AuthController::class)
-                    ->execute('login');
+            ->controller(AuthController::class)
+            ->execute('login');
 
         $this->assertTrue($result->isOK());
         $result->see('Login', 'h2');
@@ -51,35 +54,38 @@ class LoginTest extends AuthTestCase
         $this->asserttrue(isset($_SESSION['_ci_validation_errors']));
     }
 
-    public function testAttemptLoginSuccess()
+    /**
+     * @dataProvider rememberMeProvider
+     */
+    public function testAttemptLoginSuccess(bool $remembering)
     {
         // Create user
         $user = [
             'username' => 'Joe Cool',
-            'email' => 'jc@example.com',
+            'email'    => 'jc@example.com',
             'password' => 'xaH96AhjglK',
-            'active' => 1,
+            'active'   => 1,
         ];
         $this->createUser($user);
 
         // Set form input
         $data = [
-            'login' => $user['username'],
+            'login'    => $user['username'],
             'password' => $user['password'],
-            'remember' => 'on'
+            'remember' => 'on',
         ];
         $globals = [
             'request' => $data,
-            'post' => $data,
+            'post'    => $data,
         ];
 
         $request = service('request', null, false);
         $this->setPrivateProperty($request, 'globals', $globals);
 
         // Just make sure since it's a default
-        $config = config('Auth');
-        $config->allowRemembering = false;
-        \CodeIgniter\Config\Config::injectMock('Auth', $config);
+        $config                   = config('Auth');
+        $config->allowRemembering = $remembering;
+        \CodeIgniter\Config\Factories::injectMock('Config', 'Auth', $config);
 
         $result = $this->withUri(site_url('login'))
             ->withRequest($request)
@@ -87,48 +93,15 @@ class LoginTest extends AuthTestCase
             ->execute('attemptLogin');
 
         $this->assertTrue($result->isRedirect());
-        $this->assertEquals(lang('Auth.loginSuccess'), $_SESSION['message']);
-        $this->assertFalse($result->response()->hasCookie('remember'));
+        $this->assertSame(lang('Auth.loginSuccess'), $_SESSION['message']);
+        $this->assertSame($remembering, $result->response()->hasCookie('remember'));
     }
 
-    public function testAttemptLoginSuccessWithRememberMe()
+    public function rememberMeProvider()
     {
-        // Create user
-        $user = [
-            'username' => 'Joe Cool',
-            'email' => 'jc@example.com',
-            'password' => 'xaH96AhjglK',
-            'active' => 1,
+        return [
+            [true],
+            [false],
         ];
-        $this->createUser($user);
-
-        // Set form input
-        $data = [
-            'login' => $user['username'],
-            'password' => $user['password'],
-            'remember' => 'on'
-        ];
-        $globals = [
-            'request' => $data,
-            'post' => $data,
-        ];
-
-        $request = service('request', null, false);
-        $this->setPrivateProperty($request, 'globals', $globals);
-
-        // Just make sure since it's a default
-        $config = config('Auth');
-        $config->allowRemembering = true;
-        \CodeIgniter\Config\Config::injectMock('Auth', $config);
-
-        $result = $this->withUri(site_url('login'))
-            ->withRequest($request)
-            ->controller(AuthController::class)
-            ->execute('attemptLogin');
-
-        $this->assertTrue($result->isRedirect());
-        $this->assertEquals(lang('Auth.loginSuccess'), $_SESSION['message']);
-        $this->assertTrue($result->response()->hasCookie('remember'));
     }
-
 }

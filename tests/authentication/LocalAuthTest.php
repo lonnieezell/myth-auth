@@ -1,29 +1,32 @@
 <?php
 
-use Myth\Auth\Models\UserModel;
 use Myth\Auth\Authentication\LocalAuthenticator;
+use Myth\Auth\Models\UserModel;
 use Tests\Support\AuthTestCase;
 
-class LocalAuthTest extends AuthTestCase
+/**
+ * @internal
+ */
+final class LocalAuthTest extends AuthTestCase
 {
     /**
      * @var LocalAuthenticator
      */
     protected $auth;
 
-	/**
-	 * @var bool
-	 */
+    /**
+     * @var bool
+     */
     protected $refresh = true;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->auth = \Myth\Auth\Config\Services::authentication('local');
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         parent::tearDown();
 
@@ -33,8 +36,8 @@ class LocalAuthTest extends AuthTestCase
     public function testValidateNoPassword()
     {
         $this->hasInDatabase('users', [
-            'email' => 'fred@example.com',
-            'password_hash' => 'secret'
+            'email'         => 'fred@example.com',
+            'password_hash' => 'secret',
         ]);
 
         $this->assertFalse($this->auth->validate(['email' => 'fred@example.com', 'foo' => 'bar']));
@@ -43,8 +46,8 @@ class LocalAuthTest extends AuthTestCase
     public function testValidateOneCredential()
     {
         $this->hasInDatabase('users', [
-            'email' => 'fred@example.com',
-            'password_hash' => 'secret'
+            'email'         => 'fred@example.com',
+            'password_hash' => 'secret',
         ]);
 
         $this->assertFalse($this->auth->validate(['password' => 'fred@example.com']));
@@ -55,8 +58,8 @@ class LocalAuthTest extends AuthTestCase
         $this->expectException(\Myth\Auth\Exceptions\AuthException::class);
 
         $this->hasInDatabase('users', [
-            'email' => 'fred@example.com',
-            'password_hash' => 'secret'
+            'email'         => 'fred@example.com',
+            'password_hash' => 'secret',
         ]);
 
         $this->assertFalse($this->auth->validate(['password' => 'fred@example.com', 'foo' => 'bar']));
@@ -65,7 +68,7 @@ class LocalAuthTest extends AuthTestCase
     public function testValidateUserNotFound()
     {
         $this->assertFalse($this->auth->validate(['email' => 'fred@example.com', 'password' => 'bar']));
-        $this->assertEquals(lang('Auth.badAttempt'), $this->auth->error());
+        $this->assertSame(lang('Auth.badAttempt'), $this->auth->error());
     }
 
     public function testValidateBadPassword()
@@ -73,7 +76,7 @@ class LocalAuthTest extends AuthTestCase
         $user = $this->createUser();
 
         $this->assertFalse($this->auth->validate(['email' => 'fred@example.com', 'password' => 'bar']));
-        $this->assertEquals(lang('Auth.invalidPassword'), $this->auth->error());
+        $this->assertSame(lang('Auth.invalidPassword'), $this->auth->error());
     }
 
     public function testValidateSuccess()
@@ -85,13 +88,13 @@ class LocalAuthTest extends AuthTestCase
 
         // It should return a user instance
         $foundUser = $this->auth->validate(['email' => 'fred@example.com', 'password' => 'secret'], true);
-        $this->assertEquals($user->email, $foundUser->email);
+        $this->assertSame($user->email, $foundUser->email);
     }
 
     public function testCheckNotRemembered()
     {
         $_SESSION = [];
-        $user = $this->createUser();
+        $user     = $this->createUser();
 
         $this->assertFalse($this->auth->check());
     }
@@ -99,16 +102,16 @@ class LocalAuthTest extends AuthTestCase
     public function testCheckWithForcedPasswordReset()
     {
         $users = model(UserModel::class);
-        $user = $this->createUser();
+        $user  = $this->createUser();
         $user->forcePasswordReset();
         $users->save($user);
 
         $_SESSION = [
-            'logged_in' => $user->id
+            'logged_in' => $user->id,
         ];
         $this->assertTrue(! empty($user->reset_hash));
         $this->expectException(\CodeIgniter\Router\Exceptions\RedirectException::class);
-        $this->expectExceptionMessage(route_to('reset-password') .'?token='. $user->reset_hash);
+        $this->expectExceptionMessage(route_to('reset-password') . '?token=' . $user->reset_hash);
 
         $this->auth->check();
 
