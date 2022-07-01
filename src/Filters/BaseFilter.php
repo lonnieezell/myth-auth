@@ -35,7 +35,7 @@ abstract class BaseFilter
         $config = config(AuthConfig::class);
 
         // Load the routes
-        $this->landingRoute = $config->landingRoute;
+        $this->landingRoute   = $config->landingRoute;
         $this->reservedRoutes = $config->reservedRoutes;
 
         // Load the authenticate service

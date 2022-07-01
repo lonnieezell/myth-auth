@@ -2,16 +2,15 @@
 
 namespace Myth\Auth\Filters;
 
+use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
-use CodeIgniter\Filters\FilterInterface;
 
 class LoginFilter extends BaseFilter implements FilterInterface
 {
     /**
      * Verifies that a user is logged in, or redirects to login.
      *
-     * @param RequestInterface $request
      * @param array|null $params
      *
      * @return mixed
@@ -28,13 +27,12 @@ class LoginFilter extends BaseFilter implements FilterInterface
         // If no user is logged in then send them to the login form.
         if (! $this->authenticate->check()) {
             session()->set('redirect_url', current_url());
+
             return redirect($this->reservedRoutes['login']);
         }
     }
 
     /**
-     * @param RequestInterface  $request
-     * @param ResponseInterface $response
      * @param array|null $arguments
      *
      * @return void

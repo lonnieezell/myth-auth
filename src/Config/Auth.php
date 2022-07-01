@@ -46,13 +46,13 @@ class Auth extends BaseConfig
      * @var array
      */
     public $reservedRoutes = [
-        'login' => 'login',
-        'logout' => 'logout',
-        'register' => 'register',
-        'activate-account' => 'activate-account',
+        'login'                   => 'login',
+        'logout'                  => 'logout',
+        'register'                => 'register',
+        'activate-account'        => 'activate-account',
         'resend-activate-account' => 'resend-activate-account',
-        'forgot' => 'forgot',
-        'reset-password' => 'reset-password',
+        'forgot'                  => 'forgot',
+        'reset-password'          => 'reset-password',
     ];
 
     /**
@@ -74,11 +74,11 @@ class Auth extends BaseConfig
      * @var array
      */
     public $views = [
-        'login'		   => 'Myth\Auth\Views\login',
-        'register'		=> 'Myth\Auth\Views\register',
-        'forgot'		  => 'Myth\Auth\Views\forgot',
-        'reset'		   => 'Myth\Auth\Views\reset',
-        'emailForgot'	 => 'Myth\Auth\Views\emails\forgot',
+        'login'           => 'Myth\Auth\Views\login',
+        'register'        => 'Myth\Auth\Views\register',
+        'forgot'          => 'Myth\Auth\Views\forgot',
+        'reset'           => 'Myth\Auth\Views\reset',
+        'emailForgot'     => 'Myth\Auth\Views\emails\forgot',
         'emailActivation' => 'Myth\Auth\Views\emails\activation',
     ];
 
@@ -252,7 +252,7 @@ class Auth extends BaseConfig
      * If you choose to use any ARGON algorithm, then you might want to
      * uncomment the "ARGON2i/D Algorithm" options to suit your needs
      *
-     * @var string|int
+     * @var int|string
      */
     public $hashAlgorithm = PASSWORD_DEFAULT;
 
@@ -271,13 +271,19 @@ class Auth extends BaseConfig
      * cost. This makes the hashing process takes longer.
      */
 
-    /** @var int */
+    /**
+     * @var int
+     */
     public $hashMemoryCost = 2048; // PASSWORD_ARGON2_DEFAULT_MEMORY_COST;
 
-    /** @var int */
+    /**
+     * @var int
+     */
     public $hashTimeCost = 4; // PASSWORD_ARGON2_DEFAULT_TIME_COST;
 
-    /** @var int */
+    /**
+     * @var int
+     */
     public $hashThreads = 4; // PASSWORD_ARGON2_DEFAULT_THREADS;
 
     /**
@@ -342,7 +348,7 @@ class Auth extends BaseConfig
     public $userActivators = [
         'Myth\Auth\Authentication\Activators\EmailActivator' => [
             'fromEmail' => null,
-            'fromName' => null,
+            'fromName'  => null,
         ],
     ];
 
@@ -358,7 +364,7 @@ class Auth extends BaseConfig
     public $userResetters = [
         'Myth\Auth\Authentication\Resetters\EmailResetter' => [
             'fromEmail' => null,
-            'fromName' => null,
+            'fromName'  => null,
         ],
     ];
 

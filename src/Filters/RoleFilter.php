@@ -2,9 +2,9 @@
 
 namespace Myth\Auth\Filters;
 
+use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
-use CodeIgniter\Filters\FilterInterface;
 use Myth\Auth\Exceptions\PermissionException;
 
 class RoleFilter extends BaseFilter implements FilterInterface
@@ -19,8 +19,7 @@ class RoleFilter extends BaseFilter implements FilterInterface
      * sent back to the client, allowing for error pages,
      * redirects, etc.
      *
-     * @param RequestInterface $request
-     * @param array|null                         $params
+     * @param array|null $params
      *
      * @return mixed
      */
@@ -29,6 +28,7 @@ class RoleFilter extends BaseFilter implements FilterInterface
         // If no user is logged in then send them to the login form.
         if (! $this->authenticate->check()) {
             session()->set('redirect_url', current_url());
+
             return redirect($this->reservedRoutes['login']);
         }
 
@@ -46,10 +46,11 @@ class RoleFilter extends BaseFilter implements FilterInterface
         if ($this->authenticate->silent()) {
             $redirectURL = session('redirect_url') ?? route_to($this->landingRoute);
             unset($_SESSION['redirect_url']);
+
             return redirect()->to($redirectURL)->with('error', lang('Auth.notEnoughPrivilege'));
-        } else {
-            throw new PermissionException(lang('Auth.notEnoughPrivilege'));
         }
+
+        throw new PermissionException(lang('Auth.notEnoughPrivilege'));
     }
 
     /**
@@ -58,9 +59,7 @@ class RoleFilter extends BaseFilter implements FilterInterface
      * to stop execution of other after filters, short of
      * throwing an Exception or Error.
      *
-     * @param RequestInterface  $request
-     * @param ResponseInterface $response
-     * @param array|null                          $arguments
+     * @param array|null $arguments
      *
      * @return void
      */
