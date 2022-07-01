@@ -56,3 +56,41 @@ The `list_groups` command displays all the groups in the database in a neatly or
 ### Arguments
 
 `list_groups` accepts no arguments.
+
+## Set Password
+
+	php spark auth:set_password [identity] [password]
+
+The `set_password` command will set a new password for provided `identity` argument. The `identity` and `password` arguments will both be prompted for if missing.
+If `identity` value is passed by the user does not exist, you will get an error message: **User with identity: {identity} not found**.
+If the operation succeeds, you will get success message: **Password successfully set for user with identity: {identity}**.
+If the operation fails, you will get an error message: **Failed to set password for user with identity: {identity}**.
+
+### Arguments
+The `set_password` command accepts two required arguments:
+
+* `identity`: A valid identity (username or email)
+* `password`: A valid password (minimum length according to the $minimumPasswordLength variable from auth config file)
+
+## Activate User
+
+	php spark auth:activate_user [identity]
+
+The `activate_user` command will activate the existing user for provided `identity`. The `identity` argument will be prompted for if missing.
+If `identity` value passed by the user does not exist, you will get an error message: **User with identity: {identity} not found**.
+If the operation succeeds, you will get success message: **Sucessfuly activated the user with identity: {identity}**.
+If the operation fails, you will get an error message: **Failed to activate the user with identity: {identity}**.
+
+### Arguments
+
+* `identity`: A valid identity (username or email)
+
+## Hash Password
+
+	php spark auth:hash_password [password]
+
+The `hash_password` command hashes the given password by the user and print it to the console as green colored text. The `password` argument will be prompted for if missing.
+
+### Arguments
+
+* `password`: A valid password

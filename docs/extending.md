@@ -2,7 +2,7 @@
 
 ## Core classes
 
-`Authenticaion` and `Authorization` have their own interfaces and configurations. See the
+`Authentication` and `Authorization` have their own interfaces and configurations. See the
 appropriate docs for each component:
 * [Authentication](/docs/authentication.md)
 * [Authorization](/docs/authorization.md)
@@ -30,6 +30,7 @@ the appearance or add form fields. Create your own **app/Config/Auth.php** as an
 of the package's version and add a `$views` property as an array of "method => view path".
 Here are the default values:
 
+```php
 	public $views = [
 		'login'		      => 'Myth\Auth\Views\login',
 		'register'		  => 'Myth\Auth\Views\register',
@@ -38,11 +39,14 @@ Here are the default values:
 		'emailForgot'	  => 'Myth\Auth\Views\emails\forgot',
 		'emailActivation' => 'Myth\Auth\Views\emails\activation',
 	];
+```
 
 Every view is wrapped in Myth:Auth's default layout, which can also be changed by modifying
 the `$viewLayout` property in the same config file:
 
+```php
 	public $viewLayout = 'Myth\Auth\Views\layout';
+```
 
 ## Example
 
@@ -56,7 +60,8 @@ Next you need to let the `UserModel` know about these additional fields. Myth:Au
 `Factories` to load its `UserModel` so if it finds a corresponding file in **app/Models** it
 will use yours instead. Second step is to create **app/Models/UserModel.php** and update the
 list of allowed fields to include the new fields:
-```
+
+```php
 <?php namespace App\Models;
 
 use Myth\Auth\Models\UserModel as MythModel;
@@ -76,7 +81,8 @@ class UserModel extends MythModel
 Next, you would like to add a shorthand for displaying a user's full name, as well as a
 default name in case a user has not supplied one yet. We will need a new Entity for this,
 so create **app/Entities/User.php**:
-```
+
+```php
 <?php namespace App\Entities;
 
 use Myth\Auth\Entities\User as MythUser;
@@ -108,7 +114,8 @@ class User extends MythUser
 
 Now that we have our new entity, we need to update our `UserModel` to return it instead of the
 default Myth:Auth version:
-```
+
+```php
 class UserModel extends MythModel
 {
     protected $returnType = 'App\Entities\User';
@@ -118,7 +125,8 @@ class UserModel extends MythModel
 Finally, we want to collect phone numbers during the initial registration. In order to do this
 we will need our own View, so create **app/Views/register.php** (probably as a copy of
 [the original](/src/Views/register.php)) and add your new field:
-```
+
+```php
 	<div class="form-group">
 		<label for="phone">Phone number</label>
 		<input type="phone" class="form-control <?= session('errors.phone') ? 'is-invalid' : '' ?>" name="phone" placeholder="Phone number" value="<?= old('phone') ?>">

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
-		bootstrap="vendor/codeigniter4/codeigniter4/system/Test/bootstrap.php"
+		xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+		bootstrap="vendor/codeigniter4/framework/system/Test/bootstrap.php"
 		backupGlobals="false"
 		beStrictAboutCoversAnnotation="true"
 		beStrictAboutOutputDuringTests="true"
@@ -21,11 +21,11 @@
 
 	<coverage includeUncoveredFiles="true" processUncoveredFiles="true">
 		<include>
-			<directory suffix=".php">./src</directory>
+			<directory suffix=".php">./src/</directory>
 		</include>
 		<exclude>
+			<directory suffix=".php">./src/Config</directory>
 			<directory suffix=".php">./src/Views</directory>
-			<file>./src/Config/Routes.php</file>
 		</exclude>
 		<report>
 			<clover outputFile="build/phpunit/clover.xml"/>
@@ -37,7 +37,7 @@
 	</coverage>
 
 	<testsuites>
-		<testsuite name="app">
+		<testsuite name="main">
 			<directory>./tests</directory>
 		</testsuite>
 	</testsuites>
@@ -74,16 +74,16 @@
 
 	<php>
 		<env name="XDEBUG_MODE" value="coverage"/>
-		<server name="app.baseURL" value="http://example.com"/>
+		<server name="app.baseURL" value="https://example.com/"/>
 
 		<!-- Directory containing phpunit.xml -->
 		<const name="HOMEPATH" value="./"/>
 
 		<!-- Directory containing the Paths config file -->
-		<const name="CONFIGPATH" value="./vendor/codeigniter4/codeigniter4/app/Config/"/>
+		<const name="CONFIGPATH" value="./vendor/codeigniter4/framework/app/Config/"/>
 
 		<!-- Directory containing the front controller (index.php) -->
-		<const name="PUBLICPATH" value="./vendor/codeigniter4/codeigniter4/public/"/>
+		<const name="PUBLICPATH" value="./vendor/codeigniter4/framework/public/"/>
 
 		<!-- https://getcomposer.org/xdebug -->
 		<env name="COMPOSER_DISABLE_XDEBUG_WARN" value="1"/>

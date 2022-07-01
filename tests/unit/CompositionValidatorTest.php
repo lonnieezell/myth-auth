@@ -2,19 +2,20 @@
 
 use CodeIgniter\Test\CIUnitTestCase;
 use Myth\Auth\Authentication\Passwords\CompositionValidator;
+use Myth\Auth\Config\Auth;
 
-class CompositionValidatorTest extends CIUnitTestCase
+/**
+ * @internal
+ */
+final class CompositionValidatorTest extends CIUnitTestCase
 {
-    /**
-     * @var CompositionValidator
-     */
-    protected $validator;
+    protected CompositionValidator $validator;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $config = new \Myth\Auth\Config\Auth();
+        $config                        = new Auth();
         $config->minimumPasswordLength = 8;
 
         $this->validator = new CompositionValidator();

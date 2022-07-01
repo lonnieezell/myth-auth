@@ -1,19 +1,22 @@
 <?php
+
 use CodeIgniter\Test\CIUnitTestCase;
 use Myth\Auth\Authentication\Passwords\NothingPersonalValidator;
+use Myth\Auth\Config\Auth;
+use Myth\Auth\Entities\User;
 
-class NothingPersonalValidatorTest extends CIUnitTestCase
+/**
+ * @internal
+ */
+final class NothingPersonalValidatorTest extends CIUnitTestCase
 {
-    /**
-     * @var NothingPersonalValidator
-     */
-    protected $validator;
+    protected NothingPersonalValidator $validator;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $config = new \Myth\Auth\Config\Auth();
+        $config = new Auth();
 
         $this->validator = new NothingPersonalValidator();
         $this->validator->setConfig($config);
@@ -21,10 +24,10 @@ class NothingPersonalValidatorTest extends CIUnitTestCase
 
     public function testFalseOnPasswordIsEmail()
     {
-        $user = new \Myth\Auth\Entities\User(
+        $user = new User(
             [
-            'email' => 'JoeSmith@example.com',
-            'username' => 'Joe Smith'
+                'email'    => 'JoeSmith@example.com',
+                'username' => 'Joe Smith',
             ]
         );
 
@@ -35,10 +38,10 @@ class NothingPersonalValidatorTest extends CIUnitTestCase
 
     public function testFalseOnPasswordIsUsernameBackwards()
     {
-        $user = new \Myth\Auth\Entities\User(
+        $user = new User(
             [
-            'email' => 'JoeSmith@example.com',
-            'username' => 'Joe Smith'
+                'email'    => 'JoeSmith@example.com',
+                'username' => 'Joe Smith',
             ]
         );
 
@@ -49,10 +52,10 @@ class NothingPersonalValidatorTest extends CIUnitTestCase
 
     public function testFalseOnPasswordAndUsernameTheSame()
     {
-        $user = new \Myth\Auth\Entities\User(
+        $user = new User(
             [
-            'email' => 'vampire@example.com',
-            'username' => 'Vlad the Impaler'
+                'email'    => 'vampire@example.com',
+                'username' => 'Vlad the Impaler',
             ]
         );
 
@@ -63,17 +66,17 @@ class NothingPersonalValidatorTest extends CIUnitTestCase
 
     public function testTrueWhenPasswordHasNothingPersonal()
     {
-        $config = new \Myth\Auth\Config\Auth();
-        $config->maxSimilarity = 50;
+        $config                 = new Auth();
+        $config->maxSimilarity  = 50;
         $config->personalFields = ['firstname', 'lastname'];
         $this->validator->setConfig($config);
 
-        $user = new \Myth\Auth\Entities\User(
+        $user = new User(
             [
-            'email' => 'jsmith@example.com',
-            'username' => 'JoeS',
-            'firstname' => 'Joseph',
-            'lastname' => 'Smith',
+                'email'     => 'jsmith@example.com',
+                'username'  => 'JoeS',
+                'firstname' => 'Joseph',
+                'lastname'  => 'Smith',
             ]
         );
 
@@ -83,36 +86,38 @@ class NothingPersonalValidatorTest extends CIUnitTestCase
     }
 
     /**
-     * The dataProvider is a list of passwords to be tested. 
-     * Some of them clearly contain elements of the username. 
-     * Others are scrambled usernames that may not clearly be troublesome, 
+     * The dataProvider is a list of passwords to be tested.
+     * Some of them clearly contain elements of the username.
+     * Others are scrambled usernames that may not clearly be troublesome,
      * but arguably should considered troublesome.
-     * 
+     *
      * All the passwords are accepted by isNotPersonal() but are
      * rejected by isNotSimilar().
-     * 
+     *
      *  $config->maxSimilarity = 50; is the highest setting where all tests pass.
-     * 
+     *
      * @dataProvider passwordProvider
+     *
+     * @param mixed $password
      */
     public function testIsNotPersonalFalsePositivesCaughtByIsNotSimilar($password)
     {
-        $user = new \Myth\Auth\Entities\User(
+        $user = new User(
             [
-            'username' => 'CaptainJoe',
-            'email' => 'JosephSmith@example.com'
+                'username' => 'CaptainJoe',
+                'email'    => 'JosephSmith@example.com',
             ]
         );
 
-        $config = new \Myth\Auth\Config\Auth();
+        $config                = new Auth();
         $config->maxSimilarity = 50;
         $this->validator->setConfig($config);
 
-        $isNotPersonal = $this->getPrivateMethodInvoker($this->validator, 'isNotPersonal',
-            [$password, $user]);
+        $method        = $this->getPrivateMethodInvoker($this->validator, 'isNotPersonal');
+        $isNotPersonal = $method($password, $user);
 
-        $isNotSimilar = $this->getPrivateMethodInvoker($this->validator, 'isNotSimilar',
-            [$password, $user]);
+        $method       = $this->getPrivateMethodInvoker($this->validator, 'isNotSimilar');
+        $isNotSimilar = $method($password, $user);
 
         $this->assertNotSame($isNotPersonal, $isNotSimilar);
     }
@@ -133,20 +138,24 @@ class NothingPersonalValidatorTest extends CIUnitTestCase
 
     /**
      * @dataProvider firstLastNameProvider
+     *
+     * @param mixed $firstName
+     * @param mixed $lastName
+     * @param mixed $expected
      */
     public function testConfigPersonalFieldsValues($firstName, $lastName, $expected)
     {
-        $config = new \Myth\Auth\Config\Auth();
-        $config->maxSimilarity = 66;
+        $config                 = new Auth();
+        $config->maxSimilarity  = 66;
         $config->personalFields = ['firstname', 'lastname'];
         $this->validator->setConfig($config);
 
-        $user = new \Myth\Auth\Entities\User(
+        $user = new User(
             [
-            'username' => 'Vlad the Impaler',
-            'email' => 'vampire@example.com',
-            'firstname' => $firstName,
-            'lastname' => $lastName,
+                'username'  => 'Vlad the Impaler',
+                'email'     => 'vampire@example.com',
+                'firstname' => $firstName,
+                'lastname'  => $lastName,
             ]
         );
 
@@ -166,23 +175,27 @@ class NothingPersonalValidatorTest extends CIUnitTestCase
 
     /**
      * @dataProvider maxSimilarityProvider
-     * 
+     *
      * The calculated similarity of 'captnjoe' and 'CaptainJoe' is 88.89.
      * With $config->maxSimilarity = 66; the password should be rejected,
-     * but using $config->maxSimilarity = 0; will turn off the calculation 
-     * and accept the password. 
+     * but using $config->maxSimilarity = 0; will turn off the calculation
+     * and accept the password.
+     *
+     * @param mixed $maxSimilarity
+     * @param mixed $expected
      */
-    public function testMaxSimilarityZeroTurnsOffSimilarityCalculation($maxSimilarity,
-                                                                       $expected)
-    {
-        $config = new \Myth\Auth\Config\Auth();
+    public function testMaxSimilarityZeroTurnsOffSimilarityCalculation(
+        $maxSimilarity,
+        $expected
+    ) {
+        $config                = new Auth();
         $config->maxSimilarity = $maxSimilarity;
         $this->validator->setConfig($config);
 
-        $user = new \Myth\Auth\Entities\User(
+        $user = new User(
             [
-            'username' => 'CaptainJoe',
-            'email' => 'joseph@example.com',
+                'username' => 'CaptainJoe',
+                'email'    => 'joseph@example.com',
             ]
         );
 
@@ -193,7 +206,6 @@ class NothingPersonalValidatorTest extends CIUnitTestCase
 
     public function maxSimilarityProvider()
     {
-        return[[66, false], [0, true]];
+        return [[66, false], [0, true]];
     }
-
 }

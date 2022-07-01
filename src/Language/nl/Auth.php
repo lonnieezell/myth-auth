@@ -2,42 +2,42 @@
 
 return [
     // Exceptions
-    'invalidModel'              => 'Het {0} model moet geladen worden voor gebruik.',
-    'userNotFound'              => 'De gebruiker met ID = {0, number} kan niet worden gevonden.',
-    'noUserEntity'              => 'User Entity moet worden opgegeven voor wachtwoordvalidatie.',
-    'tooManyCredentials'        => 'U mag slechts valideren op basis van 1 andere referentie dan een wachtwoord.',
-    'invalidFields'             => 'Het veld "{0}" kan niet worden gebruikt om inloggegevens te valideren.',
-    'unsetPasswordLength'       => 'Je moet de instelling `minimumPasswordLength` instellen in het Auth configuratiebestand.',
-    'unknownError'              => 'Sorry, er is een probleem opgetreden bij het verzenden van de e-mail naar u. Probeer het later nog eens.',
-    'notLoggedIn'               => 'Je moet ingelogd zijn om deze pagina te bekijken.',
-    'notEnoughPrivilege'        => 'Je hebt niet genoeg rechten om deze pagina te bekijken.',
+    'invalidModel'        => 'Het {0} model moet geladen worden voor gebruik.',
+    'userNotFound'        => 'De gebruiker met ID = {0, number} kan niet worden gevonden.',
+    'noUserEntity'        => 'User Entity moet worden opgegeven voor wachtwoordvalidatie.',
+    'tooManyCredentials'  => 'U mag slechts valideren op basis van 1 andere referentie dan een wachtwoord.',
+    'invalidFields'       => 'Het veld "{0}" kan niet worden gebruikt om inloggegevens te valideren.',
+    'unsetPasswordLength' => 'Je moet de instelling `minimumPasswordLength` instellen in het Auth configuratiebestand.',
+    'unknownError'        => 'Sorry, er is een probleem opgetreden bij het verzenden van de e-mail naar u. Probeer het later nog eens.',
+    'notLoggedIn'         => 'Je moet ingelogd zijn om deze pagina te bekijken.',
+    'notEnoughPrivilege'  => 'Je hebt niet genoeg rechten om deze pagina te bekijken.',
 
     // Registration
-    'registerDisabled'          => 'Sorry, nieuwe gebruikersaccounts zijn momenteel niet toegestaan.',
-    'registerSuccess'           => 'Welkom! Log in met uw nieuwe inloggegevens.',
-    'registerCLI'               => 'Nieuwe gebruiker aangemaakt: {0}, #{1}',
+    'registerDisabled' => 'Sorry, nieuwe gebruikersaccounts zijn momenteel niet toegestaan.',
+    'registerSuccess'  => 'Welkom! Log in met uw nieuwe inloggegevens.',
+    'registerCLI'      => 'Nieuwe gebruiker aangemaakt: {0}, #{1}',
 
     // Activation
-    'activationNoUser'          => 'Geen gebruiker gevonden met deze activatie code.',
-    'activationSubject'         => 'Activeer je account',
-    'activationSuccess'         => 'Activeer je account door op de activatielink in de e-mail te klikken.',
-    'activationResend'          => 'Verstuur activatielink opnieuw.',
-    'notActivated'              => 'Deze gebruiker is nog niet geactiveerd.',
-    'errorSendingActivation'    => 'Versturen van activiatielink aan {0} mislukt.',
+    'activationNoUser'       => 'Geen gebruiker gevonden met deze activatie code.',
+    'activationSubject'      => 'Activeer je account',
+    'activationSuccess'      => 'Activeer je account door op de activatielink in de e-mail te klikken.',
+    'activationResend'       => 'Verstuur activatielink opnieuw.',
+    'notActivated'           => 'Deze gebruiker is nog niet geactiveerd.',
+    'errorSendingActivation' => 'Versturen van activiatielink aan {0} mislukt.',
 
     // Login
-    'badAttempt'                => 'Inloggen mislukt. Controleer je gegevens.',
-    'loginSuccess'              => 'Welkom terug!',
-    'invalidPassword'           => 'Inloggen mislukt. Controleer je wachtwoord.',
+    'badAttempt'      => 'Inloggen mislukt. Controleer je gegevens.',
+    'loginSuccess'    => 'Welkom terug!',
+    'invalidPassword' => 'Inloggen mislukt. Controleer je wachtwoord.',
 
     // Forgotten Passwords
-    'forgotDisabled'            => 'Wachtwoord vergeten is uitgeschakeld.',
-    'forgotNoUser'              => 'Er kan geen gebruiker met dit e-mailadres gevonden worden.',
-    'forgotSubject'             => 'Instructies wachtwoord herstellen',
-    'resetSuccess'              => 'Je wachtwoord is succesvol gewijzigd. Login met je nieuwe wachtwoord.',
-    'forgotEmailSent'           => 'Een beveiligingscode is naar het e-mailadres gestuurd. Vul de code in onderstaand veld in om door te gaan.',
-    'errorEmailSent'            => 'Kan geen instructies voor wachtwoord herstel naar {0} sturen.',
-    'errorResetting'            => 'Kan geen instructies voor wachtwoord herstel sturen naar {0}',
+    'forgotDisabled'  => 'Wachtwoord vergeten is uitgeschakeld.',
+    'forgotNoUser'    => 'Er kan geen gebruiker met dit e-mailadres gevonden worden.',
+    'forgotSubject'   => 'Instructies wachtwoord herstellen',
+    'resetSuccess'    => 'Je wachtwoord is succesvol gewijzigd. Login met je nieuwe wachtwoord.',
+    'forgotEmailSent' => 'Een beveiligingscode is naar het e-mailadres gestuurd. Vul de code in onderstaand veld in om door te gaan.',
+    'errorEmailSent'  => 'Kan geen instructies voor wachtwoord herstel naar {0} sturen.',
+    'errorResetting'  => 'Kan geen instructies voor wachtwoord herstel sturen naar {0}',
 
     // Passwords
     'errorPasswordLength'       => 'Het wachtwoord moet minimaal {0, number} karakters lang zijn.',
@@ -56,16 +56,16 @@ return [
     'resetTokenExpired'         => 'Sorry. Je reset code is verlopen.',
 
     // Groups
-    'groupNotFound'             => 'Kan groep {0} niet vinden.',
+    'groupNotFound' => 'Kan groep {0} niet vinden.',
 
     // Permissions
-    'permissionNotFound'        => 'Kan rechten {0} niet vinden.',
+    'permissionNotFound' => 'Kan rechten {0} niet vinden.',
 
     // Banned
-    'userIsBanned'              => 'Gebruiker is verbannen. Neem contact op met de administrator.',
+    'userIsBanned' => 'Gebruiker is verbannen. Neem contact op met de administrator.',
 
     // Too many requests
-    'tooManyRequests'           => 'Te veel verzoeken. Wacht {0, number} seconden.',
+    'tooManyRequests' => 'Te veel verzoeken. Wacht {0, number} seconden.',
 
     // Login views
     'home'                      => 'Thuis',
