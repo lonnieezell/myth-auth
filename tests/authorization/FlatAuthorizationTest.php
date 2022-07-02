@@ -341,14 +341,14 @@ final class FlatAuthorizationTest extends AuthTestCase
         $permission2 = $this->createPermission();
 
         $this->assertIsArray($this->permissions->getPermissionsForUser($user->id));
-        $this->assertEquals([],$this->permissions->getPermissionsForUser($user->id));
+        $this->assertEquals([], $this->permissions->getPermissionsForUser($user->id));
         
         $this->auth->addPermissionToUser($permission->id, $user->id); //user's permissions
         $this->auth->addPermissionToGroup($permission2->id, $group->id); // groups permission
         $this->auth->addUserToGroup($user->id, $group->id);
 
         $expected = [
-            $permission->id => $permission->name,
+            $permission->id  => $permission->name,
             $permission2->id => $permission2->name,
         ];
 
@@ -359,7 +359,7 @@ final class FlatAuthorizationTest extends AuthTestCase
         $this->assertArrayHasKey($permission->id, $actual);
         $this->assertArrayHasKey($permission2->id, $actual);
         $this->assertArrayNotHasKey(9999, $actual);      
-        $this->assertEquals(2, count($actual));
+        $this->assertCount(2, $actual);
     }
 
     public function testDoesUserHavePermission()
