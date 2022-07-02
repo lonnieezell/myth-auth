@@ -342,7 +342,7 @@ final class FlatAuthorizationTest extends AuthTestCase
 
         $this->assertIsArray($this->permissions->getPermissionsForUser($user->id));
         $this->assertSame([], $this->permissions->getPermissionsForUser($user->id));
-        
+
         $this->auth->addPermissionToUser($permission->id, $user->id); //user's permissions
         $this->auth->addPermissionToGroup($permission2->id, $group->id); // groups permission
         $this->auth->addUserToGroup($user->id, $group->id);
