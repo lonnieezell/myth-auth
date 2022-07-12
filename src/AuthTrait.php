@@ -116,8 +116,8 @@ trait AuthTrait
      * the user to the URI set in $url or the site root, and attempt
      * to set a status message.
      *
-     * @param        $permissions
-     * @param string $uri         The URI to redirect to on fail.
+     * @param int|int[]|string|string[] $permissions
+     * @param string                    $uri         The URI to redirect to on fail.
      *
      * @throws RedirectException
      *
@@ -127,23 +127,13 @@ trait AuthTrait
     {
         $this->setupAuthClasses();
 
-        if ($this->authenticate->check())
-        {
-            if (is_array($permissions))
-            {
-                foreach ($permissions as $permission)
-                {
-                    if ($this->authorize->hasPermission($permission, $this->authenticate->id())
-                    {
-                        return true;
-                    }
-                }
-                
+        if ($this->authenticate->check()) {
+            if (! is_array($permissions)) {
+                $permissions = [$permissions];
             }
-            else
-            {
-                if ($this->authorize->hasPermission($permissions, $this->authenticate->id() ) )
-                {
+
+            foreach ($permissions as $permission) {
+                if ($this->authorize->hasPermission($permission, $this->authenticate->id())) {
                     return true;
                 }
             }
