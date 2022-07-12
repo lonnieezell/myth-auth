@@ -77,6 +77,7 @@ class Services extends BaseService
         $config ??= config(AuthConfig::class);
         $class = $config->requireActivation ?? UserActivator::class;
 
+        /** @var class-string<ActivatorInterface> $class */
         return new $class($config);
     }
 
@@ -92,6 +93,7 @@ class Services extends BaseService
         $config ??= config(AuthConfig::class);
         $class = $config->activeResetter ?? EmailResetter::class;
 
+        /** @var class-string<ResetterInterface> $class */
         return new $class($config);
     }
 }

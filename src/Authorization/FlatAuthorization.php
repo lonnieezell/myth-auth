@@ -600,16 +600,16 @@ class FlatAuthorization implements AuthorizeInterface
      *
      * @return mixed
      */
-    public function deletePermission(int $permissionIdId)
+    public function deletePermission(int $permissionId)
     {
-        if (! $this->permissionModel->delete($permissionIdId)) {
+        if (! $this->permissionModel->delete($permissionId)) {
             $this->error = $this->permissionModel->errors();
 
             return false;
         }
 
         // Remove the permission from all groups
-        $this->groupModel->removePermissionFromAllGroups($permissionIdId);
+        $this->groupModel->removePermissionFromAllGroups($permissionId);
 
         return true;
     }

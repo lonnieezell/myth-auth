@@ -107,6 +107,7 @@ final class FlatAuthorizationTest extends AuthTestCase
         $this->groups->addUserToGroup($user->id, $group->id);
 
         $this->assertFalse($this->auth->hasPermission($permission->id, $user->id));
+        cache()->clean();
 
         $this->groups->addPermissionToGroup($permission->id, $group->id);
 
@@ -121,6 +122,7 @@ final class FlatAuthorizationTest extends AuthTestCase
         $this->groups->addUserToGroup($user->id, $group->id);
 
         $this->assertFalse($this->auth->hasPermission($permission->name, $user->id));
+        cache()->clean();
 
         $this->groups->addPermissionToGroup($permission->id, $group->id);
 
@@ -347,19 +349,19 @@ final class FlatAuthorizationTest extends AuthTestCase
         $this->auth->addPermissionToGroup($permission2->id, $group->id); // groups permission
         $this->auth->addUserToGroup($user->id, $group->id);
 
-        $expected = [
-            $permission->id  => $permission->name,
-            $permission2->id => $permission2->name,
+        $expectedNames = [
+            $permission->name,
+            $permission2->name,
+        ];
+        $expectedIds = [
+            $permission->id,
+            $permission2->id,
         ];
 
         $actual = $this->permissions->getPermissionsForUser($user->id);
 
-        $this->assertEqualsCanonicalizing($expected, $actual);
-
-        $this->assertArrayHasKey($permission->id, $actual);
-        $this->assertArrayHasKey($permission2->id, $actual);
-        $this->assertArrayNotHasKey(9999, $actual);
-        $this->assertCount(2, $actual);
+        $this->assertEqualsCanonicalizing($expectedNames, $actual);
+        $this->assertEqualsCanonicalizing($expectedIds, array_keys($actual));
     }
 
     public function testDoesUserHavePermission()

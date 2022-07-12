@@ -1,6 +1,10 @@
 <?php
 
+use CodeIgniter\Config\Factories;
 use CodeIgniter\Test\ControllerTestTrait;
+use Config\Services;
+use Config\Validation;
+use Myth\Auth\Authentication\Passwords\ValidationRules;
 use Myth\Auth\Controllers\AuthController;
 use Tests\Support\AuthTestCase;
 
@@ -15,21 +19,21 @@ final class LoginTest extends AuthTestCase
 
     protected function setUp(): void
     {
-        \Config\Services::reset();
+        $this->resetServices();
 
         parent::setUp();
 
         // Make sure our valiation rules include strong_password
-        $vConfig             = new \Config\Validation();
-        $vConfig->ruleSets[] = \Myth\Auth\Authentication\Passwords\ValidationRules::class;
+        $vConfig             = new Validation();
+        $vConfig->ruleSets[] = ValidationRules::class;
         $vConfig->ruleSets   = array_reverse($vConfig->ruleSets);
-        \CodeIgniter\Config\Factories::injectMock('Config', 'Validation', $vConfig);
+        Factories::injectMock('Config', 'Validation', $vConfig);
 
         // Make sure our routes are mapped
         $routes = service('routes');
         $routes->add('login', 'AuthController::login', ['as' => 'login']);
         $routes->add('register', 'AuthController::register', ['as' => 'register']);
-        \Config\Services::injectMock('routes', $routes);
+        Services::injectMock('routes', $routes);
 
         $_SESSION = [];
     }
@@ -51,7 +55,7 @@ final class LoginTest extends AuthTestCase
             ->execute('attemptLogin');
 
         $this->assertTrue($result->isRedirect());
-        $this->asserttrue(isset($_SESSION['_ci_validation_errors']));
+        $this->assertArrayHasKey('_ci_validation_errors', $_SESSION);
     }
 
     /**
@@ -85,7 +89,7 @@ final class LoginTest extends AuthTestCase
         // Just make sure since it's a default
         $config                   = config('Auth');
         $config->allowRemembering = $remembering;
-        \CodeIgniter\Config\Factories::injectMock('Config', 'Auth', $config);
+        Factories::injectMock('Config', 'Auth', $config);
 
         $result = $this->withUri(site_url('login'))
             ->withRequest($request)

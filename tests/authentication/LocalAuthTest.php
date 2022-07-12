@@ -1,6 +1,9 @@
 <?php
 
+use CodeIgniter\Router\Exceptions\RedirectException;
 use Myth\Auth\Authentication\LocalAuthenticator;
+use Myth\Auth\Config\Services;
+use Myth\Auth\Exceptions\AuthException;
 use Myth\Auth\Models\UserModel;
 use Tests\Support\AuthTestCase;
 
@@ -23,7 +26,7 @@ final class LocalAuthTest extends AuthTestCase
     {
         parent::setUp();
 
-        $this->auth = \Myth\Auth\Config\Services::authentication('local');
+        $this->auth = Services::authentication('local');
     }
 
     protected function tearDown(): void
@@ -55,7 +58,7 @@ final class LocalAuthTest extends AuthTestCase
 
     public function testValidateInvalidCredential()
     {
-        $this->expectException(\Myth\Auth\Exceptions\AuthException::class);
+        $this->expectException(AuthException::class);
 
         $this->hasInDatabase('users', [
             'email'         => 'fred@example.com',
@@ -73,7 +76,7 @@ final class LocalAuthTest extends AuthTestCase
 
     public function testValidateBadPassword()
     {
-        $user = $this->createUser();
+        $this->createUser();
 
         $this->assertFalse($this->auth->validate(['email' => 'fred@example.com', 'password' => 'bar']));
         $this->assertSame(lang('Auth.invalidPassword'), $this->auth->error());
@@ -94,7 +97,7 @@ final class LocalAuthTest extends AuthTestCase
     public function testCheckNotRemembered()
     {
         $_SESSION = [];
-        $user     = $this->createUser();
+        $this->createUser();
 
         $this->assertFalse($this->auth->check());
     }
@@ -109,8 +112,8 @@ final class LocalAuthTest extends AuthTestCase
         $_SESSION = [
             'logged_in' => $user->id,
         ];
-        $this->assertTrue(! empty($user->reset_hash));
-        $this->expectException(\CodeIgniter\Router\Exceptions\RedirectException::class);
+        $this->assertNotEmpty($user->reset_hash);
+        $this->expectException(RedirectException::class);
         $this->expectExceptionMessage(route_to('reset-password') . '?token=' . $user->reset_hash);
 
         $this->auth->check();

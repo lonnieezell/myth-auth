@@ -1,5 +1,6 @@
 <?php
 
+use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\Test\CIUnitTestCase;
 use Mockery as m;
 use Myth\Auth\Authentication\LocalAuthenticator;
@@ -13,20 +14,9 @@ use Myth\Auth\Models\UserModel;
  */
 final class LocalAuthenticateAttemptTest extends CIUnitTestCase
 {
-    /**
-     * @var UserModel
-     */
-    protected $userModel;
-
-    /**
-     * @var LocalAuthenticator
-     */
-    protected $auth;
-
-    /**
-     * @var \CodeIgniter\HTTP\IncomingRequest
-     */
-    protected $request;
+    protected UserModel $userModel;
+    protected LocalAuthenticator $auth;
+    protected IncomingRequest $request;
 
     protected function setUp(): void
     {

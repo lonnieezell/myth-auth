@@ -1,5 +1,6 @@
 <?php
 
+use Rector\Config\RectorConfig;
 use Rector\CodeQuality\Rector\BooleanAnd\SimplifyEmptyArrayCheckRector;
 use Rector\CodeQuality\Rector\Expression\InlineIfToExplicitIfRector;
 use Rector\CodeQuality\Rector\For_\ForToForeachRector;
@@ -17,7 +18,6 @@ use Rector\CodeQuality\Rector\Ternary\UnnecessaryTernaryExpressionRector;
 use Rector\CodingStyle\Rector\ClassMethod\FuncGetArgsToVariadicParamRector;
 use Rector\CodingStyle\Rector\ClassMethod\MakeInheritedMethodVisibilitySameAsParentRector;
 use Rector\CodingStyle\Rector\FuncCall\CountArrayToEmptyArrayComparisonRector;
-use Rector\Core\Configuration\Option;
 use Rector\Core\ValueObject\PhpVersion;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUnusedPromotedPropertyRector;
 use Rector\DeadCode\Rector\MethodCall\RemoveEmptyMethodCallRector;
@@ -34,50 +34,39 @@ use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\PSR4\Rector\FileWithoutNamespace\NormalizeNamespaceByPSR4ComposerAutoloadRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    // Rule sets to apply
-    $containerConfigurator->import(SetList::DEAD_CODE);
-    $containerConfigurator->import(LevelSetList::UP_TO_PHP_74);
-    $containerConfigurator->import(PHPUnitSetList::PHPUNIT_SPECIFIC_METHOD);
-    $containerConfigurator->import(PHPUnitSetList::PHPUNIT_80);
-
-    $parameters = $containerConfigurator->parameters();
-
-    $parameters->set(Option::PARALLEL, true);
+return static function (RectorConfig $rectorConfig): void {
+    $rectorConfig->sets([SetList::DEAD_CODE, LevelSetList::UP_TO_PHP_74, PHPUnitSetList::PHPUNIT_SPECIFIC_METHOD, PHPUnitSetList::PHPUNIT_80]);
+    $rectorConfig->parallel();
     // The paths to refactor (can also be supplied with CLI arguments)
-    $parameters->set(Option::PATHS, [
+    $rectorConfig->paths([
         __DIR__ . '/src/',
         __DIR__ . '/tests/',
     ]);
 
     // Include Composer's autoload - required for global execution, remove if running locally
-    $parameters->set(Option::AUTOLOAD_PATHS, [
+    $rectorConfig->autoloadPaths([
         __DIR__ . '/vendor/autoload.php',
     ]);
 
     // Do you need to include constants, class aliases, or a custom autoloader?
-    $parameters->set(Option::BOOTSTRAP_FILES, [
+    $rectorConfig->bootstrapFiles([
         realpath(getcwd()) . '/vendor/codeigniter4/framework/system/Test/bootstrap.php',
     ]);
 
     if (is_file(__DIR__ . '/phpstan.neon.dist')) {
-        $parameters->set(Option::PHPSTAN_FOR_RECTOR_PATH, __DIR__ . '/phpstan.neon.dist');
+        $rectorConfig->phpstanConfig(__DIR__ . '/phpstan.neon.dist');
     }
 
     // Set the target version for refactoring
-    $parameters->set(Option::PHP_VERSION_FEATURES, PhpVersion::PHP_74);
+    $rectorConfig->phpVersion(PhpVersion::PHP_74);
 
     // Auto-import fully qualified class names
-    $parameters->set(Option::AUTO_IMPORT_NAMES, true);
+    $rectorConfig->importNames();
 
     // Are there files or rules you need to skip?
-    $parameters->set(Option::SKIP, [
-        __DIR__ . '/src/Config/Auth.php',
-        __DIR__ . '/src/Language',
+    $rectorConfig->skip([
         __DIR__ . '/src/Views',
-        __DIR__ . '/tests/controllers/LoginTest.php', // not sure why this crashes Rector
 
         JsonThrowOnErrorRector::class,
         StringifyStrNeedlesRector::class,
@@ -101,33 +90,31 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // May be uninitialized on purpose
         AddDefaultValueForUndefinedVariableRector::class,
     ]);
-
-    // Additional rules to apply
-    $services = $containerConfigurator->services();
-    $services->set(SimplifyUselessVariableRector::class);
-    $services->set(RemoveAlwaysElseRector::class);
-    $services->set(CountArrayToEmptyArrayComparisonRector::class);
-    $services->set(ForToForeachRector::class);
-    $services->set(ChangeNestedForeachIfsToEarlyContinueRector::class);
-    $services->set(ChangeIfElseValueAssignToEarlyReturnRector::class);
-    $services->set(SimplifyStrposLowerRector::class);
-    $services->set(CombineIfRector::class);
-    $services->set(SimplifyIfReturnBoolRector::class);
-    $services->set(InlineIfToExplicitIfRector::class);
-    $services->set(PreparedValueToEarlyReturnRector::class);
-    $services->set(ShortenElseIfRector::class);
-    $services->set(SimplifyIfElseToTernaryRector::class);
-    $services->set(UnusedForeachValueToArrayKeysRector::class);
-    $services->set(ChangeArrayPushToArrayAssignRector::class);
-    $services->set(UnnecessaryTernaryExpressionRector::class);
-    $services->set(AddPregQuoteDelimiterRector::class);
-    $services->set(SimplifyRegexPatternRector::class);
-    $services->set(FuncGetArgsToVariadicParamRector::class);
-    $services->set(MakeInheritedMethodVisibilitySameAsParentRector::class);
-    $services->set(SimplifyEmptyArrayCheckRector::class);
-    $services->set(NormalizeNamespaceByPSR4ComposerAutoloadRector::class);
-    // $services->set(TypedPropertyRector::class)
-    //     ->configure([
-    //         TypedPropertyRector::INLINE_PUBLIC => true,
-    //     ]);
+    $rectorConfig->rule(SimplifyUselessVariableRector::class);
+    $rectorConfig->rule(RemoveAlwaysElseRector::class);
+    $rectorConfig->rule(CountArrayToEmptyArrayComparisonRector::class);
+    $rectorConfig->rule(ForToForeachRector::class);
+    $rectorConfig->rule(ChangeNestedForeachIfsToEarlyContinueRector::class);
+    $rectorConfig->rule(ChangeIfElseValueAssignToEarlyReturnRector::class);
+    $rectorConfig->rule(SimplifyStrposLowerRector::class);
+    $rectorConfig->rule(CombineIfRector::class);
+    $rectorConfig->rule(SimplifyIfReturnBoolRector::class);
+    $rectorConfig->rule(InlineIfToExplicitIfRector::class);
+    $rectorConfig->rule(PreparedValueToEarlyReturnRector::class);
+    $rectorConfig->rule(ShortenElseIfRector::class);
+    $rectorConfig->rule(SimplifyIfElseToTernaryRector::class);
+    $rectorConfig->rule(UnusedForeachValueToArrayKeysRector::class);
+    $rectorConfig->rule(ChangeArrayPushToArrayAssignRector::class);
+    $rectorConfig->rule(UnnecessaryTernaryExpressionRector::class);
+    $rectorConfig->rule(AddPregQuoteDelimiterRector::class);
+    $rectorConfig->rule(SimplifyRegexPatternRector::class);
+    $rectorConfig->rule(FuncGetArgsToVariadicParamRector::class);
+    $rectorConfig->rule(MakeInheritedMethodVisibilitySameAsParentRector::class);
+    $rectorConfig->rule(SimplifyEmptyArrayCheckRector::class);
+    $rectorConfig->rule(NormalizeNamespaceByPSR4ComposerAutoloadRector::class);
+    $rectorConfig
+        ->ruleWithConfiguration(TypedPropertyRector::class, [
+            // Set to false if you use in libraries, or it does create breaking changes.
+            TypedPropertyRector::INLINE_PUBLIC => false,
+        ]);
 };

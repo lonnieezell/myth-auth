@@ -3,6 +3,7 @@
 namespace Myth\Auth\Filters;
 
 use CodeIgniter\Filters\FilterInterface;
+use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\App;
@@ -12,11 +13,11 @@ class LoginFilter implements FilterInterface
     /**
      * Verifies that a user is logged in, or redirects to login.
      *
-     * @param array|null $params
+     * @param array|null $arguments
      *
-     * @return mixed
+     * @return RedirectResponse|void
      */
-    public function before(RequestInterface $request, $params = null)
+    public function before(RequestInterface $request, $arguments = null)
     {
         if (! function_exists('logged_in')) {
             helper('auth');

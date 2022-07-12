@@ -1,69 +1,73 @@
 {
-	"name": "myth/auth",
-	"type": "library",
-	"description": "Flexible authentication/authorization system for CodeIgniter 4.",
-	"keywords": [
-		"codeigniter",
-		"authentication",
-		"authorization"
-	],
-	"homepage": "https://github.com/lonnieezell/myth-auth",
-	"license": "MIT",
-	"authors": [
-		{
-			"name": "Lonnie Ezell",
-			"email": "lonnieje@gmail.com",
-			"homepage": "http://newmythmedia.com",
-			"role": "Developer"
-		}
-	],
-	"require": {
-		"php": "^7.4 || ^8.0"
-	},
-	"provide": {
-		"codeigniter4/authentication-implementation": "1.0"
-	},
-	"require-dev": {
-		"codeigniter4/codeigniter4-standard": "^1.0",
-		"codeigniter4/devkit": "^1.0",
-		"codeigniter4/framework": "^4.1",
-		"mockery/mockery": "^1.0"
-	},
-	"config": {
-		"allow-plugins": {
-			"phpstan/extension-installer": true
-		}
-	},
-	"autoload": {
-		"psr-4": {
-			"Myth\\Auth\\": "src"
-		},
-		"exclude-from-classmap": [
-			"**/Database/Migrations/**"
-		]
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"Tests\\Support\\": "tests/_support"
-		}
-	},
-	"minimum-stability": "dev",
-	"prefer-stable": true,
-	"scripts": {
-		"analyze": "phpstan analyze",
-		"ci": [
-			"Composer\\Config::disableProcessTimeout",
-			"@deduplicate",
-			"@analyze",
-			"@test",
-			"@inspect",
-			"rector process",
-			"@style"
-		],
-		"deduplicate": "phpcpd app/ src/",
-		"inspect": "deptrac analyze --cache-file=build/deptrac.cache",
-		"mutate": "infection --threads=2 --skip-initial-tests --coverage=build/phpunit",
-		"style": "php-cs-fixer fix --verbose --ansi --using-cache=no",
-		"test": "phpunit"
-	}
+    "name": "myth/auth",
+    "description": "Flexible authentication/authorization system for CodeIgniter 4.",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "codeigniter",
+        "authentication",
+        "authorization"
+    ],
+    "authors": [
+        {
+            "name": "Lonnie Ezell",
+            "email": "lonnieje@gmail.com",
+            "homepage": "http://newmythmedia.com",
+            "role": "Developer"
+        }
+    ],
+    "homepage": "https://github.com/lonnieezell/myth-auth",
+    "require": {
+        "php": "^7.4 || ^8.0"
+    },
+    "require-dev": {
+        "codeigniter4/codeigniter4-standard": "^1.0",
+        "codeigniter4/devkit": "^1.0",
+        "codeigniter4/framework": "^4.1",
+        "mockery/mockery": "^1.0"
+    },
+    "provide": {
+        "codeigniter4/authentication-implementation": "1.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Myth\\Auth\\": "src"
+        },
+        "exclude-from-classmap": [
+            "**/Database/Migrations/**"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Support\\": "tests/_support"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
+    },
+    "scripts": {
+        "analyze": [
+            "phpstan analyze",
+            "psalm",
+            "rector process --dry-run"
+        ],
+        "ci": [
+            "Composer\\Config::disableProcessTimeout",
+            "@deduplicate",
+            "@analyze",
+            "@composer normalize --dry-run",
+            "@test",
+            "@inspect",
+            "@style"
+        ],
+        "deduplicate": "phpcpd app/ src/",
+        "inspect": "deptrac analyze --cache-file=build/deptrac.cache",
+        "mutate": "infection --threads=2 --skip-initial-tests --coverage=build/phpunit",
+        "style": "php-cs-fixer fix --verbose --ansi --using-cache=no",
+        "test": "phpunit"
+    }
 }

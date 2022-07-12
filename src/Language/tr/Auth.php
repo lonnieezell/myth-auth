@@ -1,5 +1,7 @@
 <?php
 
+namespace Myth\Auth\Language\tr;
+
 return [
     // Exceptions
     'invalidModel'        => '{0} modeli kullanılmadan önce yüklenmelidir.',
