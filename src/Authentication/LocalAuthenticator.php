@@ -139,7 +139,7 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
         // Can we find a user with those credentials?
         $user = $this->userModel->where($credentials)->first();
 
-        if (! $user) {
+        if (! $user instanceof User) {
             $this->error = lang('Auth.badAttempt');
 
             return false;
