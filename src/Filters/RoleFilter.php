@@ -3,6 +3,7 @@
 namespace Myth\Auth\Filters;
 
 use CodeIgniter\Filters\FilterInterface;
+use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Myth\Auth\Exceptions\PermissionException;
@@ -10,26 +11,17 @@ use Myth\Auth\Exceptions\PermissionException;
 class RoleFilter implements FilterInterface
 {
     /**
-     * Do whatever processing this filter needs to do.
-     * By default it should not return anything during
-     * normal execution. However, when an abnormal state
-     * is found, it should return an instance of
-     * CodeIgniter\HTTP\Response. If it does, script
-     * execution will end and that Response will be
-     * sent back to the client, allowing for error pages,
-     * redirects, etc.
+     * @param array|null $arguments
      *
-     * @param array|null $params
-     *
-     * @return mixed
+     * @return RedirectResponse|void
      */
-    public function before(RequestInterface $request, $params = null)
+    public function before(RequestInterface $request, $arguments = null)
     {
         if (! function_exists('logged_in')) {
             helper('auth');
         }
 
-        if (empty($params)) {
+        if (empty($arguments)) {
             return;
         }
 
@@ -45,7 +37,7 @@ class RoleFilter implements FilterInterface
         $authorize = service('authorization');
 
         // Check each requested permission
-        foreach ($params as $group) {
+        foreach ($arguments as $group) {
             if ($authorize->inGroup($group, $authenticate->id())) {
                 return;
             }
