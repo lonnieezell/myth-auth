@@ -24,21 +24,7 @@ class PermissionModel extends Model
      */
     public function doesUserHavePermission(int $userId, int $permissionId): bool
     {
-        // Check user permissions and take advantage of caching
-        $userPerms = $this->getPermissionsForUser($userId);
-
-        if (count($userPerms) && array_key_exists($permissionId, $userPerms)) {
-            return true;
-        }
-
-        // Check group permissions
-        $count = $this->db->table('auth_groups_permissions')
-            ->join('auth_groups_users', 'auth_groups_users.group_id = auth_groups_permissions.group_id', 'inner')
-            ->where('auth_groups_permissions.permission_id', $permissionId)
-            ->where('auth_groups_users.user_id', $userId)
-            ->countAllResults();
-
-        return $count > 0;
+        return array_key_exists($permissionId, $this->getPermissionsForUser($userId));
     }
 
     /**

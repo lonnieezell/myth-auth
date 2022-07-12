@@ -3,6 +3,9 @@
 namespace Myth\Auth\Config;
 
 use Myth\Auth\Config\Auth as AuthConfig;
+use CodeIgniter\Router\RouteCollection;
+
+/** @var RouteCollection $routes */
 
 // Myth:Auth routes file.
 $routes->group('', ['namespace' => 'Myth\Auth\Controllers'], static function ($routes) {

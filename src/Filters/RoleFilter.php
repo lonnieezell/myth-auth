@@ -3,6 +3,7 @@
 namespace Myth\Auth\Filters;
 
 use CodeIgniter\Filters\FilterInterface;
+use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Myth\Auth\Exceptions\PermissionException;
@@ -10,20 +11,11 @@ use Myth\Auth\Exceptions\PermissionException;
 class RoleFilter extends BaseFilter implements FilterInterface
 {
     /**
-     * Do whatever processing this filter needs to do.
-     * By default it should not return anything during
-     * normal execution. However, when an abnormal state
-     * is found, it should return an instance of
-     * CodeIgniter\HTTP\Response. If it does, script
-     * execution will end and that Response will be
-     * sent back to the client, allowing for error pages,
-     * redirects, etc.
+     * @param array|null $arguments
      *
-     * @param array|null $params
-     *
-     * @return mixed
+     * @return RedirectResponse|void
      */
-    public function before(RequestInterface $request, $params = null)
+    public function before(RequestInterface $request, $arguments = null)
     {
         // If no user is logged in then send them to the login form.
         if (! $this->authenticate->check()) {
@@ -32,7 +24,7 @@ class RoleFilter extends BaseFilter implements FilterInterface
             return redirect($this->reservedRoutes['login']);
         }
 
-        if (empty($params)) {
+        if (empty($arguments)) {
             return;
         }
 

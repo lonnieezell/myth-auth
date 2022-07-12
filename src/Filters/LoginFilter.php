@@ -3,6 +3,7 @@
 namespace Myth\Auth\Filters;
 
 use CodeIgniter\Filters\FilterInterface;
+use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
@@ -11,11 +12,11 @@ class LoginFilter extends BaseFilter implements FilterInterface
     /**
      * Verifies that a user is logged in, or redirects to login.
      *
-     * @param array|null $params
+     * @param array|null $arguments
      *
-     * @return mixed
+     * @return RedirectResponse|void
      */
-    public function before(RequestInterface $request, $params = null)
+    public function before(RequestInterface $request, $arguments = null)
     {
         // Make sure this isn't already a Myth\Auth routes.
         foreach ($this->reservedRoutes as $reservedRoutes => $reservedRoute) {

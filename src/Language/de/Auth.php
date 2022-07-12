@@ -1,5 +1,7 @@
 <?php
 
+namespace Myth\Auth\Language\de;
+
 return [
 
     // Exceptions

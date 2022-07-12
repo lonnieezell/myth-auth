@@ -1,5 +1,7 @@
 <?php
 
+namespace Myth\Auth\Language\nl;
+
 return [
     // Exceptions
     'invalidModel'        => 'Het {0} model moet geladen worden voor gebruik.',

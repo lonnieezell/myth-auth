@@ -1,5 +1,7 @@
 <?php
 
+namespace Myth\Auth\Language\en;
+
 return [
     // Exceptions
     'invalidModel'        => 'The {0} model must be loaded prior to use.',

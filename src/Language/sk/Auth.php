@@ -1,5 +1,7 @@
 <?php
 
+namespace Myth\Auth\Language\sk;
+
 return [
     // Exceptions
     'invalidModel'        => 'Pred použitím je potrebné načítať model {0}.',
