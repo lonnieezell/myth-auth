@@ -63,5 +63,5 @@ jobs:
 
       - name: Analyze for refactoring
         run: |
-          composer global require --dev rector/rector:^0.12.16
+          composer global require --dev rector/rector:^0.13.8
           rector process --dry-run --no-progress-bar
