@@ -8,7 +8,7 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Myth\Auth\Exceptions\PermissionException;
 
-class PermissionFilter implements FilterInterface
+class PermissionFilter extends BaseFilter implements FilterInterface
 {
     /**
      * @param array|null $arguments
@@ -17,34 +17,27 @@ class PermissionFilter implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        if (! function_exists('logged_in')) {
-            helper('auth');
+        // If no user is logged in then send them to the login form.
+        if (! $this->authenticate->check()) {
+            session()->set('redirect_url', current_url());
+
+            return redirect($this->reservedRoutes['login']);
         }
 
         if (empty($arguments)) {
             return;
         }
 
-        $authenticate = service('authentication');
-
-        // if no user is logged in then send to the login form
-        if (! $authenticate->check()) {
-            session()->set('redirect_url', current_url());
-
-            return redirect('login');
-        }
-
-        $authorize = service('authorization');
-        $result    = true;
+        $result = true;
 
         // Check each requested permission
         foreach ($arguments as $permission) {
-            $result = $result && $authorize->hasPermission($permission, $authenticate->id());
+            $result = ($result && $this->authorize->hasPermission($permission, $this->authenticate->id()));
         }
 
         if (! $result) {
-            if ($authenticate->silent()) {
-                $redirectURL = session('redirect_url') ?? '/';
+            if ($this->authenticate->silent()) {
+                $redirectURL = session('redirect_url') ?? route_to($this->landingRoute);
                 unset($_SESSION['redirect_url']);
 
                 return redirect()->to($redirectURL)->with('error', lang('Auth.notEnoughPrivilege'));
@@ -53,8 +46,6 @@ class PermissionFilter implements FilterInterface
             throw new PermissionException(lang('Auth.notEnoughPrivilege'));
         }
     }
-
-    //--------------------------------------------------------------------
 
     /**
      * Allows After filters to inspect and modify the response
@@ -69,6 +60,4 @@ class PermissionFilter implements FilterInterface
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
     }
-
-    //--------------------------------------------------------------------
 }

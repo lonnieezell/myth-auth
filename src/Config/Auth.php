@@ -20,6 +20,43 @@ class Auth extends BaseConfig
 
     /**
      * --------------------------------------------------------------------
+     * Landing Route
+     * --------------------------------------------------------------------
+     *
+     * This is your landing page (route name) after user success to login,
+     * i.e $landingRoute = 'dashboard'.
+     *
+     * If you set $silent = true the Permission and Role filters will
+     * use this config too for the routing.
+     *
+     * @var string
+     */
+    public $landingRoute = '/';
+
+    /**
+     * --------------------------------------------------------------------
+     * Reserverd Routes
+     * --------------------------------------------------------------------
+     *
+     * The auth routes config is listed in here and you can customize it,
+     * i.e. $reservedRoutes = ['forgot' => 'forgot-password'].
+     *
+     * Do Not Change The Key!!! Because it's the identity for routing.
+     *
+     * @var array
+     */
+    public $reservedRoutes = [
+        'login'                   => 'login',
+        'logout'                  => 'logout',
+        'register'                => 'register',
+        'activate-account'        => 'activate-account',
+        'resend-activate-account' => 'resend-activate-account',
+        'forgot'                  => 'forgot',
+        'reset-password'          => 'reset-password',
+    ];
+
+    /**
+     * --------------------------------------------------------------------
      * Libraries
      * --------------------------------------------------------------------
      *

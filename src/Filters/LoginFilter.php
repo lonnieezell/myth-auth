@@ -6,9 +6,8 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
-use Config\App;
 
-class LoginFilter implements FilterInterface
+class LoginFilter extends BaseFilter implements FilterInterface
 {
     /**
      * Verifies that a user is logged in, or redirects to login.
@@ -19,32 +18,18 @@ class LoginFilter implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        if (! function_exists('logged_in')) {
-            helper('auth');
+        // Make sure this isn't already a Myth\Auth routes.
+        foreach ($this->reservedRoutes as $reservedRoute) {
+            if (url_is(route_to($reservedRoute))) {
+                return;
+            }
         }
 
-        $current = (string) current_url(true)
-            ->setHost('')
-            ->setScheme('')
-            ->stripQuery('token');
-
-        $config = config(App::class);
-        if ($config->forceGlobalSecureRequests) {
-            // Remove "https:/"
-            $current = substr($current, 7);
-        }
-
-        // Make sure this isn't already a login route
-        if (in_array($current, [route_to('login'), route_to('forgot'), route_to('reset-password'), route_to('register'), route_to('activate-account')], true)) {
-            return;
-        }
-
-        // if no user is logged in then send to the login form
-        $authenticate = service('authentication');
-        if (! $authenticate->check()) {
+        // If no user is logged in then send them to the login form.
+        if (! $this->authenticate->check()) {
             session()->set('redirect_url', current_url());
 
-            return redirect('login');
+            return redirect($this->reservedRoutes['login']);
         }
     }
 
