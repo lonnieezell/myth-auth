@@ -31,7 +31,7 @@ class PermissionFilter extends BaseFilter implements FilterInterface
         $result = true;
 
         // Check each requested permission
-        foreach ($params as $permission) {
+        foreach ($arguments as $permission) {
             $result = ($result && $this->authorize->hasPermission($permission, $this->authenticate->id()));
         }
 

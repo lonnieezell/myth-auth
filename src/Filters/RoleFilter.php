@@ -29,7 +29,7 @@ class RoleFilter extends BaseFilter implements FilterInterface
         }
 
         // Check each requested permission
-        foreach ($params as $group) {
+        foreach ($arguments as $group) {
             if ($this->authorize->inGroup($group, $this->authenticate->id())) {
                 return;
             }

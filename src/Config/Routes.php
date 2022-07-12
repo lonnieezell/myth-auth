@@ -2,8 +2,8 @@
 
 namespace Myth\Auth\Config;
 
-use Myth\Auth\Config\Auth as AuthConfig;
 use CodeIgniter\Router\RouteCollection;
+use Myth\Auth\Config\Auth as AuthConfig;
 
 /** @var RouteCollection $routes */
 
