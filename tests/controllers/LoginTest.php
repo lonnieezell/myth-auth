@@ -33,6 +33,7 @@ final class LoginTest extends AuthTestCase
         $routes = service('routes');
         $routes->add('login', 'AuthController::login', ['as' => 'login']);
         $routes->add('register', 'AuthController::register', ['as' => 'register']);
+        $routes->add('forgot', 'AuthController::forgot', ['as' => 'forgot']);
         Services::injectMock('routes', $routes);
 
         $_SESSION = [];

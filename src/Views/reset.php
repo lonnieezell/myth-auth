@@ -13,7 +13,7 @@
 
                     <p><?=lang('Auth.enterCodeEmailPassword')?></p>
 
-                    <form action="<?= route_to('reset-password') ?>" method="post">
+                    <form action="<?= url_to('reset-password') ?>" method="post">
                         <?= csrf_field() ?>
 
                         <div class="form-group">
