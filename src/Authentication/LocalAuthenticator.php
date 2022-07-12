@@ -56,7 +56,7 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
             return false;
         }
 
-        return $this->login($this->user, $remember);
+        return $this->login($this->user, (bool) $remember);
     }
 
     /**
