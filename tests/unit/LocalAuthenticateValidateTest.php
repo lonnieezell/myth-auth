@@ -1,9 +1,12 @@
 <?php
 
+use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\Test\CIUnitTestCase;
 use Mockery as m;
+use Mockery\MockInterface;
 use Myth\Auth\Authentication\LocalAuthenticator;
 use Myth\Auth\Config\Services;
+use Myth\Auth\Entities\User;
 use Myth\Auth\Models\LoginModel;
 use Myth\Auth\Models\UserModel;
 
@@ -12,25 +15,15 @@ use Myth\Auth\Models\UserModel;
  */
 final class LocalAuthenticateValidateTest extends CIUnitTestCase
 {
-    /**
-     * @var Mockery\MockInterface
-     */
-    protected $userModel;
-
-    /**
-     * @var Mockery\MockInterface
-     */
-    protected $loginModel;
+    protected MockInterface $userModel;
+    protected MockInterface $loginModel;
 
     /**
      * @var LocalAuthenticator
      */
     protected $auth;
 
-    /**
-     * @var \CodeIgniter\HTTP\IncomingRequest
-     */
-    protected $request;
+    protected IncomingRequest $request;
 
     protected function setUp(): void
     {
@@ -93,7 +86,7 @@ final class LocalAuthenticateValidateTest extends CIUnitTestCase
 
     public function testFailsPasswordValidation()
     {
-        $user = new \Myth\Auth\Entities\User(['password_hash' => password_hash('nope!', PASSWORD_DEFAULT)]);
+        $user = new User(['password_hash' => password_hash('nope!', PASSWORD_DEFAULT)]);
 
         $this->userModel->shouldReceive('where')->once()->with(\Mockery::subset(['email' => 'joe@example.com']))->andReturn($this->userModel);
         $this->userModel->shouldReceive('first')->once()->andReturn($user);
@@ -109,7 +102,7 @@ final class LocalAuthenticateValidateTest extends CIUnitTestCase
 
     public function testValidateSuccess()
     {
-        $user = new \Myth\Auth\Entities\User(['password' => 'secret']);
+        $user = new User(['password' => 'secret']);
 
         $this->userModel->shouldReceive('where')->once()->with(\Mockery::subset(['email' => 'joe@example.com']))->andReturn($this->userModel);
         $this->userModel->shouldReceive('first')->once()->andReturn($user);
@@ -124,7 +117,7 @@ final class LocalAuthenticateValidateTest extends CIUnitTestCase
 
     public function testValidateSuccessReturnsUser()
     {
-        $user = new \Myth\Auth\Entities\User(['password' => 'secret']);
+        $user = new User(['password' => 'secret']);
 
         $this->userModel->shouldReceive('where')->once()->with(\Mockery::subset(['email' => 'joe@example.com']))->andReturn($this->userModel);
         $this->userModel->shouldReceive('first')->once()->andReturn($user);
@@ -134,12 +127,12 @@ final class LocalAuthenticateValidateTest extends CIUnitTestCase
             'email'    => 'joe@example.com',
         ], true);
 
-        $this->assertInstanceOf(\Myth\Auth\Entities\User::class, $result);
+        $this->assertInstanceOf(User::class, $result);
     }
 
     public function testValidateSuccessReHashPassword()
     {
-        $user = new \Myth\Auth\Entities\User(['password' => 'secret']);
+        $user = new User(['password' => 'secret']);
 
         $this->userModel->shouldReceive('where')->once()->with(\Mockery::subset(['email' => 'joe@example.com']))->andReturn($this->userModel);
         $this->userModel->shouldReceive('first')->once()->andReturn($user);
@@ -149,6 +142,6 @@ final class LocalAuthenticateValidateTest extends CIUnitTestCase
             'email'    => 'joe@example.com',
         ], true);
 
-        $this->assertInstanceOf(\Myth\Auth\Entities\User::class, $result);
+        $this->assertInstanceOf(User::class, $result);
     }
 }

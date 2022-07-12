@@ -1,5 +1,7 @@
 <?php
 
+namespace Myth\Auth\Language\ru;
+
 return [
     // Exceptions
     'invalidModel'        => 'Модель [{0}] должна быть загружена перед использованием.',

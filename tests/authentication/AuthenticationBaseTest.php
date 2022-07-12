@@ -1,6 +1,7 @@
 <?php
 
 use Myth\Auth\Authentication\LocalAuthenticator;
+use Myth\Auth\Config\Services;
 use Tests\Support\AuthTestCase;
 
 /**
@@ -19,7 +20,7 @@ final class AuthenticationBaseTest extends AuthTestCase
     {
         parent::setUp();
 
-        $this->auth = \Myth\Auth\Config\Services::authentication('local', null, null, false);
+        $this->auth = Services::authentication('local', null, null, false);
         $this->setPrivateProperty($this->auth, 'user', null);
 
         $db = db_connect();
@@ -28,7 +29,7 @@ final class AuthenticationBaseTest extends AuthTestCase
 
     public function testIsLoggedInFailsWithInvalidUser()
     {
-        $user = $this->createUser();
+        $this->createUser();
 
         $_SESSION['logged_in'] = 12035;
 

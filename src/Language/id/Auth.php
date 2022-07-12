@@ -1,5 +1,7 @@
 <?php
 
+namespace Myth\Auth\Language\id;
+
 return [
     // Exceptions
     'invalidModel'        => 'Model {0} harus dimuat sebelum digunakan.',

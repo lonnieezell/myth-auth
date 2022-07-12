@@ -2,8 +2,9 @@
 
 namespace Myth\Auth\Config;
 
-/** @var \CodeIgniter\Router\RouteCollection $routes */
+use CodeIgniter\Router\RouteCollection;
 
+/** @var RouteCollection $routes */
 // Myth:Auth routes file.
 $routes->group('', ['namespace' => 'Myth\Auth\Controllers'], static function ($routes) {
     // Login/out
