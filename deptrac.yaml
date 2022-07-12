@@ -1,0 +1,156 @@
+parameters:
+  paths:
+    - ./src/
+    - ./vendor/codeigniter4/framework/system/
+  exclude_files:
+    - '#.*test.*#i'
+  layers:
+    - name: Model
+      collectors:
+        - type: bool
+          must:
+          - type: className
+            regex: .*[A-Za-z]+Model$
+          must_not:
+          - type: directory
+            regex: vendor/.*
+    - name: Vendor Model
+      collectors:
+        - type: bool
+          must:
+          - type: className
+            regex: .*[A-Za-z]+Model$
+          - type: directory
+            regex: vendor/.*
+    - name: Controller
+      collectors:
+        - type: bool
+          must:
+          - type: className
+            regex: .*\/Controllers\/.*
+          must_not:
+          - type: directory
+            regex: vendor/.*
+    - name: Vendor Controller
+      collectors:
+        - type: bool
+          must:
+          - type: className
+            regex: .*\/Controllers\/.*
+          - type: directory
+            regex: vendor/.*
+    - name: Config
+      collectors:
+        - type: bool
+          must:
+          - type: directory
+            regex: src/Config/.*
+          must_not:
+          - type: className
+            regex: .*Services
+          - type: directory
+            regex: vendor/.*
+    - name: Vendor Config
+      collectors:
+        - type: bool
+          must:
+          - type: directory
+            regex: vendor/.*/Config/.*
+          must_not:
+          - type: className
+            regex: .*Services
+    - name: Entity
+      collectors:
+        - type: bool
+          must:
+          - type: directory
+            regex: src/Entities/.*
+          must_not:
+          - type: directory
+            regex: vendor/.*
+    - name: Vendor Entity
+      collectors:
+        - type: bool
+          must:
+          - type: directory
+            regex: vendor/.*/Entities/.*
+    - name: View
+      collectors:
+        - type: bool
+          must:
+          - type: directory
+            regex: src/Views/.*
+          must_not:
+          - type: directory
+            regex: vendor/.*
+    - name: Vendor View
+      collectors:
+        - type: bool
+          must:
+          - type: directory
+            regex: vendor/.*/Views/.*
+    - name: Service
+      collectors:
+        - type: className
+          regex: .*Services.*
+  ruleset:
+    Entity:
+      - Config
+      - Model
+      - Service
+      - Vendor Config
+      - Vendor Entity
+      - Vendor Model
+    Config:
+      - Service
+      - Vendor Config
+    Model:
+      - Config
+      - Entity
+      - Service
+      - Vendor Config
+      - Vendor Entity
+      - Vendor Model
+    Service:
+      - Config
+      - Vendor Config
+  
+    # Ignore anything in the Vendor layers
+    Vendor Model:
+      - Config
+      - Service
+      - Vendor Config
+      - Vendor Controller
+      - Vendor Entity
+      - Vendor Model
+      - Vendor View
+    Vendor Controller:
+      - Service
+      - Vendor Config
+      - Vendor Controller
+      - Vendor Entity
+      - Vendor Model
+      - Vendor View
+    Vendor Config:
+      - Config
+      - Service
+      - Vendor Config
+      - Vendor Controller
+      - Vendor Entity
+      - Vendor Model
+      - Vendor View
+    Vendor Entity:
+      - Service
+      - Vendor Config
+      - Vendor Controller
+      - Vendor Entity
+      - Vendor Model
+      - Vendor View
+    Vendor View:
+      - Service
+      - Vendor Config
+      - Vendor Controller
+      - Vendor Entity
+      - Vendor Model
+      - Vendor View
+  skip_violations:
