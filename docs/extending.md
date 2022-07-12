@@ -11,7 +11,7 @@ appropriate docs for each component:
 
 This library is intentionally slim on user identifying information, having only the fields necessary for
 authentication and authorization. You will likely want to add fields like a user's name or phone number,
-which you can do by can creating your own migration with these fields.
+which you can do by creating your own migration with these fields.
 
 ## Models
 

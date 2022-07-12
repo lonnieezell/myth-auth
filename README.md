@@ -1,7 +1,7 @@
 # Myth:Auth
 
 [![](https://github.com/lonnieezell/myth-auth/workflows/PHPUnit/badge.svg)](https://github.com/lonnieezell/myth-auth/actions?query=workflow%3A%22PHPUnit%22)
-[![](https://github.com/lonnieezell/myth-auth/workflows/PHPStan/badge.svg)](https://github.com/lonnieezell/myth-auth/actions?query=workflow%3A%22PHPStan)
+[![](https://github.com/lonnieezell/myth-auth/workflows/PHPStan/badge.svg)](https://github.com/lonnieezell/myth-auth/actions?query=workflow%3A%22PHPStan%22)
 [![Coverage Status](https://coveralls.io/repos/github/lonnieezell/myth-auth/badge.svg?branch=develop)](https://coveralls.io/github/lonnieezell/myth-auth?branch=develop)
 
 Flexible, Powerful, Secure auth package for CodeIgniter 4.
