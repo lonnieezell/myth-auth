@@ -23,6 +23,9 @@ overriding models.
 Similarly, extending the models allows you to provide a new return type and make use of new
 Entities with your own casts and class methods.
 
+If you extend the Model and supply your own validation rules you can also enforce those on the
+`AuthController` by providing a `$registrationRules` property in **app/Config/Validation.php**.
+
 ## Views
 
 Myth:Auth uses its own views by default, but you may want to update these in order to change
