@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+_No unreleased changes yet_
+
+## 1.1.0
+
+Released July 13, 2022
+
+**It has been more than a year since the previous release. The volume of changes since `1.0.1`**
+**is daunting and individual Pull Requests did not keep up with the docs. If you would be willing**
+**to help generate this section please [see this issue](https://github.com/lonnieezell/myth-auth/issues/543).**
+
+Visit the [CHANGELOG](https://github.com/lonnieezell/myth-auth/blob/develop/CHANGELOG.md) or
+[Release Notes](https://github.com/lonnieezell/myth-auth/releases/tag/v1.1.0) for details.
+
 ## 1.0.1
 
 Released July 2, 2021
