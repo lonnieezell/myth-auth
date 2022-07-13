@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+_No changes yet_
+
+## 1.2.0
+
+Released July 13, 2022
+
 Enhancements:
 
 - Added alternate authorization Models with stronger typing
