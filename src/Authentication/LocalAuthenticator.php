@@ -56,7 +56,7 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
             return false;
         }
 
-        return $this->login($this->user, $remember);
+        return $this->login($this->user, (bool) $remember);
     }
 
     /**
@@ -137,17 +137,16 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
         }
 
         // Can we find a user with those credentials?
-        $user = $this->userModel->where($credentials)
-            ->first();
+        $user = $this->userModel->where($credentials)->first();
 
-        if (! $user) {
+        if (! $user instanceof User) {
             $this->error = lang('Auth.badAttempt');
 
             return false;
         }
 
         // Now, try matching the passwords.
-        if (! Password::verify($password, $user->password_hash)) {
+        if (! Password::verify((string) $password, $user->password_hash)) {
             $this->error = lang('Auth.invalidPassword');
 
             return false;

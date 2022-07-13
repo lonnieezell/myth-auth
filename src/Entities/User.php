@@ -77,6 +77,34 @@ class User extends Entity
     }
 
     /**
+     * Explicitly convert false and true to 0 and 1
+     *
+     * Some BDD (PostgreSQL for example) can be picky about data types and
+     * if 'active' or 'force_pass_reset' are set to (bool)true/false, the method
+     * CodeIgniter\Database\Postgre\Connection::escape() will translate it
+     * to a literal TRUE/FALSE. Since the database fields are defined as integer,
+     * the BDD will throw an error about mismatched type.
+     *
+     * @param bool|int $active
+     */
+    public function setActive($active)
+    {
+        $this->attributes['active'] = $active ? 1 : 0;
+    }
+
+    /**
+     * Explicitly convert false and true to 0 and 1
+     *
+     * @see setActive()  Explanation about strict typing at database level
+     *
+     * @param bool|int $force_pass_reset
+     */
+    public function setForcePassReset($force_pass_reset)
+    {
+        $this->attributes['force_pass_reset'] = $force_pass_reset ? 1 : 0;
+    }
+
+    /**
      * Force a user to reset their password on next page refresh
      * or login. Checked in the LocalAuthenticator's check() method.
      *

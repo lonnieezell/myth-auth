@@ -2,7 +2,7 @@
 
 <p>To activate your account use this URL.</p>
 
-<p><a href="<?= site_url(route_to('activate-account')) . '?token=' . $hash ?>">Activate account</a>.</p>
+<p><a href="<?= url_to('activate-account') . '?token=' . $hash ?>">Activate account</a>.</p>
 
 <br>
 

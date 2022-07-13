@@ -11,7 +11,7 @@ appropriate docs for each component:
 
 This library is intentionally slim on user identifying information, having only the fields necessary for
 authentication and authorization. You will likely want to add fields like a user's name or phone number,
-which you can do by can creating your own migration with these fields.
+which you can do by creating your own migration with these fields.
 
 ## Models
 
@@ -22,6 +22,9 @@ overriding models.
 
 Similarly, extending the models allows you to provide a new return type and make use of new
 Entities with your own casts and class methods.
+
+If you extend the Model and supply your own validation rules you can also enforce those on the
+`AuthController` by providing a `$registrationRules` property in **app/Config/Validation.php**.
 
 ## Views
 
