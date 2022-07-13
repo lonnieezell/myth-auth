@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-_No unreleased changes yet_
+Enhancements:
+
+- Added alternate authorization Models with stronger typing
 
 ## 1.1.0
 
