@@ -3,6 +3,7 @@
 namespace Myth\Auth\Models;
 
 use CodeIgniter\Model;
+use Faker\Generator;
 use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Entities\User;
 
@@ -107,5 +108,17 @@ class UserModel extends Model
         }
 
         return $data;
+    }
+
+    /**
+     * Faked data for Fabricator.
+     */
+    public function fake(Generator &$faker): User
+    {
+        return new User([
+            'email'    => $faker->email,
+            'username' => $faker->userName,
+            'password' => bin2hex(random_bytes(16)),
+        ]);
     }
 }

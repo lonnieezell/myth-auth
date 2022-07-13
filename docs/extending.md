@@ -26,6 +26,13 @@ Entities with your own casts and class methods.
 If you extend the Model and supply your own validation rules you can also enforce those on the
 `AuthController` by providing a `$registrationRules` property in **app/Config/Validation.php**.
 
+### Alternate Models
+
+Since version `1.2.0` this library includes an alternate version of the authorization models
+that use specific Entities as their return types. These models are not yet used by the library
+itself for backwards-compatibility, but they are highly recommended for any implementing
+projects or model extensions.
+
 ## Views
 
 Myth:Auth uses its own views by default, but you may want to update these in order to change

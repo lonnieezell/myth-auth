@@ -10,6 +10,7 @@ parameters:
 		- src/Config/Routes.php
 		- src/Views/*
 	ignoreErrors:
+		- '#.+deprecated class Myth\\Auth\\Authorization\\(Group|Permission)Model.+#'
 		- '#.+Mockery.+#'
 		- '#Call to an undefined method .+::shouldReceive\(\)#'
 		- '#Call to an undefined static method Config\\Services::[A-Za-z]+\(\)#'
