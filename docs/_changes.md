@@ -16,12 +16,30 @@ Enhancements:
 
 Released July 13, 2022
 
-**It has been more than a year since the previous release. The volume of changes since `1.0.1`**
-**is daunting and individual Pull Requests did not keep up with the docs. If you would be willing**
-**to help generate this section please [see this issue](https://github.com/lonnieezell/myth-auth/issues/543).**
+Enhancements:
 
-Visit the [CHANGELOG](https://github.com/lonnieezell/myth-auth/blob/develop/CHANGELOG.md) or
-[Release Notes](https://github.com/lonnieezell/myth-auth/releases/tag/v1.1.0) for details.
+- Updated development tools to the CodeIgniter DevKit
+- Added Config\Auth::$landingRoute variable to set landing page (route name) after user success to login
+- Added Config\Auth::$reservedRoutes variable to set named routes
+- Added a check for custom validation rules during registration via `$registrationRules` property in **app/Config/Validation.php**
+- Reworked all filters, added BaseFilter. Login, permission and role filters now extends BaseFilter
+- Added new php spark auth:list_users command to list all registered users
+- Added validation rules for email in attemptForgot() method of AuthController
+- Updated language and doc files to reflect latest changes
+
+Bugs Fixed:
+
+- Fixed a bug in Auth trait's restrictWithPermissions() method preventing to check multiple permissions at once
+- Fixed a namespace error in published views with auth:publish command
+- Fixed issue with forcePasswordReset() method of user entity preventing PostgreSQL support
+- Fixed a bug with views when your project folder is not root folder
+- Fixed improper redirection issue to '/' when site is served from sub-directory
+- Fixed argument type error in Password::verify() method
+- Fixed argument type error in AuthenticationBase class login() method
+- Fixed type error in LocalAuthenticator when result from user model is not instance of User entity
+- Fixed a bug in login filter causing redirect loop
+
+These are just highlights. Visit the [CHANGELOG](https://github.com/lonnieezell/myth-auth/blob/develop/CHANGELOG.md) for more details.
 
 ## 1.0.1
 
