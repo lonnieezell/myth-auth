@@ -2,6 +2,45 @@
 
 ## Unreleased
 
+_No changes yet_
+
+## 1.2.0
+
+Released July 13, 2022
+
+Enhancements:
+
+- Added alternate authorization Models with stronger typing
+
+## 1.1.0
+
+Released July 13, 2022
+
+Enhancements:
+
+- Updated development tools to the CodeIgniter DevKit
+- Added Config\Auth::$landingRoute variable to set landing page (route name) after user success to login
+- Added Config\Auth::$reservedRoutes variable to set named routes
+- Added a check for custom validation rules during registration via `$registrationRules` property in **app/Config/Validation.php**
+- Reworked all filters, added BaseFilter. Login, permission and role filters now extends BaseFilter
+- Added new php spark auth:list_users command to list all registered users
+- Added validation rules for email in attemptForgot() method of AuthController
+- Updated language and doc files to reflect latest changes
+
+Bugs Fixed:
+
+- Fixed a bug in Auth trait's restrictWithPermissions() method preventing to check multiple permissions at once
+- Fixed a namespace error in published views with auth:publish command
+- Fixed issue with forcePasswordReset() method of user entity preventing PostgreSQL support
+- Fixed a bug with views when your project folder is not root folder
+- Fixed improper redirection issue to '/' when site is served from sub-directory
+- Fixed argument type error in Password::verify() method
+- Fixed argument type error in AuthenticationBase class login() method
+- Fixed type error in LocalAuthenticator when result from user model is not instance of User entity
+- Fixed a bug in login filter causing redirect loop
+
+These are just highlights. Visit the [CHANGELOG](https://github.com/lonnieezell/myth-auth/blob/develop/CHANGELOG.md) for more details.
+
 ## 1.0.1
 
 Released July 2, 2021

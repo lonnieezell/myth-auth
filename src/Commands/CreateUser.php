@@ -40,6 +40,7 @@ class CreateUser extends BaseCommand
 
         // Run the user through the entity and insert it
         $user = new User($row);
+        $user->forcePasswordReset();
 
         $users = model(UserModel::class);
         if ($userId = $users->insert($user)) {

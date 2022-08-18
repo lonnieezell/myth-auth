@@ -1,17 +1,26 @@
 # Myth:Auth
 
-[![](https://github.com/lonnieezell/myth-auth/workflows/PHPUnit/badge.svg)](https://github.com/lonnieezell/myth-auth/actions?query=workflow%3A%22PHPUnit%22)
-[![](https://github.com/lonnieezell/myth-auth/workflows/PHPStan/badge.svg)](https://github.com/lonnieezell/myth-auth/actions?query=workflow%3A%22PHPStan%22)
+[![](https://github.com/lonnieezell/myth-auth/workflows/PHPUnit/badge.svg)](https://github.com/lonnieezell/myth-auth/actions/workflows/phpunit.yml)
+[![](https://github.com/lonnieezell/myth-auth/workflows/PHPStan/badge.svg)](https://github.com/lonnieezell/myth-auth/actions/workflows/phpstan.yml)
+[![](https://github.com/lonnieezell/myth-auth/workflows/Deptrac/badge.svg)](https://github.com/lonnieezell/myth-auth/actions/workflows/deptrac.yml)
 [![Coverage Status](https://coveralls.io/repos/github/lonnieezell/myth-auth/badge.svg?branch=develop)](https://coveralls.io/github/lonnieezell/myth-auth?branch=develop)
 
 Flexible, Powerful, Secure auth package for CodeIgniter 4.
 
-*This repo is maintained by volunteers. If you post an issue and haven't heard from us within 7 days, feel free to ping the issue so that we see it again.*
+## Project Notice
+
+As of [June 2022](https://forum.codeigniter.com/showthread.php?tid=82003) CodeIgniter now has an official
+Authentication library, [CodeIgniter Shield](https://www.codeigniter.com/user_guide/libraries/official_packages.html#shield).
+If you are looking for an authentication solution for a new project then that is the recommended solution.
+
+This project is now maintained by volunteers. If you interact with the project repository there may be delays
+in receiving response. Please direct support questions to [GitHub Discussions](https://github.com/lonnieezell/myth-auth/discussions)
+or to CodeIgniter's [Forums](https://forum.codeigniter.com/forumdisplay.php?fid=34) or [Slack Channel](https://codeigniterchat.slack.com/).
 
 ## Requirements
 
-- PHP 7.3+, 8.0+
-- CodeIgniter 4.0.4+
+- PHP 7.4+, 8.0+
+- CodeIgniter 4.1+
 
 ## Features
 
@@ -29,32 +38,30 @@ the following primary features:
 
 Installation is best done via Composer. Assuming Composer is installed globally, you may use
 the following command: 
-
+```shell
     > composer require myth/auth
+```
 
-This will add the latest stable release of **Myth\Auth** as a module to your project. Note that
-you may need to adjust your project's
-[minimum stability ](http://webtips.krajee.com/setting-composer-minimum-stability-application/)
-in order to use **Myth\Auth** while it is in beta.
+This will add the latest stable release of **Myth:Auth** as a module to your project.
 
 ### Manual Installation
 
 Should you choose not to use Composer to install, you can clone or download this repo and
-then enable it by editing **app/Config/Autoload.php** and adding the **Myth\Auth**
-namespace to the **$psr4** array. For example, if you copied it into **app/ThirdParty**:
+then enable it by editing **app/Config/Autoload.php** and adding the `Myth\Auth`
+namespace to the `$psr4` array. For example, if you copied it into **app/ThirdParty/**:
 ```php
     $psr4 = [
         'Config'      => APPPATH . 'Config',
         APP_NAMESPACE => APPPATH,
         'App'         => APPPATH,
-        'Myth\Auth'   => APPPATH .'ThirdParty/myth-auth/src',
+        'Myth\Auth'   => APPPATH . 'ThirdParty/myth-auth/src',
     ];
 ```
 
 ### Upgrading
 
-Be sure to check the [Changes Docs](https://github.com/lonnieezell/myth-auth/blob/develop/docs/_changes.md) for
-necessary steps to take after upgrading versions.
+Be sure to check the [Changes Docs](https://github.com/lonnieezell/myth-auth/blob/develop/docs/_changes.md)
+for necessary steps to take after upgrading versions.
 
 ## Configuration
 
@@ -68,8 +75,9 @@ In your application, perform the following setup:
     `\Myth\Auth\Authentication\Passwords\ValidationRules::class`
 
 3. Ensure your database is setup correctly, then run the Auth migrations: 
-
+```shell
     > php spark migrate -all  
+```
 
 NOTE: This library uses your application's cache settings to reduce database lookups. If you want
 to make use of this, simply make sure that your are using a cache engine other than `dummy` and 
@@ -88,26 +96,27 @@ by setting the `$allowRemembering` variable to be `true` in Config/Auth.php.
 
 Routes are defined in Auth's **Config/Routes.php** file. This file is automatically located by CodeIgniter
 when it is processing the routes. If you would like to customize the routes, you should copy the file
-to the **app/Config** directory and make your changes there.
+to the **app/Config** directory, update the namespace, and make your route changes there. You
+may also use the `$reservedRoutes` property of `Config\Auth` to redirect internal route names.
 
 ### Views
 
-Basic views are provided that are based on [Bootstrap 4](http://getbootstrap.com/) for all features.
+Basic views are provided that are based on [Bootstrap 4](https://getbootstrap.com/) for all features.
 
-You can easily override the views used by editing Config/Auth.php, and changing the appropriate values
-within the `$views` variable: 
+You can easily override the views used by editing **Config/Auth.php**, and changing the appropriate
+values within the `$views` variable: 
 
     public $views = [
-        'login'     => 'Myth\Auth\Views\login',
-        'register'  => 'Myth\Auth\Views\register',
-        'forgot'    => 'Myth\Auth\Views\forgot',
-        'reset'     => 'Myth\Auth\Views\reset',
+        'login'       => 'Myth\Auth\Views\login',
+        'register'    => 'Myth\Auth\Views\register',
+        'forgot'      => 'Myth\Auth\Views\forgot',
+        'reset'       => 'Myth\Auth\Views\reset',
         'emailForgot' => 'Myth\Auth\Views\emails\forgot',
     ];
 
 NOTE: If you're not familiar with how views can be namespaced in CodeIgniter, please refer to 
-[the user guide](https://codeigniter4.github.io/CodeIgniter4/general/modules.html) for CI4's 
-Code Module support. 
+[the CodeIgniter User Guide](https://codeigniter.com/user_guide/general/modules.html) for section
+on Code Module support. 
 
 ## Services
 
@@ -117,20 +126,23 @@ The following Services are provided by the package:
 
 Provides access to any of the authentication packages that Myth:Auth knows about. By default
 it will return the "Local Authentication" library, which is the basic password-based system.
-
+```php
     $authenticate = service('authentication');
+```
     
 You can specify the library to use as the first argument:
-
+```php
     $authenticate = service('authentication', 'jwt');
-    
+```
+
 **authorization**
 
 Provides access to any of the authorization libraries that Myth:Auth knows about. By default
 it will return the "Flat" authorization library, which is a Flat RBAC (role-based access control)
 as defined by NIST. It provides user-specific permissions as well as group (role) based permissions.
-
+```php
     $authorize = service('authorization');
+```
 
 **passwords**
 
@@ -138,13 +150,14 @@ Provides direct access to the Password validation system. This is an expandable 
 supports many of [NIST's latest Digital Identity guidelines](https://pages.nist.gov/800-63-3/). The 
 validator comes with a dictionary of over 620,000 common/leaked passwords that can be checked against.
 A handful of variations on the user's email/username are automatically checked against. 
-
+```php
     $authenticate = service('passwords');
-   
+```
+
 Most of the time you should not need to access this library directly, though, as a new Validation rule
 is provided that can be used with the Validation library, `strong_password`. In order to enable this, 
 you must first edit **app/Config/Validation.php** and add the new ruleset to the available rule sets:
-
+```php
      public $ruleSets = [
         \CodeIgniter\Validation\Rules::class,
         \CodeIgniter\Validation\FormatRules::class,
@@ -152,13 +165,15 @@ you must first edit **app/Config/Validation.php** and add the new ruleset to the
         \CodeIgniter\Validation\CreditCardRules::class,
         \Myth\Auth\Authentication\Passwords\ValidationRules::class,
     ];
-    
-Now you can use `strong_password` in any set of rules for validation:
+```
 
+Now you can use `strong_password` in any set of rules for validation:
+```php
     $validation->setRules([
         'username' => 'required',
         'password' => 'required|strong_password'
     ]);
+```
 
 ## Helper Functions
 
@@ -200,7 +215,6 @@ auth filters all pre-load the helper so it is available on any filtered routes.
 * Parameters: Permission ID or name.
 * Returns: `true` or `false`
 
-
 ## Users
 
 Myth:Auth uses [CodeIgniter Entities](https://codeigniter4.github.io/CodeIgniter4/models/entities.html) 
@@ -215,7 +229,6 @@ or modify it as needed.
 The UserModel can automatically assign a role during user creation. Pass the group name to the 
 `withGroup()` method prior to calling `insert()` or `save()` to create a new user and the user 
 will be automatically added to that group.
-
 ```php
     $user = $userModel
                 ->withGroup('guests')
