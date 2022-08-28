@@ -46,7 +46,7 @@ class AuthController extends Controller
         // No need to show a login form if the user
         // is already logged in.
         if ($this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? site_url('/');
+            $redirectURL = session('redirect_url') ?? route_to($this->config->landingRoute);
             unset($_SESSION['redirect_url']);
 
             return redirect()->to($redirectURL);
@@ -90,10 +90,10 @@ class AuthController extends Controller
 
         // Is the user being forced to reset their password?
         if ($this->auth->user()->force_pass_reset === true) {
-            return redirect()->to(route_to('reset-password') . '?token=' . $this->auth->user()->reset_hash)->withCookies();
+            return redirect()->to(route_to($this->config->reservedRoutes['reset-password']) . '?token=' . $this->auth->user()->reset_hash)->withCookies();
         }
 
-        $redirectURL = session('redirect_url') ?? site_url('/');
+        $redirectURL = session('redirect_url') ?? site_url($this->config->landingRoute);
         unset($_SESSION['redirect_url']);
 
         return redirect()->to($redirectURL)->withCookies()->with('message', lang('Auth.loginSuccess'));
@@ -189,11 +189,11 @@ class AuthController extends Controller
             }
 
             // Success!
-            return redirect()->route('login')->with('message', lang('Auth.activationSuccess'));
+            return redirect($this->config->reservedRoutes['login'])->with('message', lang('Auth.activationSuccess'));
         }
 
         // Success!
-        return redirect()->route('login')->with('message', lang('Auth.registerSuccess'));
+        return redirect($this->config->reservedRoutes['login'])->with('message', lang('Auth.registerSuccess'));
     }
 
     //--------------------------------------------------------------------
@@ -206,7 +206,7 @@ class AuthController extends Controller
     public function forgotPassword()
     {
         if ($this->config->activeResetter === null) {
-            return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
+            return redirect($this->config->reservedRoutes['login'])->with('error', lang('Auth.forgotDisabled'));
         }
 
         return $this->_render($this->config->views['forgot'], ['config' => $this->config]);
@@ -219,7 +219,7 @@ class AuthController extends Controller
     public function attemptForgot()
     {
         if ($this->config->activeResetter === null) {
-            return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
+            return redirect($this->config->reservedRoutes['login'])->with('error', lang('Auth.forgotDisabled'));
         }
 
         $rules = [
@@ -252,7 +252,7 @@ class AuthController extends Controller
             return redirect()->back()->withInput()->with('error', $resetter->error() ?? lang('Auth.unknownError'));
         }
 
-        return redirect()->route('reset-password')->with('message', lang('Auth.forgotEmailSent'));
+        return redirect($this->config->reservedRoutes['reset-password'])->with('message', lang('Auth.forgotEmailSent'));
     }
 
     /**
@@ -261,7 +261,7 @@ class AuthController extends Controller
     public function resetPassword()
     {
         if ($this->config->activeResetter === null) {
-            return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
+            return redirect($this->config->reservedRoutes['login'])->with('error', lang('Auth.forgotDisabled'));
         }
 
         $token = $this->request->getGet('token');
@@ -281,7 +281,7 @@ class AuthController extends Controller
     public function attemptReset()
     {
         if ($this->config->activeResetter === null) {
-            return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
+            return redirect($this->config->reservedRoutes['login'])->with('error', lang('Auth.forgotDisabled'));
         }
 
         $users = model(UserModel::class);
@@ -326,7 +326,7 @@ class AuthController extends Controller
         $user->force_pass_reset = false;
         $users->save($user);
 
-        return redirect()->route('login')->with('message', lang('Auth.resetSuccess'));
+        return redirect($this->config->reservedRoutes['login'])->with('message', lang('Auth.resetSuccess'));
     }
 
     /**
@@ -356,14 +356,14 @@ class AuthController extends Controller
             ->first();
 
         if (null === $user) {
-            return redirect()->route('login')->with('error', lang('Auth.activationNoUser'));
+            return redirect($this->config->reservedRoutes['login'])->with('error', lang('Auth.activationNoUser'));
         }
 
         $user->activate();
 
         $users->save($user);
 
-        return redirect()->route('login')->with('message', lang('Auth.registerSuccess'));
+        return redirect($this->config->reservedRoutes['login'])->with('message', lang('Auth.registerSuccess'));
     }
 
     /**
@@ -374,7 +374,7 @@ class AuthController extends Controller
     public function resendActivateAccount()
     {
         if ($this->config->requireActivation === null) {
-            return redirect()->route('login');
+            return redirect($this->config->reservedRoutes['login']);
         }
 
         $throttler = service('throttler');
@@ -393,7 +393,7 @@ class AuthController extends Controller
             ->first();
 
         if (null === $user) {
-            return redirect()->route('login')->with('error', lang('Auth.activationNoUser'));
+            return redirect($this->config->reservedRoutes['login'])->with('error', lang('Auth.activationNoUser'));
         }
 
         $activator = service('activator');
@@ -404,7 +404,7 @@ class AuthController extends Controller
         }
 
         // Success!
-        return redirect()->route('login')->with('message', lang('Auth.activationSuccess'));
+        return redirect($this->config->reservedRoutes['login'])->with('message', lang('Auth.activationSuccess'));
     }
 
     protected function _render(string $view, array $data = [])
