@@ -10,6 +10,9 @@ use Myth\Auth\Models\UserModel;
 
 class AuthController extends Controller
 {
+    /**
+     * @var object
+     */
     protected $auth;
 
     /**
@@ -22,6 +25,9 @@ class AuthController extends Controller
      */
     protected $session;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         // Most services in this controller require
@@ -32,35 +38,41 @@ class AuthController extends Controller
         $this->auth   = service('authentication');
     }
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
     // Login/out
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     /**
      * Displays the login form, or redirects
      * the user to their destination/home if
      * they are already logged in.
+     *
+     * @return \CodeIgniter\HTTP\RedirectResponse|string
      */
     public function login()
     {
         // No need to show a login form if the user
         // is already logged in.
         if ($this->auth->check()) {
-            $redirectURL = session('redirect_url') ?? route_to($this->config->landingRoute);
+            $redirectURL = session('redirect_url') ?? site_url($this->config->landingRoute);
             unset($_SESSION['redirect_url']);
 
-            return redirect()->to($redirectURL);
+            return redirect()
+                ->to($redirectURL);
         }
 
-        // Set a return URL if none is specified
+        // Set a return URL if none is specified.
         $_SESSION['redirect_url'] = session('redirect_url') ?? previous_url();
 
+        // Display the login view.
         return $this->_render($this->config->views['login'], ['config' => $this->config]);
     }
 
     /**
      * Attempts to verify the user's credentials
      * through a POST request.
+     *
+     * @return \CodeIgniter\HTTP\RedirectResponse
      */
     public function attemptLogin()
     {
@@ -73,7 +85,10 @@ class AuthController extends Controller
         }
 
         if (! $this->validate($rules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('errors', $this->validator->getErrors());
         }
 
         $login    = $this->request->getPost('login');
@@ -85,22 +100,34 @@ class AuthController extends Controller
 
         // Try to log them in...
         if (! $this->auth->attempt([$type => $login, 'password' => $password], $remember)) {
-            return redirect()->back()->withInput()->with('error', $this->auth->error() ?? lang('Auth.badAttempt'));
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', $this->auth->error() ?? lang('Auth.badAttempt'));
         }
 
         // Is the user being forced to reset their password?
         if ($this->auth->user()->force_pass_reset === true) {
-            return redirect()->to(route_to($this->config->reservedRoutes['reset-password']) . '?token=' . $this->auth->user()->reset_hash)->withCookies();
+            $url = route_to('reset-password') . '?token=' . $this->auth->user()->reset_hash;
+
+            return redirect()
+                ->to($url)
+                ->withCookies();
         }
 
         $redirectURL = session('redirect_url') ?? site_url($this->config->landingRoute);
         unset($_SESSION['redirect_url']);
 
-        return redirect()->to($redirectURL)->withCookies()->with('message', lang('Auth.loginSuccess'));
+        return redirect()
+            ->to($redirectURL)
+            ->withCookies()
+            ->with('message', lang('Auth.loginSuccess'));
     }
 
     /**
      * Log the user out.
+     *
+     * @return \CodeIgniter\HTTP\RedirectResponse
      */
     public function logout()
     {
@@ -111,12 +138,14 @@ class AuthController extends Controller
         return redirect()->to(site_url('/'));
     }
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
     // Register
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     /**
      * Displays the user registration page.
+     *
+     * @return \CodeIgniter\HTTP\RedirectResponse|string
      */
     public function register()
     {
@@ -127,7 +156,10 @@ class AuthController extends Controller
 
         // Check if registration is allowed
         if (! $this->config->allowRegistration) {
-            return redirect()->back()->withInput()->with('error', lang('Auth.registerDisabled'));
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', lang('Auth.registerDisabled'));
         }
 
         return $this->_render($this->config->views['register'], ['config' => $this->config]);
@@ -135,12 +167,17 @@ class AuthController extends Controller
 
     /**
      * Attempt to register a new user.
+     *
+     * @return \CodeIgniter\HTTP\RedirectResponse
      */
     public function attemptRegister()
     {
         // Check if registration is allowed
         if (! $this->config->allowRegistration) {
-            return redirect()->back()->withInput()->with('error', lang('Auth.registerDisabled'));
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', lang('Auth.registerDisabled'));
         }
 
         $users = model(UserModel::class);
@@ -152,7 +189,10 @@ class AuthController extends Controller
         ];
 
         if (! $this->validate($rules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('errors', $this->validator->getErrors());
         }
 
         // Validate passwords since they can only be validated properly here
@@ -162,7 +202,10 @@ class AuthController extends Controller
         ];
 
         if (! $this->validate($rules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('errors', $this->validator->getErrors());
         }
 
         // Save the user
@@ -177,7 +220,10 @@ class AuthController extends Controller
         }
 
         if (! $users->save($user)) {
-            return redirect()->back()->withInput()->with('errors', $users->errors());
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('errors', $users->errors());
         }
 
         if ($this->config->requireActivation !== null) {
@@ -185,28 +231,39 @@ class AuthController extends Controller
             $sent      = $activator->send($user);
 
             if (! $sent) {
-                return redirect()->back()->withInput()->with('error', $activator->error() ?? lang('Auth.unknownError'));
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('error', $activator->error() ?? lang('Auth.unknownError'));
             }
 
             // Success!
-            return redirect($this->config->reservedRoutes['login'])->with('message', lang('Auth.activationSuccess'));
+            return redirect()
+                ->route('login')
+                ->with('message', lang('Auth.activationSuccess'));
         }
 
         // Success!
-        return redirect($this->config->reservedRoutes['login'])->with('message', lang('Auth.registerSuccess'));
+        return redirect()
+            ->route('login')
+            ->with('message', lang('Auth.registerSuccess'));
     }
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
     // Forgot Password
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     /**
      * Displays the forgot password form.
+     *
+     * @return \CodeIgniter\HTTP\RedirectResponse|string
      */
     public function forgotPassword()
     {
         if ($this->config->activeResetter === null) {
-            return redirect($this->config->reservedRoutes['login'])->with('error', lang('Auth.forgotDisabled'));
+            return redirect()
+                ->route('login')
+                ->with('error', lang('Auth.forgotDisabled'));
         }
 
         return $this->_render($this->config->views['forgot'], ['config' => $this->config]);
@@ -215,11 +272,15 @@ class AuthController extends Controller
     /**
      * Attempts to find a user account with that password
      * and send password reset instructions to them.
+     *
+     * @return \CodeIgniter\HTTP\RedirectResponse
      */
     public function attemptForgot()
     {
         if ($this->config->activeResetter === null) {
-            return redirect($this->config->reservedRoutes['login'])->with('error', lang('Auth.forgotDisabled'));
+            return redirect()
+                ->route('login')
+                ->with('error', lang('Auth.forgotDisabled'));
         }
 
         $rules = [
@@ -230,7 +291,10 @@ class AuthController extends Controller
         ];
 
         if (! $this->validate($rules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('errors', $this->validator->getErrors());
         }
 
         $users = model(UserModel::class);
@@ -238,7 +302,9 @@ class AuthController extends Controller
         $user = $users->where('email', $this->request->getPost('email'))->first();
 
         if (null === $user) {
-            return redirect()->back()->with('error', lang('Auth.forgotNoUser'));
+            return redirect()
+                ->back()
+                ->with('error', lang('Auth.forgotNoUser'));
         }
 
         // Save the reset hash /
@@ -249,19 +315,28 @@ class AuthController extends Controller
         $sent     = $resetter->send($user);
 
         if (! $sent) {
-            return redirect()->back()->withInput()->with('error', $resetter->error() ?? lang('Auth.unknownError'));
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', $resetter->error() ?? lang('Auth.unknownError'));
         }
 
-        return redirect($this->config->reservedRoutes['reset-password'])->with('message', lang('Auth.forgotEmailSent'));
+        return redirect()
+            ->route('reset-password')
+            ->with('message', lang('Auth.forgotEmailSent'));
     }
 
     /**
      * Displays the Reset Password form.
+     *
+     * @return \CodeIgniter\HTTP\RedirectResponse|string
      */
     public function resetPassword()
     {
         if ($this->config->activeResetter === null) {
-            return redirect($this->config->reservedRoutes['login'])->with('error', lang('Auth.forgotDisabled'));
+            return redirect()
+                ->route('login')
+                ->with('error', lang('Auth.forgotDisabled'));
         }
 
         $token = $this->request->getGet('token');
@@ -276,12 +351,14 @@ class AuthController extends Controller
      * Verifies the code with the email and saves the new password,
      * if they all pass validation.
      *
-     * @return mixed
+     * @return \CodeIgniter\HTTP\RedirectResponse
      */
     public function attemptReset()
     {
         if ($this->config->activeResetter === null) {
-            return redirect($this->config->reservedRoutes['login'])->with('error', lang('Auth.forgotDisabled'));
+            return redirect()
+                ->route('login')
+                ->with('error', lang('Auth.forgotDisabled'));
         }
 
         $users = model(UserModel::class);
@@ -302,7 +379,10 @@ class AuthController extends Controller
         ];
 
         if (! $this->validate($rules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('errors', $this->validator->getErrors());
         }
 
         $user = $users->where('email', $this->request->getPost('email'))
@@ -310,12 +390,17 @@ class AuthController extends Controller
             ->first();
 
         if (null === $user) {
-            return redirect()->back()->with('error', lang('Auth.forgotNoUser'));
+            return redirect()
+                ->back()
+                ->with('error', lang('Auth.forgotNoUser'));
         }
 
         // Reset token still valid?
         if (! empty($user->reset_expires) && time() > $user->reset_expires->getTimestamp()) {
-            return redirect()->back()->withInput()->with('error', lang('Auth.resetTokenExpired'));
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', lang('Auth.resetTokenExpired'));
         }
 
         // Success! Save the new password, and cleanup the reset hash.
@@ -326,7 +411,9 @@ class AuthController extends Controller
         $user->force_pass_reset = false;
         $users->save($user);
 
-        return redirect($this->config->reservedRoutes['login'])->with('message', lang('Auth.resetSuccess'));
+        return redirect()
+            ->route('login')
+            ->with('message', lang('Auth.resetSuccess'));
     }
 
     /**
@@ -348,7 +435,9 @@ class AuthController extends Controller
         $throttler = service('throttler');
 
         if ($throttler->check(md5($this->request->getIPAddress()), 2, MINUTE) === false) {
-            return service('response')->setStatusCode(429)->setBody(lang('Auth.tooManyRequests', [$throttler->getTokentime()]));
+            return service('response')
+                ->setStatusCode(429)
+                ->setBody(lang('Auth.tooManyRequests', [$throttler->getTokentime()]));
         }
 
         $user = $users->where('activate_hash', $this->request->getGet('token'))
@@ -356,14 +445,18 @@ class AuthController extends Controller
             ->first();
 
         if (null === $user) {
-            return redirect($this->config->reservedRoutes['login'])->with('error', lang('Auth.activationNoUser'));
+            return redirect()
+                ->route('login')
+                ->with('error', lang('Auth.activationNoUser'));
         }
 
         $user->activate();
 
         $users->save($user);
 
-        return redirect($this->config->reservedRoutes['login'])->with('message', lang('Auth.registerSuccess'));
+        return redirect()
+            ->route('login')
+            ->with('message', lang('Auth.registerSuccess'));
     }
 
     /**
@@ -374,13 +467,16 @@ class AuthController extends Controller
     public function resendActivateAccount()
     {
         if ($this->config->requireActivation === null) {
-            return redirect($this->config->reservedRoutes['login']);
+            return redirect()
+                ->route('login');
         }
 
         $throttler = service('throttler');
 
         if ($throttler->check(md5($this->request->getIPAddress()), 2, MINUTE) === false) {
-            return service('response')->setStatusCode(429)->setBody(lang('Auth.tooManyRequests', [$throttler->getTokentime()]));
+            return service('response')
+                ->setStatusCode(429)
+                ->setBody(lang('Auth.tooManyRequests', [$throttler->getTokentime()]));
         }
 
         $login = urldecode($this->request->getGet('login'));
@@ -393,20 +489,32 @@ class AuthController extends Controller
             ->first();
 
         if (null === $user) {
-            return redirect($this->config->reservedRoutes['login'])->with('error', lang('Auth.activationNoUser'));
+            return redirect()
+                ->route('login')
+                ->with('error', lang('Auth.activationNoUser'));
         }
 
         $activator = service('activator');
         $sent      = $activator->send($user);
 
         if (! $sent) {
-            return redirect()->back()->withInput()->with('error', $activator->error() ?? lang('Auth.unknownError'));
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', $activator->error() ?? lang('Auth.unknownError'));
         }
 
         // Success!
-        return redirect($this->config->reservedRoutes['login'])->with('message', lang('Auth.activationSuccess'));
+        return redirect()
+            ->route('login')
+            ->with('message', lang('Auth.activationSuccess'));
     }
 
+    /**
+     * Render the view.
+     *
+     * @return string
+     */
     protected function _render(string $view, array $data = [])
     {
         return view($view, $data);
