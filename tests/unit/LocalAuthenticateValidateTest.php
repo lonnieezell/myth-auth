@@ -72,7 +72,7 @@ final class LocalAuthenticateValidateTest extends CIUnitTestCase
 
     public function testFailsBadUser()
     {
-        $this->userModel->shouldReceive('where')->once()->with(\Mockery::subset(['email' => 'joe@example.com']))->andReturn($this->userModel);
+        $this->userModel->shouldReceive('where')->once()->with(m::subset(['email' => 'joe@example.com']))->andReturn($this->userModel);
         $this->userModel->shouldReceive('first')->once()->andReturn(null);
 
         $result = $this->auth->validate([
@@ -88,7 +88,7 @@ final class LocalAuthenticateValidateTest extends CIUnitTestCase
     {
         $user = new User(['password_hash' => password_hash('nope!', PASSWORD_DEFAULT)]);
 
-        $this->userModel->shouldReceive('where')->once()->with(\Mockery::subset(['email' => 'joe@example.com']))->andReturn($this->userModel);
+        $this->userModel->shouldReceive('where')->once()->with(m::subset(['email' => 'joe@example.com']))->andReturn($this->userModel);
         $this->userModel->shouldReceive('first')->once()->andReturn($user);
 
         $result = $this->auth->validate([
@@ -104,7 +104,7 @@ final class LocalAuthenticateValidateTest extends CIUnitTestCase
     {
         $user = new User(['password' => 'secret']);
 
-        $this->userModel->shouldReceive('where')->once()->with(\Mockery::subset(['email' => 'joe@example.com']))->andReturn($this->userModel);
+        $this->userModel->shouldReceive('where')->once()->with(m::subset(['email' => 'joe@example.com']))->andReturn($this->userModel);
         $this->userModel->shouldReceive('first')->once()->andReturn($user);
 
         $result = $this->auth->validate([
@@ -119,7 +119,7 @@ final class LocalAuthenticateValidateTest extends CIUnitTestCase
     {
         $user = new User(['password' => 'secret']);
 
-        $this->userModel->shouldReceive('where')->once()->with(\Mockery::subset(['email' => 'joe@example.com']))->andReturn($this->userModel);
+        $this->userModel->shouldReceive('where')->once()->with(m::subset(['email' => 'joe@example.com']))->andReturn($this->userModel);
         $this->userModel->shouldReceive('first')->once()->andReturn($user);
 
         $result = $this->auth->validate([
@@ -134,7 +134,7 @@ final class LocalAuthenticateValidateTest extends CIUnitTestCase
     {
         $user = new User(['password' => 'secret']);
 
-        $this->userModel->shouldReceive('where')->once()->with(\Mockery::subset(['email' => 'joe@example.com']))->andReturn($this->userModel);
+        $this->userModel->shouldReceive('where')->once()->with(m::subset(['email' => 'joe@example.com']))->andReturn($this->userModel);
         $this->userModel->shouldReceive('first')->once()->andReturn($user);
 
         $result = $this->auth->validate([
