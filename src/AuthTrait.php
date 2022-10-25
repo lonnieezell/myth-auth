@@ -39,9 +39,9 @@ trait AuthTrait
      *
      * @param string $uri
      *
-     * @throws RedirectException
-     *
      * @return bool
+     *
+     * @throws RedirectException
      */
     public function restrict(?string $uri = null, bool $returnOnly = false)
     {
@@ -84,9 +84,9 @@ trait AuthTrait
      * @param mixed  $groups
      * @param string $uri    The URI to redirect to on fail.
      *
-     * @throws RedirectException
-     *
      * @return bool
+     *
+     * @throws RedirectException
      */
     public function restrictToGroups($groups, $uri = null)
     {
@@ -119,9 +119,9 @@ trait AuthTrait
      * @param int|int[]|string|string[] $permissions
      * @param string                    $uri         The URI to redirect to on fail.
      *
-     * @throws RedirectException
-     *
      * @return bool
+     *
+     * @throws RedirectException
      */
     public function restrictWithPermissions($permissions, $uri = null)
     {
