@@ -214,6 +214,7 @@ class Publish extends BaseCommand
 
             $content = file_get_contents($path);
             $content = $this->replaceNamespace($content, 'Myth\Auth\Filters', 'Filters');
+            $content = str_replace('use CodeIgniter\HTTP\ResponseInterface;', 'use CodeIgniter\HTTP\ResponseInterface;' . PHP_EOL . 'use Myth\Auth\Filters\BaseFilter;', $content);
 
             $this->writeFile("Filters/{$filter}.php", $content);
         }
