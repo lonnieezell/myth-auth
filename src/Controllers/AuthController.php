@@ -3,6 +3,8 @@
 namespace Myth\Auth\Controllers;
 
 use CodeIgniter\Controller;
+use CodeIgniter\HTTP\CLIRequest;
+use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\Session\Session;
 use Myth\Auth\Config\Auth as AuthConfig;
 use Myth\Auth\Entities\User;
@@ -10,6 +12,13 @@ use Myth\Auth\Models\UserModel;
 
 class AuthController extends Controller
 {
+    /**
+     * Analysis assist; remove after CodeIgniter 4.3 release.
+     *
+     * @var CLIRequest|IncomingRequest
+     */
+    protected $request;
+
     protected $auth;
 
     /**
