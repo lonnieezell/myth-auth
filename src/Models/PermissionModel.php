@@ -33,7 +33,7 @@ class PermissionModel extends Model
     /**
      * Adds a single permission to a single user.
      *
-     * @return BaseResult|false|Query
+     * @return bool
      */
     public function addPermissionToUser(int $permissionId, int $userId)
     {
