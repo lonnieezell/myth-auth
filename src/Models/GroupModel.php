@@ -49,7 +49,7 @@ class GroupModel extends Model
             'group_id' => $groupId,
         ];
 
-        return (bool) $this->db->table('auth_groups_users')->insert($data);
+        return $this->db->table('auth_groups_users')->insert($data);
     }
 
     /**
