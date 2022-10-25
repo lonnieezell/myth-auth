@@ -108,9 +108,9 @@ class User extends Entity
      * Force a user to reset their password on next page refresh
      * or login. Checked in the LocalAuthenticator's check() method.
      *
-     * @throws Exception
-     *
      * @return $this
+     *
+     * @throws Exception
      */
     public function forcePasswordReset()
     {
@@ -124,9 +124,9 @@ class User extends Entity
      * Generates a secure hash to use for password reset purposes,
      * saves it to the instance.
      *
-     * @throws Exception
-     *
      * @return $this
+     *
+     * @throws Exception
      */
     public function generateResetHash()
     {
@@ -139,9 +139,9 @@ class User extends Entity
     /**
      * Generates a secure random hash to use for account activation.
      *
-     * @throws Exception
-     *
      * @return $this
+     *
+     * @throws Exception
      */
     public function generateActivateHash()
     {

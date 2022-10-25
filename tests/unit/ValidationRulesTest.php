@@ -12,7 +12,7 @@ final class ValidationRulesTest extends CIUnitTestCase
 {
     protected Validation $validation;
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     protected function setUp(): void
     {
@@ -32,7 +32,7 @@ final class ValidationRulesTest extends CIUnitTestCase
         $this->validation->reset();
     }
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     public function testStrongPasswordLongRule()
     {
@@ -50,7 +50,7 @@ final class ValidationRulesTest extends CIUnitTestCase
         $this->assertTrue($this->validation->run($data));
     }
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     public function testStrongPasswordLongRuleWithPostRequest()
     {
@@ -70,7 +70,7 @@ final class ValidationRulesTest extends CIUnitTestCase
         $this->assertTrue($result);
     }
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     public function testStrongPasswordLongRuleWithRawInputRequest()
     {
@@ -90,7 +90,7 @@ final class ValidationRulesTest extends CIUnitTestCase
         $this->assertTrue($result);
     }
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     public function testStrongPasswordShortRuleWithPostRequest()
     {
@@ -110,7 +110,7 @@ final class ValidationRulesTest extends CIUnitTestCase
         $this->assertTrue($result);
     }
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     public function testStrongPasswordShortRuleWithErrors()
     {
@@ -133,7 +133,7 @@ final class ValidationRulesTest extends CIUnitTestCase
         ], $this->validation->getErrors());
     }
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     public function testStrongPasswordLongRuleWithErrors()
     {

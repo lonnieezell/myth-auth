@@ -74,7 +74,7 @@ class Publish extends BaseCommand
      */
     protected $entityPublished = false;
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     /**
      * Displays the help for the spark cli script itself.
@@ -260,9 +260,9 @@ class Publish extends BaseCommand
         $this->writeFile('Language/en/Auth.php', $content);
     }
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
     // Utilities
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     /**
      * Replaces the Myth\Auth namespace in the published
