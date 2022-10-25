@@ -31,7 +31,7 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.0'
+          php-version: '8.1'
           tools: infection, phpunit
           extensions: intl, json, mbstring, gd, xml, sqlite3
           coverage: xdebug
