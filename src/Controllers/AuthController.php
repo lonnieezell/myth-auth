@@ -3,6 +3,8 @@
 namespace Myth\Auth\Controllers;
 
 use CodeIgniter\Controller;
+use CodeIgniter\HTTP\CLIRequest;
+use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\Session\Session;
 use Myth\Auth\Config\Auth as AuthConfig;
 use Myth\Auth\Entities\User;
@@ -10,6 +12,13 @@ use Myth\Auth\Models\UserModel;
 
 class AuthController extends Controller
 {
+    /**
+     * Analysis assist; remove after CodeIgniter 4.3 release.
+     *
+     * @var CLIRequest|IncomingRequest
+     */
+    protected $request;
+
     protected $auth;
 
     /**
@@ -32,9 +41,9 @@ class AuthController extends Controller
         $this->auth   = service('authentication');
     }
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
     // Login/out
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     /**
      * Displays the login form, or redirects
@@ -111,9 +120,9 @@ class AuthController extends Controller
         return redirect()->to(site_url('/'));
     }
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
     // Register
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     /**
      * Displays the user registration page.
@@ -196,9 +205,9 @@ class AuthController extends Controller
         return redirect()->route('login')->with('message', lang('Auth.registerSuccess'));
     }
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
     // Forgot Password
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     /**
      * Displays the forgot password form.

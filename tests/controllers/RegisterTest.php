@@ -47,6 +47,12 @@ final class RegisterTest extends AuthTestCase
             ->execute('register');
 
         $this->assertTrue($result->isOK());
+
+        /**
+         * @see https://github.com/codeigniter4/CodeIgniter4/pull/6756
+         *
+         * @phpstan-ignore-next-line
+         */
         $result->see('Register', 'h2');
     }
 
@@ -74,6 +80,11 @@ final class RegisterTest extends AuthTestCase
             ->controller(AuthController::class)
             ->execute('attemptRegister');
 
+        /**
+         * @see https://github.com/codeigniter4/CodeIgniter4/pull/6756
+         *
+         * @phpstan-ignore-next-line
+         */
         $this->assertTrue($result->isRedirect(), print_r($result->getBody(), true));
         $this->assertNotNull($_SESSION['_ci_validation_errors']);
     }

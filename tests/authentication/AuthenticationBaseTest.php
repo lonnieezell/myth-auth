@@ -78,7 +78,7 @@ final class AuthenticationBaseTest extends AuthTestCase
         ]);
 
         // TODO: some BDD send back strings : should we forcefullyconvert in Authentication\AuthenticationBase::login() ?
-        //$this->assertSame(4, $_SESSION['logged_in']);
+        // $this->assertSame(4, $_SESSION['logged_in']);
         $this->assertContains($_SESSION['logged_in'], [4, '4']);
 
         $this->dontSeeInDatabase('auth_tokens', [

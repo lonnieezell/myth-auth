@@ -3,12 +3,17 @@
 namespace Myth\Auth\Entities;
 
 use CodeIgniter\Entity\Entity;
+use CodeIgniter\I18n\Time;
 use Exception;
 use Myth\Auth\Authorization\GroupModel;
 use Myth\Auth\Authorization\PermissionModel;
 use Myth\Auth\Password;
 use RuntimeException;
 
+/**
+ * @property array<int, string> $permissions
+ * @property Time|null          $reset_expires
+ */
 class User extends Entity
 {
     /**
@@ -42,7 +47,7 @@ class User extends Entity
     /**
      * Per-user permissions cache
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $permissions = [];
 
@@ -108,9 +113,9 @@ class User extends Entity
      * Force a user to reset their password on next page refresh
      * or login. Checked in the LocalAuthenticator's check() method.
      *
-     * @throws Exception
-     *
      * @return $this
+     *
+     * @throws Exception
      */
     public function forcePasswordReset()
     {
@@ -124,9 +129,9 @@ class User extends Entity
      * Generates a secure hash to use for password reset purposes,
      * saves it to the instance.
      *
-     * @throws Exception
-     *
      * @return $this
+     *
+     * @throws Exception
      */
     public function generateResetHash()
     {
@@ -139,9 +144,9 @@ class User extends Entity
     /**
      * Generates a secure random hash to use for account activation.
      *
-     * @throws Exception
-     *
      * @return $this
+     *
+     * @throws Exception
      */
     public function generateActivateHash()
     {
@@ -235,7 +240,7 @@ class User extends Entity
      *    id=> name,
      * ]
      *
-     * @return array|mixed
+     * @return array<int, string>
      */
     public function getPermissions()
     {
