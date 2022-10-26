@@ -42,7 +42,7 @@ class Auth extends BaseCollector
      */
     protected $title = 'Auth';
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     /**
      * Returns any information that should be shown next to the title.

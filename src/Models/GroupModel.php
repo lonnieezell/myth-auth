@@ -29,9 +29,9 @@ class GroupModel extends Model
      */
     protected string $permissionModel = PermissionModel::class;
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
     // Users
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     /**
      * Adds a single user to a single group.
@@ -49,7 +49,7 @@ class GroupModel extends Model
             'group_id' => $groupId,
         ];
 
-        return (bool) $this->db->table('auth_groups_users')->insert($data);
+        return $this->db->table('auth_groups_users')->insert($data);
     }
 
     /**
@@ -128,9 +128,9 @@ class GroupModel extends Model
         return $found;
     }
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
     // Permissions
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     /**
      * Gets all permissions for a group in a way that can be
@@ -172,7 +172,7 @@ class GroupModel extends Model
         return $this->db->table('auth_groups_permissions')->insert($data);
     }
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     /**
      * Removes a single permission from a single group.
@@ -188,7 +188,7 @@ class GroupModel extends Model
             ])->delete();
     }
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     /**
      * Removes a single permission from all groups.

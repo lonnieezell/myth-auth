@@ -46,6 +46,12 @@ final class LoginTest extends AuthTestCase
             ->execute('login');
 
         $this->assertTrue($result->isOK());
+
+        /**
+         * @see https://github.com/codeigniter4/CodeIgniter4/pull/6756
+         *
+         * @phpstan-ignore-next-line
+         */
         $result->see('Login', 'h2');
     }
 
