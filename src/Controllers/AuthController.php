@@ -5,6 +5,7 @@ namespace Myth\Auth\Controllers;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
+use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\Session\Session;
 use Myth\Auth\Config\Auth as AuthConfig;
 use Myth\Auth\Entities\User;
@@ -47,13 +48,12 @@ class AuthController extends Controller
     // --------------------------------------------------------------------
     // Login/out
     // --------------------------------------------------------------------
-
     /**
      * Displays the login form, or redirects
      * the user to their destination/home if
      * they are already logged in.
      *
-     * @return \CodeIgniter\HTTP\RedirectResponse|string
+     * @return RedirectResponse|string
      */
     public function login()
     {
@@ -78,7 +78,7 @@ class AuthController extends Controller
      * Attempts to verify the user's credentials
      * through a POST request.
      *
-     * @return \CodeIgniter\HTTP\RedirectResponse
+     * @return RedirectResponse
      */
     public function attemptLogin()
     {
@@ -133,7 +133,7 @@ class AuthController extends Controller
     /**
      * Log the user out.
      *
-     * @return \CodeIgniter\HTTP\RedirectResponse
+     * @return RedirectResponse
      */
     public function logout()
     {
@@ -147,11 +147,10 @@ class AuthController extends Controller
     // --------------------------------------------------------------------
     // Register
     // --------------------------------------------------------------------
-
     /**
      * Displays the user registration page.
      *
-     * @return \CodeIgniter\HTTP\RedirectResponse|string
+     * @return RedirectResponse|string
      */
     public function register()
     {
@@ -174,7 +173,7 @@ class AuthController extends Controller
     /**
      * Attempt to register a new user.
      *
-     * @return \CodeIgniter\HTTP\RedirectResponse
+     * @return RedirectResponse
      */
     public function attemptRegister()
     {
@@ -258,11 +257,10 @@ class AuthController extends Controller
     // --------------------------------------------------------------------
     // Forgot Password
     // --------------------------------------------------------------------
-
     /**
      * Displays the forgot password form.
      *
-     * @return \CodeIgniter\HTTP\RedirectResponse|string
+     * @return RedirectResponse|string
      */
     public function forgotPassword()
     {
@@ -279,7 +277,7 @@ class AuthController extends Controller
      * Attempts to find a user account with that password
      * and send password reset instructions to them.
      *
-     * @return \CodeIgniter\HTTP\RedirectResponse
+     * @return RedirectResponse
      */
     public function attemptForgot()
     {
@@ -335,7 +333,7 @@ class AuthController extends Controller
     /**
      * Displays the Reset Password form.
      *
-     * @return \CodeIgniter\HTTP\RedirectResponse|string
+     * @return RedirectResponse|string
      */
     public function resetPassword()
     {
@@ -357,7 +355,7 @@ class AuthController extends Controller
      * Verifies the code with the email and saves the new password,
      * if they all pass validation.
      *
-     * @return \CodeIgniter\HTTP\RedirectResponse
+     * @return RedirectResponse
      */
     public function attemptReset()
     {
