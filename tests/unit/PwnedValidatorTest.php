@@ -13,7 +13,7 @@ use Myth\Auth\Exceptions\AuthException;
  */
 final class PwnedValidatorTest extends CIUnitTestCase
 {
-    protected PwnedValidator $validator;
+    private PwnedValidator $validator;
 
     protected function setUp(): void
     {

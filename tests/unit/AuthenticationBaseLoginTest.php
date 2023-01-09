@@ -12,8 +12,8 @@ use Myth\Auth\Models\LoginModel;
  */
 final class AuthenticationBaseLoginTest extends CIUnitTestCase
 {
-    protected AuthenticationBase $auth;
-    protected MockInterface $loginModel;
+    private AuthenticationBase $auth;
+    private MockInterface $loginModel;
 
     protected function setUp(): void
     {

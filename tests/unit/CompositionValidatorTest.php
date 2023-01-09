@@ -9,7 +9,7 @@ use Myth\Auth\Config\Auth;
  */
 final class CompositionValidatorTest extends CIUnitTestCase
 {
-    protected CompositionValidator $validator;
+    private CompositionValidator $validator;
 
     protected function setUp(): void
     {

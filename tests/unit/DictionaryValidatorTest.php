@@ -9,7 +9,7 @@ use Myth\Auth\Config\Auth;
  */
 final class DictionaryValidatorTest extends CIUnitTestCase
 {
-    protected DictionaryValidator $validator;
+    private DictionaryValidator $validator;
 
     protected function setUp(): void
     {

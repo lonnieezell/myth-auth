@@ -1,6 +1,7 @@
 <?php
 
 use Rector\CodeQuality\Rector\BooleanAnd\SimplifyEmptyArrayCheckRector;
+use Rector\CodeQuality\Rector\Class_\CompleteDynamicPropertiesRector;
 use Rector\CodeQuality\Rector\Expression\InlineIfToExplicitIfRector;
 use Rector\CodeQuality\Rector\For_\ForToForeachRector;
 use Rector\CodeQuality\Rector\Foreach_\UnusedForeachValueToArrayKeysRector;
@@ -29,15 +30,23 @@ use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
 use Rector\Php56\Rector\FunctionLike\AddDefaultValueForUndefinedVariableRector;
 use Rector\Php73\Rector\FuncCall\JsonThrowOnErrorRector;
 use Rector\Php73\Rector\FuncCall\StringifyStrNeedlesRector;
-use Rector\Php74\Rector\Property\TypedPropertyRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
+use Rector\Privatization\Rector\Property\PrivatizeFinalClassPropertyRector;
 use Rector\PSR4\Rector\FileWithoutNamespace\NormalizeNamespaceByPSR4ComposerAutoloadRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
+use Rector\TypeDeclaration\Rector\Property\TypedPropertyFromAssignsRector;
 
 return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->sets([SetList::DEAD_CODE, LevelSetList::UP_TO_PHP_74, PHPUnitSetList::PHPUNIT_SPECIFIC_METHOD, PHPUnitSetList::PHPUNIT_80]);
+    $rectorConfig->sets([
+        SetList::DEAD_CODE,
+        LevelSetList::UP_TO_PHP_74,
+        PHPUnitSetList::PHPUNIT_SPECIFIC_METHOD,
+        PHPUnitSetList::PHPUNIT_100,
+    ]);
+
     $rectorConfig->parallel();
+
     // The paths to refactor (can also be supplied with CLI arguments)
     $rectorConfig->paths([
         __DIR__ . '/src/',
@@ -79,7 +88,7 @@ return static function (RectorConfig $rectorConfig): void {
             __DIR__ . '/tests',
         ],
 
-        // Ignore files that should not be namespaced
+        // Ignore files that should not be namespaced to their folder
         NormalizeNamespaceByPSR4ComposerAutoloadRector::class => [
             __DIR__ . '/src/Helpers',
         ],
@@ -90,6 +99,10 @@ return static function (RectorConfig $rectorConfig): void {
         // May be uninitialized on purpose
         AddDefaultValueForUndefinedVariableRector::class,
     ]);
+
+    // auto import fully qualified class names
+    $rectorConfig->importNames();
+
     $rectorConfig->rule(SimplifyUselessVariableRector::class);
     $rectorConfig->rule(RemoveAlwaysElseRector::class);
     $rectorConfig->rule(CountArrayToEmptyArrayComparisonRector::class);
@@ -113,8 +126,14 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->rule(SimplifyEmptyArrayCheckRector::class);
     $rectorConfig->rule(NormalizeNamespaceByPSR4ComposerAutoloadRector::class);
     $rectorConfig
-        ->ruleWithConfiguration(TypedPropertyRector::class, [
-            // Set to false if you use in libraries, or it does create breaking changes.
-            TypedPropertyRector::INLINE_PUBLIC => false,
+        ->ruleWithConfiguration(TypedPropertyFromAssignsRector::class, [
+            /**
+             * The INLINE_PUBLIC value is default to false to avoid BC break, if you use for libraries and want to preserve BC break, you don't need to configure it, as it included in LevelSetList::UP_TO_PHP_74
+             * Set to true for projects that allow BC break
+             */
+            TypedPropertyFromAssignsRector::INLINE_PUBLIC => false,
         ]);
+    $rectorConfig->rule(StringClassNameToClassConstantRector::class);
+    $rectorConfig->rule(PrivatizeFinalClassPropertyRector::class);
+    $rectorConfig->rule(CompleteDynamicPropertiesRector::class);
 };

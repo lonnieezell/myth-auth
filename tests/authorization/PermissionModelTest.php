@@ -8,7 +8,7 @@ use Tests\Support\AuthTestCase;
  */
 final class PermissionModelTest extends AuthTestCase
 {
-    protected PermissionModel $model;
+    private PermissionModel $model;
     protected $refresh = true;
 
     protected function setUp(): void

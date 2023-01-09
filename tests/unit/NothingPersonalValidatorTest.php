@@ -10,7 +10,7 @@ use Myth\Auth\Entities\User;
  */
 final class NothingPersonalValidatorTest extends CIUnitTestCase
 {
-    protected NothingPersonalValidator $validator;
+    private NothingPersonalValidator $validator;
 
     protected function setUp(): void
     {
@@ -122,7 +122,7 @@ final class NothingPersonalValidatorTest extends CIUnitTestCase
         $this->assertNotSame($isNotPersonal, $isNotSimilar);
     }
 
-    public function passwordProvider()
+    public static function passwordProvider()
     {
         return [
             ['JoeTheCaptain'],
@@ -164,7 +164,7 @@ final class NothingPersonalValidatorTest extends CIUnitTestCase
         $this->assertSame($expected, $this->validator->check($password, $user));
     }
 
-    public function firstLastNameProvider()
+    public static function firstLastNameProvider()
     {
         return [
             ['Count', '', false],
@@ -204,7 +204,7 @@ final class NothingPersonalValidatorTest extends CIUnitTestCase
         $this->assertSame($expected, $this->validator->check($password, $user));
     }
 
-    public function maxSimilarityProvider()
+    public static function maxSimilarityProvider()
     {
         return [[66, false], [0, true]];
     }

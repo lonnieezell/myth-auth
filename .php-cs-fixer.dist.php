@@ -10,10 +10,19 @@ $finder = Finder::create()
         __DIR__ . '/src/',
         __DIR__ . '/tests/',
     ])
-    ->exclude('build')
-    ->append([__FILE__]);
+    ->exclude([
+        'build',
+        'Views',
+    ])
+    ->append([
+        __FILE__,
+        __DIR__ . '/rector.php',
+    ]);
 
-$overrides = [];
+$overrides = [
+    // 'declare_strict_types' => true,
+    // 'void_return'          => true,
+];
 
 $options = [
     'finder'    => $finder,

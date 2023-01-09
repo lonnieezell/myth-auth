@@ -28,7 +28,7 @@ final class FlatAuthorizationTest extends AuthTestCase
      */
     protected $permissions;
 
-    protected FlatAuthorization $auth;
+    private FlatAuthorization $auth;
 
     protected function setUp(): void
     {

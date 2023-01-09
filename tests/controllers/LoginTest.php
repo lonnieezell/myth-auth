@@ -47,11 +47,6 @@ final class LoginTest extends AuthTestCase
 
         $this->assertTrue($result->isOK());
 
-        /**
-         * @see https://github.com/codeigniter4/CodeIgniter4/pull/6756
-         *
-         * @phpstan-ignore-next-line
-         */
         $result->see('Login', 'h2');
     }
 
@@ -108,7 +103,7 @@ final class LoginTest extends AuthTestCase
         $this->assertSame($remembering, $result->response()->hasCookie('remember'));
     }
 
-    public function rememberMeProvider()
+    public static function rememberMeProvider()
     {
         return [
             [true],

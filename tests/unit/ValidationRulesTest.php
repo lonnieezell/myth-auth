@@ -10,7 +10,7 @@ use Myth\Auth\Authentication\Passwords\ValidationRules;
  */
 final class ValidationRulesTest extends CIUnitTestCase
 {
-    protected Validation $validation;
+    private Validation $validation;
 
     // --------------------------------------------------------------------
 

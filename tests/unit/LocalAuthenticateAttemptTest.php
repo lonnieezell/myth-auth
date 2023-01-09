@@ -14,9 +14,9 @@ use Myth\Auth\Models\UserModel;
  */
 final class LocalAuthenticateAttemptTest extends CIUnitTestCase
 {
-    protected UserModel $userModel;
-    protected LocalAuthenticator $auth;
-    protected IncomingRequest $request;
+    private UserModel $userModel;
+    private LocalAuthenticator $auth;
+    private IncomingRequest $request;
 
     protected function setUp(): void
     {

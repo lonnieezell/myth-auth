@@ -15,15 +15,15 @@ use Myth\Auth\Models\UserModel;
  */
 final class LocalAuthenticateValidateTest extends CIUnitTestCase
 {
-    protected MockInterface $userModel;
-    protected MockInterface $loginModel;
+    private MockInterface $userModel;
+    private MockInterface $loginModel;
 
     /**
      * @var LocalAuthenticator
      */
-    protected $auth;
+    private $auth;
 
-    protected IncomingRequest $request;
+    private IncomingRequest $request;
 
     protected function setUp(): void
     {

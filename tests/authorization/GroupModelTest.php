@@ -9,7 +9,7 @@ use Tests\Support\AuthTestCase;
  */
 final class GroupModelTest extends AuthTestCase
 {
-    protected GroupModel $model;
+    private GroupModel $model;
     protected $refresh = true;
 
     protected function setUp(): void
