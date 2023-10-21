@@ -1,6 +1,10 @@
-<?php namespace Myth\Auth\Authentication;
+<?php
+
+namespace Myth\Auth\Authentication;
 
 use Config\App;
+use CodeIgniter\CodeIgniter;
+use Config\Cookie;
 use CodeIgniter\Events\Events;
 use CodeIgniter\Model;
 use Config\Services;
@@ -74,9 +78,9 @@ class AuthenticationBase
      * @return bool
      * @throws \Exception
      */
-    public function login(User $user=null, bool $remember = false): bool
+    public function login(User $user = null, bool $remember = false): bool
     {
-        if (empty($user))
+        if (empty($user)) 
         {
             $this->user = null;
             return false;
@@ -89,7 +93,7 @@ class AuthenticationBase
         $this->recordLoginAttempt($user->email, $ipAddress, $user->id ?? null, true);
 
         // Regenerate the session ID to help protect against session fixation
-        if (ENVIRONMENT !== 'testing')
+        if (ENVIRONMENT !== 'testing') 
         {
             session()->regenerate();
         }
@@ -100,7 +104,7 @@ class AuthenticationBase
         // When logged in, ensure cache control headers are in place
         Services::response()->noCache();
 
-        if ($remember && $this->config->allowRemembering)
+        if ($remember && $this->config->allowRemembering) 
         {
             $this->rememberUser($this->user->id);
         }
@@ -108,13 +112,13 @@ class AuthenticationBase
         // We'll give a 20% chance to need to do a purge since we
         // don't need to purge THAT often, it's just a maintenance issue.
         // to keep the table from getting out of control.
-        if (mt_rand(1, 100) < 20)
+        if (mt_rand(1, 100) < 20) 
         {
             $this->loginModel->purgeOldRememberTokens();
         }
 
-		// trigger login event, in case anyone cares
-		Events::trigger('login', $user);
+        // trigger login event, in case anyone cares
+        Events::trigger('login', $user);
 
         return true;
     }
@@ -132,7 +136,7 @@ class AuthenticationBase
             return true;
         }
 
-        if ($userID = session('logged_in'))
+        if ($userID = session('logged_in')) 
         {
             // Store our current user object
             $this->user = $this->userModel->find($userID);
@@ -154,7 +158,7 @@ class AuthenticationBase
     {
         $user = $this->retrieveUser(['id' => $id]);
 
-        if (empty($user))
+        if (empty($user)) 
         {
             throw UserNotFoundException::forUserID($id);
         }
@@ -171,9 +175,9 @@ class AuthenticationBase
 
         // Destroy the session data - but ensure a session is still
         // available for flash messages, etc.
-        if (isset($_SESSION))
+        if (isset($_SESSION)) 
         {
-            foreach ($_SESSION as $key => $value)
+            foreach ($_SESSION as $key => $value) 
             {
                 $_SESSION[$key] = NULL;
                 unset($_SESSION[$key]);
@@ -187,7 +191,7 @@ class AuthenticationBase
         delete_cookie("remember");
 
         // Handle user-specific tasks
-        if ($user = $this->user())
+        if ($user = $this->user()) 
         {
             // Take care of any remember me functionality
             $this->loginModel->purgeRememberTokens($user->id);
@@ -210,7 +214,7 @@ class AuthenticationBase
      *
      * @return bool|int|string
      */
-    public function recordLoginAttempt(string $email, string $ipAddress=null, int $userID=null, bool $success)
+    public function recordLoginAttempt(string $email, string $ipAddress = null, int $userID = null, bool $success)
     {
         return $this->loginModel->insert([
             'ip_address' => $ipAddress,
@@ -237,7 +241,7 @@ class AuthenticationBase
         $validator = bin2hex(random_bytes(20));
         $expires   = date('Y-m-d H:i:s', time() + $this->config->rememberLength);
 
-        $token = $selector.':'.$validator;
+        $token = $selector . ':' . $validator;
 
         // Store it in the database
         $this->loginModel->rememberUser($userID, $selector, hash('sha256', $validator), $expires);
@@ -246,16 +250,27 @@ class AuthenticationBase
         $appConfig = config('App');
         $response = \Config\Services::response();
 
+        //fix cookie config positions on new version of CodeIgniter
+        if (version_compare(CodeIgniter::CI_VERSION, '4.3.8', '>')) 
+        {
+            $cookieConfig = config('Cookie');
+            $appConfig->cookieDomain    = $cookieConfig->domain;
+            $appConfig->cookiePath      = $cookieConfig->path;
+            $appConfig->cookiePrefix    = $cookieConfig->prefix;
+            $appConfig->cookieSecure    = $cookieConfig->secure;
+            $appConfig->cookieHTTPOnly  = $cookieConfig->httponly;
+        }
+
         // Create the cookie
         $response->setCookie(
-            'remember',      							// Cookie Name
-            $token,                         			// Value
-            $this->config->rememberLength,  			// # Seconds until it expires
+            'remember',                                  // Cookie Name
+            $token,                                     // Value
+            $this->config->rememberLength,              // # Seconds until it expires
             $appConfig->cookieDomain,
             $appConfig->cookiePath,
             $appConfig->cookiePrefix,
             $appConfig->cookieHTTPOnly,                 // Only send over HTTPS?
-            true                    					// Hide from Javascript?
+            true                                        // Hide from Javascript?
         );
     }
 
@@ -272,7 +287,7 @@ class AuthenticationBase
         $existing = $this->loginModel->getRememberToken($selector);
 
         // No matching record? Shouldn't happen, but remember the user now.
-        if (empty($existing))
+        if (empty($existing)) 
         {
             return $this->rememberUser($userID);
         }
@@ -287,16 +302,27 @@ class AuthenticationBase
 
         $appConfig = config('App');
 
+        //fix cookie config positions on new version of CodeIgniter
+        if (version_compare(CodeIgniter::CI_VERSION, '4.3.8', '>')) 
+        {
+            $cookieConfig = config('Cookie');
+            $appConfig->cookieDomain    = $cookieConfig->domain;
+            $appConfig->cookiePath      = $cookieConfig->path;
+            $appConfig->cookiePrefix    = $cookieConfig->prefix;
+            $appConfig->cookieSecure    = $cookieConfig->secure;
+            $appConfig->cookieHTTPOnly  = $cookieConfig->httponly;
+        }
+
         // Create the cookie
         set_cookie(
-            'remember',      							// Cookie Name
-            $selector.':'.$validator, 					// Value
-            $this->config->rememberLength,  			// # Seconds until it expires
+            'remember',                                  // Cookie Name
+            $selector . ':' . $validator,                     // Value
+            $this->config->rememberLength,              // # Seconds until it expires
             $appConfig->cookieDomain,
             $appConfig->cookiePath,
             $appConfig->cookiePrefix,
             $appConfig->cookieHTTPOnly,                 // Only send over HTTPS?
-            true                  						// Hide from Javascript?
+            true                                          // Hide from Javascript?
         );
     }
 
@@ -331,7 +357,7 @@ class AuthenticationBase
      */
     public function retrieveUser(array $wheres)
     {
-        if (! $this->userModel instanceof Model)
+        if (!$this->userModel instanceof Model) 
         {
             throw AuthException::forInvalidModel('User');
         }
@@ -377,6 +403,4 @@ class AuthenticationBase
 
         return $this;
     }
-
 }
-
