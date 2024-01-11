@@ -225,12 +225,12 @@ class AuthenticationBase
 
         // Replace cookie config values from cookie.php file on new versions of CI (v4.4.0 and above) for BC.
         if (version_compare(CodeIgniter::CI_VERSION, '4.3.8', '>')) {
-            $cookieConfig = config('Cookie');
-            $appConfig->cookieDomain    = $cookieConfig->domain;
-            $appConfig->cookiePath      = $cookieConfig->path;
-            $appConfig->cookiePrefix    = $cookieConfig->prefix;
-            $appConfig->cookieSecure    = $cookieConfig->secure;
-            $appConfig->cookieHTTPOnly  = $cookieConfig->httponly;
+            $cookieConfig              = config('Cookie');
+            $appConfig->cookieDomain   = $cookieConfig->domain;
+            $appConfig->cookiePath     = $cookieConfig->path;
+            $appConfig->cookiePrefix   = $cookieConfig->prefix;
+            $appConfig->cookieSecure   = $cookieConfig->secure;
+            $appConfig->cookieHTTPOnly = $cookieConfig->httponly;
         }
 
         // Create the cookie
@@ -272,12 +272,12 @@ class AuthenticationBase
 
         // Replace cookie config values from cookie.php file on new versions of CI (v4.4.0 and above) for BC.
         if (version_compare(CodeIgniter::CI_VERSION, '4.3.8', '>')) {
-            $cookieConfig = config('Cookie');
-            $appConfig->cookieDomain    = $cookieConfig->domain;
-            $appConfig->cookiePath      = $cookieConfig->path;
-            $appConfig->cookiePrefix    = $cookieConfig->prefix;
-            $appConfig->cookieSecure    = $cookieConfig->secure;
-            $appConfig->cookieHTTPOnly  = $cookieConfig->httponly;
+            $cookieConfig              = config('Cookie');
+            $appConfig->cookieDomain   = $cookieConfig->domain;
+            $appConfig->cookiePath     = $cookieConfig->path;
+            $appConfig->cookiePrefix   = $cookieConfig->prefix;
+            $appConfig->cookieSecure   = $cookieConfig->secure;
+            $appConfig->cookieHTTPOnly = $cookieConfig->httponly;
         }
 
         // Create the cookie
