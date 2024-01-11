@@ -116,8 +116,8 @@ class UserModel extends Model
     public function fake(Generator &$faker): User
     {
         return new User([
-            'email'    => $faker->email,
-            'username' => $faker->userName,
+            'email'    => $faker->email(),
+            'username' => $faker->userName(),
             'password' => bin2hex(random_bytes(16)),
         ]);
     }
