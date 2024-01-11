@@ -2,6 +2,7 @@
 
 namespace Myth\Auth\Authentication;
 
+use CodeIgniter\CodeIgniter;
 use CodeIgniter\Events\Events;
 use CodeIgniter\Model;
 use Exception;
@@ -222,6 +223,16 @@ class AuthenticationBase
         $appConfig = config('App');
         $response  = service('response');
 
+        // Replace cookie config values from cookie.php file on new versions of CI (v4.4.0 and above) for BC.
+        if (version_compare(CodeIgniter::CI_VERSION, '4.3.8', '>')) {
+            $cookieConfig              = config('Cookie');
+            $appConfig->cookieDomain   = $cookieConfig->domain;
+            $appConfig->cookiePath     = $cookieConfig->path;
+            $appConfig->cookiePrefix   = $cookieConfig->prefix;
+            $appConfig->cookieSecure   = $cookieConfig->secure;
+            $appConfig->cookieHTTPOnly = $cookieConfig->httponly;
+        }
+
         // Create the cookie
         $response->setCookie(
             'remember',      							// Cookie Name
@@ -258,6 +269,16 @@ class AuthenticationBase
         helper('cookie');
 
         $appConfig = config('App');
+
+        // Replace cookie config values from cookie.php file on new versions of CI (v4.4.0 and above) for BC.
+        if (version_compare(CodeIgniter::CI_VERSION, '4.3.8', '>')) {
+            $cookieConfig              = config('Cookie');
+            $appConfig->cookieDomain   = $cookieConfig->domain;
+            $appConfig->cookiePath     = $cookieConfig->path;
+            $appConfig->cookiePrefix   = $cookieConfig->prefix;
+            $appConfig->cookieSecure   = $cookieConfig->secure;
+            $appConfig->cookieHTTPOnly = $cookieConfig->httponly;
+        }
 
         // Create the cookie
         set_cookie(
