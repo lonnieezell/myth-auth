@@ -14,8 +14,8 @@ class GroupFaker extends GroupModel
     public function fake(Generator &$faker): stdClass
     {
         return (object) [
-            'name'        => $faker->word,
-            'description' => $faker->sentence,
+            'name'        => $faker->word(),
+            'description' => $faker->sentence(),
         ];
     }
 }
