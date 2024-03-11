@@ -12,8 +12,6 @@ use Tests\Support\AuthTestCase;
  */
 final class UserEntityTest extends AuthTestCase
 {
-    protected User $user;
-
     protected function setUp(): void
     {
         Services::reset();

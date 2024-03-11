@@ -12,7 +12,7 @@ final class AuthenticationBaseTest extends AuthTestCase
     /**
      * @var LocalAuthenticator
      */
-    protected $auth;
+    private $auth;
 
     protected $refresh = true;
 

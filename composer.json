@@ -24,7 +24,9 @@
         "codeigniter4/codeigniter4-standard": "^1.0",
         "codeigniter4/devkit": "^1.0",
         "codeigniter4/framework": "^4.1",
-        "mockery/mockery": "^1.0"
+        "ergebnis/composer-normalize": "*",
+        "mockery/mockery": "^1.0",
+        "rector/rector": "^0.15.1"
     },
     "provide": {
         "codeigniter4/authentication-implementation": "1.0"
@@ -46,7 +48,8 @@
     },
     "config": {
         "allow-plugins": {
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "ergebnis/composer-normalize": true
         }
     },
     "scripts": {
@@ -57,17 +60,20 @@
         ],
         "ci": [
             "Composer\\Config::disableProcessTimeout",
+            "@cs",
             "@deduplicate",
+            "@inspect",
             "@analyze",
             "@composer normalize --dry-run",
-            "@test",
-            "@inspect",
-            "@style"
+            "@test"
         ],
-        "deduplicate": "phpcpd app/ src/",
+        "cs": "php-cs-fixer fix --ansi --verbose --dry-run --diff",
+        "cs-fix": "php-cs-fixer fix --ansi --verbose --diff --using-cache=yes",
+        "deduplicate": "phpcpd src/ tests/",
         "inspect": "deptrac analyze --cache-file=build/deptrac.cache",
         "mutate": "infection --threads=2 --skip-initial-tests --coverage=build/phpunit",
-        "style": "php-cs-fixer fix --verbose --ansi --using-cache=no",
-        "test": "phpunit"
+        "sa": "@analyze",
+        "style": "@cs-fix",
+        "test": "phpunit --testdox"
     }
 }

@@ -155,7 +155,7 @@ parameters:
       - Vendor View
   skip_violations:
     Myth\Auth\Config\Services:
-      - Myth\Auth\Authorization\GroupModel
-      - Myth\Auth\Authorization\PermissionModel
-      - Myth\Auth\Models\LoginModel
-      - Myth\Auth\Models\UserModel
+    - Myth\Auth\Authorization\GroupModel
+    - Myth\Auth\Authorization\PermissionModel
+    - Myth\Auth\Models\LoginModel
+    - Myth\Auth\Models\UserModel

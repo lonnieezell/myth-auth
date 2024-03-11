@@ -17,6 +17,7 @@ parameters:
 		- '#Cannot access property [\$a-z_]+ on (array|object)#'
 		- '#Parameter \$user of method Myth\\Auth\\Authentication\\Passwords\\ValidatorInterface::check\(\) has typehint with deprecated class CodeIgniter\\Entity#'
 	universalObjectCratesClasses:
+		- CodeIgniter\Entity
 		- CodeIgniter\Entity\Entity
 		- Faker\Generator
 	scanDirectories:

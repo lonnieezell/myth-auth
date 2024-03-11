@@ -15,7 +15,7 @@ final class LocalAuthTest extends AuthTestCase
     /**
      * @var LocalAuthenticator
      */
-    protected $auth;
+    private $auth;
 
     /**
      * @var bool
