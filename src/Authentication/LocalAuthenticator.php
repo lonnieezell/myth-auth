@@ -33,7 +33,7 @@ class LocalAuthenticator extends AuthenticationBase implements AuthenticatorInte
             $ipAddress = service('request')->getIPAddress();
             $this->recordLoginAttempt($credentials['email'] ?? $credentials['username'], $ipAddress, $this->user->id ?? null, false);
 
-            $this->error = lang('Auth.userIsBanned');
+            $this->error = $this->user->status_message && !empty($this->user->status_message) ? $this->user->status_message : lang('Auth.userIsBanned');
 
             $this->user = null;
 
