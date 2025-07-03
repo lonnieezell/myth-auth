@@ -2,7 +2,9 @@
 
 namespace Myth\Auth\Authentication\Passwords;
 
-use CodeIgniter\Entity;
+//use CodeIgniter\Entity;
+
+use CodeIgniter\Entity\Entity; //Correct path for CodeIgniter Entity on 4.6.1 version
 
 interface ValidatorInterface
 {
